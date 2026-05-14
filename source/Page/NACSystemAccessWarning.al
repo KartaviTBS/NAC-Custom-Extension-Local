@@ -315,6 +315,7 @@ page 50005 "NAC System Access Warning"
         NACUserAck.EntryNo := 0;
         NACUserAck."User ID" := UserID;
         NACUserAck."Log DateTime" := CurrentDateTime();
+        NACUserAck.CompanyName := CompanyName;
         NACUserAck.Insert(true);
     end;
 
