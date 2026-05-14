@@ -1,0 +1,44 @@
+namespace NAC_Custom;
+
+using NACCustom.NACCustom;
+using NAC_CustExtension.NAC_CustExtension;
+
+permissionset 50000 NAC_Custom
+{
+    Assignable = true;
+    Permissions = tabledata NACProdOrderCompFields = RIMD,
+        tabledata NAC_Bottom = RIMD,
+        tabledata NAC_Center = RIMD,
+        tabledata NAC_Temp = RIMD,
+        tabledata NAC_TOP = RIMD,
+        table NACProdOrderCompFields = X,
+        table NAC_Bottom = X,
+        table NAC_Center = X,
+        table NAC_Temp = X,
+        table NAC_TOP = X,
+        report "NAC LPN Label" = X,
+        report NACItemBarcodeLabel = X,
+        report NACProductionOrderOutputLabel = X,
+        report "NAC Roll List" = X,
+        report NACWarehouseShipment = X,
+        codeunit NACSubscribers = X,
+        codeunit NAC_Customs = X,
+        page "NAC Item Comment Factbox" = X,
+        page "NAC Prod Material Requirements" = X,
+        page "NAC Prod. Order Job Card" = X,
+        page "NAC Temp List" = X,
+        page NACItemComments = X,
+        page NACProdComponentsWeights = X,
+        page NACProdOrderCompFields = X,
+        page NACProdOrderCompFieldsFactbox = X,
+        page NACProdOrderLines = X,
+        page NACProdOrderRoutingLine = X,
+        page NACRoutingLineCustomFields = X,
+        page NAC_Bottom = X,
+        page NAC_Center = X,
+        page NAC_TOP = X,
+        tabledata "NAC Pass" = RIMD,
+        table "NAC Pass" = X,
+        page "NAC Create Order From Sales" = X,
+        page "NAC Pass" = X;
+}

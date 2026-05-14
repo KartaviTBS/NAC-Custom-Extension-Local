@@ -1,0 +1,20 @@
+## --- AL gitignore ---
+## Ignores generated binary files and 
+## temporary files from Visual Studio and Visual Studio code
+
+# Binary files
+.alpackages/
+.appFiles/
+*.app
+*.zip
+
+# Temp files
+.vs/
+.vscode/
+
+# Others
+~$*
+*~
+
+# Translation files, until we start using them
+Translations/

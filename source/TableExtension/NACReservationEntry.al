@@ -1,0 +1,20 @@
+namespace NACCustom.NACCustom;
+
+using Microsoft.Inventory.Tracking;
+
+tableextension 50002 "NAC Reservation Entry" extends "Reservation Entry"
+{
+    fields
+    {
+        field(51114; "NAC Weight (LB)"; Decimal)
+        {
+            Caption = 'Roll Weight (LB)';
+            DecimalPlaces = 0 : 1;
+        }
+        field(51115; "NAC Roll No."; Integer)
+        {
+            Caption = 'Roll No.';
+            DataClassification = CustomerContent;
+        }
+    }
+}

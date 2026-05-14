@@ -1,0 +1,63 @@
+{
+    "id": "cb04840f-e777-40a7-a7b9-04d5d5f6f708",
+    "name": "NAC-Customs",
+    "publisher": "Tessera Holdings Inc.",
+    "version": "27.0.3.05122",
+    "brief": "",
+    "description": "",
+    "privacyStatement": "",
+    "EULA": "",
+    "help": "",
+    "url": "",
+    "logo": "",
+    "dependencies": [
+        {
+            "id": "d04cb6c5-68c8-41d7-8e25-824b48e14f04",
+            "name": "Warehouse Insight Advanced WMS",
+            "publisher": "Insight Works",
+            "version": "2.15.9422.1"
+        },
+        {
+            "id": "9c55319d-f3b9-441b-9956-0a0a04decd4b",
+            "name": "Dynamic Ship: Integrated Shipping",
+            "publisher": "Insight Works",
+            "version": "2.8.9188.2"
+        },
+        {
+            "id": "02f80526-1dda-40d6-adb3-6b8e6d0bd332",
+            "name": "Graphical Scheduler",
+            "publisher": "Insight Works",
+            "version": "2.1.9266.1"
+        },
+        {
+            "id": "ba1776ba-1198-4b4c-a61e-c4612f1880d5",
+            "name": "IWorks Common",
+            "publisher": "Insight Works",
+            "version": "2.18.9452.1"
+        },
+				{
+					"id": "c670dab0-a6c8-4702-9416-3e3328c52ebb",
+					"name": "License Plate Management",
+					"publisher": "Insight Works",
+					"version": "1.97.9362.1"
+				}
+    ],
+    "screenshots": [],
+    "platform": "1.0.0.0",
+    "application": "27.0.0.0",
+    "idRanges": [
+        {
+            "from": 50000,
+            "to": 51999
+        }
+    ],
+    "resourceExposurePolicy": {
+        "allowDebugging": false,
+        "allowDownloadingSource": false,
+        "includeSourceInSymbolFile": false
+    },
+    "runtime": "16.0",
+    "features": [
+        "NoImplicitWith"
+    ]
+}
