@@ -297,4 +297,13 @@ codeunit 51000 NACSubscribers
         NACSystemAccessWarning.Editable(false);
         NACSystemAccessWarning.RunModal();
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ReportManagement, OnAfterSubstituteReport, '', false, false)]
+    local procedure ReportManagement_OnAfterSubstituteReport(ReportId: Integer; var NewReportId: Integer)
+    begin
+        case ReportId of
+            Report::"DSHIP Bill of Lading":
+                NewReportId := Report::"NAC Bill of Lading";
+        end;
+    end;
 }

@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-05-13T11:34:30.5612010Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-05-14T10:20:35.6083370Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -24,6 +24,220 @@
       <rd:DataSourceID>491235b2-f510-44a7-9e45-5f7b1dafdad1</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="No_">
+          <DataField>No_</DataField>
+        </Field>
+        <Field Name="CompanyInformation_Picture">
+          <DataField>CompanyInformation_Picture</DataField>
+        </Field>
+        <Field Name="Source_No_">
+          <DataField>Source_No_</DataField>
+        </Field>
+        <Field Name="NAC_Quantity_of_roll">
+          <DataField>NAC_Quantity_of_roll</DataField>
+        </Field>
+        <Field Name="RubberCompoundLot">
+          <DataField>RubberCompoundLot</DataField>
+        </Field>
+        <Field Name="Calender_date">
+          <DataField>Calender_date</DataField>
+        </Field>
+        <Field Name="NACFabricRollS_ProductionOrder">
+          <DataField>NACFabricRollS_ProductionOrder</DataField>
+        </Field>
+        <Field Name="NACCustSupplied_ProductionOrder">
+          <DataField>NACCustSupplied_ProductionOrder</DataField>
+        </Field>
+        <Field Name="NACCustomerSupplied_ProductionOrder">
+          <DataField>NACCustomerSupplied_ProductionOrder</DataField>
+        </Field>
+        <Field Name="ExternalDocumentNo">
+          <DataField>ExternalDocumentNo</DataField>
+        </Field>
+        <Field Name="CustItemRefNo">
+          <DataField>CustItemRefNo</DataField>
+        </Field>
+        <Field Name="ItemDescription">
+          <DataField>ItemDescription</DataField>
+        </Field>
+        <Field Name="RubberCompound">
+          <DataField>RubberCompound</DataField>
+        </Field>
+        <Field Name="NAC_Gauge">
+          <DataField>NAC_Gauge</DataField>
+        </Field>
+        <Field Name="NAC_GaugeFormat">
+          <DataField>NAC_GaugeFormat</DataField>
+        </Field>
+        <Field Name="NAC_Durometer">
+          <DataField>NAC_Durometer</DataField>
+        </Field>
+        <Field Name="NAC_Width">
+          <DataField>NAC_Width</DataField>
+        </Field>
+        <Field Name="NAC_WidthFormat">
+          <DataField>NAC_WidthFormat</DataField>
+        </Field>
+        <Field Name="NAC_Pickup">
+          <DataField>NAC_Pickup</DataField>
+        </Field>
+        <Field Name="NAC_Ply">
+          <DataField>NAC_Ply</DataField>
+        </Field>
+        <Field Name="NACSurfaceAppearance_ProductionOrder">
+          <DataField>NACSurfaceAppearance_ProductionOrder</DataField>
+        </Field>
+        <Field Name="NACDurometerPF_ProductionOrder">
+          <DataField>NACDurometerPF_ProductionOrder</DataField>
+        </Field>
+        <Field Name="NACGaugePF_ProductionOrder">
+          <DataField>NACGaugePF_ProductionOrder</DataField>
+        </Field>
+        <Field Name="NACPLYPF_ProductionOrder">
+          <DataField>NACPLYPF_ProductionOrder</DataField>
+        </Field>
+        <Field Name="NACSurfacePF_ProductionOrder">
+          <DataField>NACSurfacePF_ProductionOrder</DataField>
+        </Field>
+        <Field Name="NACWidthPF_ProductionOrder">
+          <DataField>NACWidthPF_ProductionOrder</DataField>
+        </Field>
+        <Field Name="FabricType">
+          <DataField>FabricType</DataField>
+        </Field>
+        <Field Name="NoteTxt">
+          <DataField>NoteTxt</DataField>
+        </Field>
+        <Field Name="CertificateofConforanceLbl">
+          <DataField>CertificateofConforanceLbl</DataField>
+        </Field>
+        <Field Name="CalenderedDateLbl">
+          <DataField>CalenderedDateLbl</DataField>
+        </Field>
+        <Field Name="PurchaseOrderLbl">
+          <DataField>PurchaseOrderLbl</DataField>
+        </Field>
+        <Field Name="NacItemNumberLbl">
+          <DataField>NacItemNumberLbl</DataField>
+        </Field>
+        <Field Name="QuantityofRolls">
+          <DataField>QuantityofRolls</DataField>
+        </Field>
+        <Field Name="CustomerItemandDescription">
+          <DataField>CustomerItemandDescription</DataField>
+        </Field>
+        <Field Name="RubberCompoundLbl">
+          <DataField>RubberCompoundLbl</DataField>
+        </Field>
+        <Field Name="CustomerSuppliedLbl">
+          <DataField>CustomerSuppliedLbl</DataField>
+        </Field>
+        <Field Name="RubberCompoundLotLbl">
+          <DataField>RubberCompoundLotLbl</DataField>
+        </Field>
+        <Field Name="FabricTypeLbl">
+          <DataField>FabricTypeLbl</DataField>
+        </Field>
+        <Field Name="FabricRollsLbl">
+          <DataField>FabricRollsLbl</DataField>
+        </Field>
+        <Field Name="SpecificationLimitsLbl">
+          <DataField>SpecificationLimitsLbl</DataField>
+        </Field>
+        <Field Name="GaugeLbl">
+          <DataField>GaugeLbl</DataField>
+        </Field>
+        <Field Name="DurometerLbl">
+          <DataField>DurometerLbl</DataField>
+        </Field>
+        <Field Name="WidthLbl">
+          <DataField>WidthLbl</DataField>
+        </Field>
+        <Field Name="PlyAdhesionLbl">
+          <DataField>PlyAdhesionLbl</DataField>
+        </Field>
+        <Field Name="SurfaceAppearanceLbl">
+          <DataField>SurfaceAppearanceLbl</DataField>
+        </Field>
+        <Field Name="Pickuplbl">
+          <DataField>Pickuplbl</DataField>
+        </Field>
+        <Field Name="FinishedRollDetailLbl">
+          <DataField>FinishedRollDetailLbl</DataField>
+        </Field>
+        <Field Name="RollLbl">
+          <DataField>RollLbl</DataField>
+        </Field>
+        <Field Name="LengthftLbl">
+          <DataField>LengthftLbl</DataField>
+        </Field>
+        <Field Name="WeightLbl">
+          <DataField>WeightLbl</DataField>
+        </Field>
+        <Field Name="BatchLbl">
+          <DataField>BatchLbl</DataField>
+        </Field>
+        <Field Name="SerialNoLbl">
+          <DataField>SerialNoLbl</DataField>
+        </Field>
+        <Field Name="QuantityofRollsLbl">
+          <DataField>QuantityofRollsLbl</DataField>
+        </Field>
+        <Field Name="CertifiedByLbl">
+          <DataField>CertifiedByLbl</DataField>
+        </Field>
+        <Field Name="DateLbl">
+          <DataField>DateLbl</DataField>
+        </Field>
+        <Field Name="UnitofMeasureLbl">
+          <DataField>UnitofMeasureLbl</DataField>
+        </Field>
+        <Field Name="WidthHeaderLbl">
+          <DataField>WidthHeaderLbl</DataField>
+        </Field>
+        <Field Name="CustomerItemRefLbl">
+          <DataField>CustomerItemRefLbl</DataField>
+        </Field>
+        <Field Name="NAC_Roll_No_">
+          <DataField>NAC_Roll_No_</DataField>
+        </Field>
+        <Field Name="NAC_Weight__LB_">
+          <DataField>NAC_Weight__LB_</DataField>
+        </Field>
+        <Field Name="NAC_Weight__LB_Format">
+          <DataField>NAC_Weight__LB_Format</DataField>
+        </Field>
+        <Field Name="Lot_No_">
+          <DataField>Lot_No_</DataField>
+        </Field>
+        <Field Name="Width">
+          <DataField>Width</DataField>
+        </Field>
+        <Field Name="WidthFormat">
+          <DataField>WidthFormat</DataField>
+        </Field>
+        <Field Name="Length">
+          <DataField>Length</DataField>
+        </Field>
+        <Field Name="LengthFormat">
+          <DataField>LengthFormat</DataField>
+        </Field>
+        <Field Name="Package_No_">
+          <DataField>Package_No_</DataField>
+        </Field>
+        <Field Name="Unit_of_Measure_Code">
+          <DataField>Unit_of_Measure_Code</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -276,7 +490,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!WidthLbl.Value</Value>
+                    <Value>=Fields!WidthHeaderLbl.Value</Value>
                     <Style>
                       <FontSize>9.5pt</FontSize>
                     </Style>
@@ -422,7 +636,7 @@
             <Top>3.22262cm</Top>
             <Left>3.82801cm</Left>
             <Height>0.5909cm</Height>
-            <Width>3.65012cm</Width>
+            <Width>3.24442cm</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -563,7 +777,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Unit of Measure</Value>
+                                  <Value>=Fields!UnitofMeasureLbl.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1243,9 +1457,9 @@
                 </Paragraph>
               </Paragraphs>
               <Top>0.63182cm</Top>
-              <Left>10.33493cm</Left>
+              <Left>9.59373cm</Left>
               <Height>0.65292cm</Height>
-              <Width>8.81cm</Width>
+              <Width>9.5512cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -1274,9 +1488,9 @@
                 </Paragraph>
               </Paragraphs>
               <Top>2.40509cm</Top>
-              <Left>10.37021cm</Left>
+              <Left>9.59373cm</Left>
               <Height>0.54709cm</Height>
-              <Width>4.35208cm</Width>
+              <Width>5.12856cm</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -1304,9 +1518,9 @@
                 </Paragraph>
               </Paragraphs>
               <Top>1.75217cm</Top>
-              <Left>10.33493cm</Left>
+              <Left>9.59373cm</Left>
               <Height>0.54709cm</Height>
-              <Width>4.35208cm</Width>
+              <Width>5.09328cm</Width>
               <ZIndex>3</ZIndex>
               <Style>
                 <Border>
@@ -2025,7 +2239,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Constant">Customer Item Ref. No.</Value>
+                      <Value>=Fields!CustomerItemRefLbl.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -2033,9 +2247,9 @@
                 </Paragraph>
               </Paragraphs>
               <Top>3.05802cm</Top>
-              <Left>10.37021cm</Left>
+              <Left>9.59373cm</Left>
               <Height>0.6cm</Height>
-              <Width>4.3168cm</Width>
+              <Width>5.09328cm</Width>
               <ZIndex>25</ZIndex>
               <Style>
                 <Border>
@@ -2065,7 +2279,7 @@
               <Top>3.05802cm</Top>
               <Left>14.79285cm</Left>
               <Height>0.6cm</Height>
-              <Width>4.3168cm</Width>
+              <Width>4.35208cm</Width>
               <ZIndex>26</ZIndex>
               <Style>
                 <Border>
@@ -2194,6 +2408,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2231,212 +2451,4 @@ End Function
 </Code>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="No_">
-          <DataField>No_</DataField>
-        </Field>
-        <Field Name="CompanyInformation_Picture">
-          <DataField>CompanyInformation_Picture</DataField>
-        </Field>
-        <Field Name="Source_No_">
-          <DataField>Source_No_</DataField>
-        </Field>
-        <Field Name="NAC_Quantity_of_roll">
-          <DataField>NAC_Quantity_of_roll</DataField>
-        </Field>
-        <Field Name="NAC_Quantity_of_rollFormat">
-          <DataField>NAC_Quantity_of_rollFormat</DataField>
-        </Field>
-        <Field Name="RubberCompoundLot">
-          <DataField>RubberCompoundLot</DataField>
-        </Field>
-        <Field Name="Calender_date">
-          <DataField>Calender_date</DataField>
-        </Field>
-        <Field Name="NACFabricRollS_ProductionOrder">
-          <DataField>NACFabricRollS_ProductionOrder</DataField>
-        </Field>
-        <Field Name="NACCustSupplied_ProductionOrder">
-          <DataField>NACCustSupplied_ProductionOrder</DataField>
-        </Field>
-        <Field Name="NACCustomerSupplied_ProductionOrder">
-          <DataField>NACCustomerSupplied_ProductionOrder</DataField>
-        </Field>
-        <Field Name="ExternalDocumentNo">
-          <DataField>ExternalDocumentNo</DataField>
-        </Field>
-        <Field Name="CustItemRefNo">
-          <DataField>CustItemRefNo</DataField>
-        </Field>
-        <Field Name="ItemDescription">
-          <DataField>ItemDescription</DataField>
-        </Field>
-        <Field Name="RubberCompound">
-          <DataField>RubberCompound</DataField>
-        </Field>
-        <Field Name="NAC_Gauge">
-          <DataField>NAC_Gauge</DataField>
-        </Field>
-        <Field Name="NAC_GaugeFormat">
-          <DataField>NAC_GaugeFormat</DataField>
-        </Field>
-        <Field Name="NAC_Durometer">
-          <DataField>NAC_Durometer</DataField>
-        </Field>
-        <Field Name="NAC_Width">
-          <DataField>NAC_Width</DataField>
-        </Field>
-        <Field Name="NAC_WidthFormat">
-          <DataField>NAC_WidthFormat</DataField>
-        </Field>
-        <Field Name="NAC_Pickup">
-          <DataField>NAC_Pickup</DataField>
-        </Field>
-        <Field Name="NAC_Ply">
-          <DataField>NAC_Ply</DataField>
-        </Field>
-        <Field Name="NACSurfaceAppearance_ProductionOrder">
-          <DataField>NACSurfaceAppearance_ProductionOrder</DataField>
-        </Field>
-        <Field Name="NACDurometerPF_ProductionOrder">
-          <DataField>NACDurometerPF_ProductionOrder</DataField>
-        </Field>
-        <Field Name="NACGaugePF_ProductionOrder">
-          <DataField>NACGaugePF_ProductionOrder</DataField>
-        </Field>
-        <Field Name="NACPLYPF_ProductionOrder">
-          <DataField>NACPLYPF_ProductionOrder</DataField>
-        </Field>
-        <Field Name="NACSurfacePF_ProductionOrder">
-          <DataField>NACSurfacePF_ProductionOrder</DataField>
-        </Field>
-        <Field Name="NACWidthPF_ProductionOrder">
-          <DataField>NACWidthPF_ProductionOrder</DataField>
-        </Field>
-        <Field Name="FabricType">
-          <DataField>FabricType</DataField>
-        </Field>
-        <Field Name="NoteTxt">
-          <DataField>NoteTxt</DataField>
-        </Field>
-        <Field Name="CertificateofConforanceLbl">
-          <DataField>CertificateofConforanceLbl</DataField>
-        </Field>
-        <Field Name="CalenderedDateLbl">
-          <DataField>CalenderedDateLbl</DataField>
-        </Field>
-        <Field Name="PurchaseOrderLbl">
-          <DataField>PurchaseOrderLbl</DataField>
-        </Field>
-        <Field Name="NacItemNumberLbl">
-          <DataField>NacItemNumberLbl</DataField>
-        </Field>
-        <Field Name="QuantityofRolls">
-          <DataField>QuantityofRolls</DataField>
-        </Field>
-        <Field Name="CustomerItemandDescription">
-          <DataField>CustomerItemandDescription</DataField>
-        </Field>
-        <Field Name="RubberCompoundLbl">
-          <DataField>RubberCompoundLbl</DataField>
-        </Field>
-        <Field Name="CustomerSuppliedLbl">
-          <DataField>CustomerSuppliedLbl</DataField>
-        </Field>
-        <Field Name="RubberCompoundLotLbl">
-          <DataField>RubberCompoundLotLbl</DataField>
-        </Field>
-        <Field Name="FabricTypeLbl">
-          <DataField>FabricTypeLbl</DataField>
-        </Field>
-        <Field Name="FabricRollsLbl">
-          <DataField>FabricRollsLbl</DataField>
-        </Field>
-        <Field Name="SpecificationLimitsLbl">
-          <DataField>SpecificationLimitsLbl</DataField>
-        </Field>
-        <Field Name="GaugeLbl">
-          <DataField>GaugeLbl</DataField>
-        </Field>
-        <Field Name="DurometerLbl">
-          <DataField>DurometerLbl</DataField>
-        </Field>
-        <Field Name="WidthLbl">
-          <DataField>WidthLbl</DataField>
-        </Field>
-        <Field Name="PlyAdhesionLbl">
-          <DataField>PlyAdhesionLbl</DataField>
-        </Field>
-        <Field Name="SurfaceAppearanceLbl">
-          <DataField>SurfaceAppearanceLbl</DataField>
-        </Field>
-        <Field Name="Pickuplbl">
-          <DataField>Pickuplbl</DataField>
-        </Field>
-        <Field Name="FinishedRollDetailLbl">
-          <DataField>FinishedRollDetailLbl</DataField>
-        </Field>
-        <Field Name="RollLbl">
-          <DataField>RollLbl</DataField>
-        </Field>
-        <Field Name="LengthftLbl">
-          <DataField>LengthftLbl</DataField>
-        </Field>
-        <Field Name="WeightLbl">
-          <DataField>WeightLbl</DataField>
-        </Field>
-        <Field Name="BatchLbl">
-          <DataField>BatchLbl</DataField>
-        </Field>
-        <Field Name="SerialNoLbl">
-          <DataField>SerialNoLbl</DataField>
-        </Field>
-        <Field Name="QuantityofRollsLbl">
-          <DataField>QuantityofRollsLbl</DataField>
-        </Field>
-        <Field Name="CertifiedByLbl">
-          <DataField>CertifiedByLbl</DataField>
-        </Field>
-        <Field Name="DateLbl">
-          <DataField>DateLbl</DataField>
-        </Field>
-        <Field Name="NAC_Roll_No_">
-          <DataField>NAC_Roll_No_</DataField>
-        </Field>
-        <Field Name="NAC_Weight__LB_">
-          <DataField>NAC_Weight__LB_</DataField>
-        </Field>
-        <Field Name="NAC_Weight__LB_Format">
-          <DataField>NAC_Weight__LB_Format</DataField>
-        </Field>
-        <Field Name="Lot_No_">
-          <DataField>Lot_No_</DataField>
-        </Field>
-        <Field Name="Width">
-          <DataField>Width</DataField>
-        </Field>
-        <Field Name="WidthFormat">
-          <DataField>WidthFormat</DataField>
-        </Field>
-        <Field Name="Length">
-          <DataField>Length</DataField>
-        </Field>
-        <Field Name="LengthFormat">
-          <DataField>LengthFormat</DataField>
-        </Field>
-        <Field Name="Package_No_">
-          <DataField>Package_No_</DataField>
-        </Field>
-        <Field Name="Unit_of_Measure_Code">
-          <DataField>Unit_of_Measure_Code</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>

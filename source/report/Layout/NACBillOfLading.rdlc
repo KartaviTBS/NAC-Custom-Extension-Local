@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-05-14T12:31:13.7894610Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
@@ -5142,21 +5153,33 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Image Name="Image1">
-                          <Source>Database</Source>
-                          <Value>=Fields!DocumentNoBarcode.Value</Value>
-                          <MIMEType>image/bmp</MIMEType>
-                          <Sizing>FitProportional</Sizing>
+                        <Textbox Name="Textbox117">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!DocumentNoBarcode.Value</Value>
+                                  <Style>
+                                    <FontFamily>IDAutomationHC39M</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox117</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <PaddingLeft>6pt</PaddingLeft>
-                            <PaddingRight>6pt</PaddingRight>
-                            <PaddingTop>6pt</PaddingTop>
-                            <PaddingBottom>6pt</PaddingBottom>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Image>
+                        </Textbox>
                         <ColSpan>3</ColSpan>
                       </CellContents>
                     </TablixCell>
@@ -5568,21 +5591,33 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Image Name="Image2">
-                          <Source>Database</Source>
-                          <Value>=Fields!ShipProNumberBarcode.Value</Value>
-                          <MIMEType>image/bmp</MIMEType>
-                          <Sizing>FitProportional</Sizing>
+                        <Textbox Name="Textbox119">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!ShipProNumberBarcode.Value</Value>
+                                  <Style>
+                                    <FontFamily>IDAutomationHC39M</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox119</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <PaddingLeft>6pt</PaddingLeft>
-                            <PaddingRight>4pt</PaddingRight>
-                            <PaddingTop>4pt</PaddingTop>
-                            <PaddingBottom>4pt</PaddingBottom>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Image>
+                        </Textbox>
                         <ColSpan>3</ColSpan>
                       </CellContents>
                     </TablixCell>
@@ -8538,7 +8573,7 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>11.105in</Top>
-            <Height>1.2in</Height>
+            <Height>1.18in</Height>
             <Width>8in</Width>
             <ZIndex>8</ZIndex>
             <Visibility>

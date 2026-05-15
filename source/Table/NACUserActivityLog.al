@@ -25,10 +25,10 @@ table 50002 "NAC User Activity Log"
             Caption = 'Log DateTime';
             DataClassification = SystemMetadata;
         }
-        field(4; CompanyName; Code[100])
+        field(4; "Company Name"; Code[100])
         {
             Caption = 'Company Name';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
     }
 
@@ -39,9 +39,13 @@ table 50002 "NAC User Activity Log"
             Clustered = true;
         }
     }
-
     trigger OnModify()
     begin
-        Error('Modify Not allow');
+        Error('Modification Not allowed');
+    end;
+
+    trigger OnDelete()
+    begin
+        Error('Delete Not allowed');
     end;
 }

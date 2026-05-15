@@ -1,6 +1,7 @@
 namespace NACCustom.NACCustom;
 
 using Microsoft.Manufacturing.Document;
+using Microsoft.Inventory.Tracking;
 using Microsoft.Foundation.Company;
 using Microsoft.Sales.Document;
 using Microsoft.Inventory.Item;
@@ -126,6 +127,10 @@ report 50003 "NAC Certificate of Conformance"
             { }
             column(DateLbl; DateLbl)
             { }
+            column(UnitofMeasureLbl; UnitofMeasureLbl)
+            { }
+            column(WidthHeaderLbl; WidthHeaderLbl) { }
+            column(CustomerItemRefLbl; CustomerItemRefLbl) { }
 
             dataitem("Item Ledger Entry"; "Item Ledger Entry")
             {
@@ -144,13 +149,42 @@ report 50003 "NAC Certificate of Conformance"
                 { }
                 column(Package_No_; "Package No.")
                 { }
-                column(Unit_of_Measure_Code; "Unit of Measure Code")
+                column(Unit_of_Measure_Code; UOM)
                 { }
                 trigger OnAfterGetRecord()
+                var
+                    rReservation1: Record "Reservation Entry";
+                    rReservation2: Record "Reservation Entry";
+                    SalesLine: Record "Sales Line";
+                    QtyRoundingPrecision: Decimal;
                 begin
-                    if Item.Get("Item No.") then begin
-                        Length_Line := Item."NAC Length (FT)";
+                    if Item.Get("Item No.") then
                         Width_Line := Item."NAC CAL Width (IN)";
+                    rReservation1.RESET;
+                    rReservation1.SETRANGE("Source Type", Database::"Item Ledger Entry");
+                    rReservation1.SETRANGE("Source Ref. No.", "Item Ledger Entry"."Entry No.");
+                    If rReservation1.FINDFIRST THEN begin
+                        rReservation2.RESET;
+                        If rReservation2.GET(rReservation1."Entry No.", not rReservation1.Positive) Then begin
+                            If rReservation2."Source Type" = Database::"Sales Line" Then
+                                if SalesLine.Get(rReservation2."Source Subtype", rReservation2."Source ID", rReservation2."Source Ref. No.") then begin
+                                    SalesLine.CalcFields("NAC Req. UoM Use in Reports", "NAC UoM Use in Reports");
+                                    if (SalesLine."NAC Req. Unit of Measure" <> '') and (SalesLine."NAC Req. UoM Use in Reports") then begin
+                                        QtyRoundingPrecision := SalesLine."NAC Req. Qty. Rounding Prec." = 0 ? 0.01 : SalesLine."NAC Req. Qty. Rounding Prec.";
+                                        Length_Line := Round(Quantity / SalesLine."NAC Qty. per Unit of Measure", QtyRoundingPrecision);
+                                        UOM := SalesLine."NAC Req. Unit of Measure Code";
+                                    end
+                                    else if (SalesLine."NAC Req. Unit of Measure" = '') and (SalesLine."NAC UoM Use in Reports") then begin
+                                        Length_Line := Quantity;
+                                        UOM := SalesLine."Unit of Measure Code";
+                                    end
+                                    else begin
+                                        Item.Get(SalesLine."No.");
+                                        Length_Line := Quantity;
+                                        UOM := Item."Base Unit of Measure";
+                                    end;
+                                end;
+                        end;
                     end;
                 end;
             }
@@ -210,10 +244,13 @@ report 50003 "NAC Certificate of Conformance"
                         end;
                         if Item.Get(rItemLConsumption."Item No.") then
                             if UpperCase(Item."Item Category Code") = 'POLY' then
-                                if FabricType = '' then
-                                    FabricType := Item."No."
-                                else
-                                    FabricType += ' - ' + Item."No.";
+                                if not FabricItemList.Contains(rItemLConsumption."Item No.") then begin
+                                    FabricItemList.Add(rItemLConsumption."Item No.");
+                                    if FabricType = '' then
+                                        FabricType := Item."No."
+                                    else
+                                        FabricType += ' - ' + Item."No.";
+                                end;
                     Until rItemLConsumption.Next() = 0;
             end;
         }
@@ -233,6 +270,7 @@ report 50003 "NAC Certificate of Conformance"
         vSalesNo: Code[20];
         vBillNo: Code[20];
         vBillName: Text[100];
+        UOM: Code[20];
         vSO: Boolean;
         vSellNo: Code[20];
         vSellName: Text[100];
@@ -242,11 +280,11 @@ report 50003 "NAC Certificate of Conformance"
         ItemDescription: Text;
         RubberCompound: Text;
         RubberCompoundLot: Text;
-        CustItemRefNo: Code[20];
-        FabricType: Code[20];
+        CustItemRefNo: Code[50];
+        FabricType: Text;
         Gauge: Decimal;
         Width: Decimal;
-        Durometer: Text[10];
+        Durometer: Text;
         NoteTxt: Label 'North American Calendering certifies the following materials were calendered to the specifications required according to the purchase order referenced above.';
         CertificateofConforanceLbl: Label 'CERTIFICATE OF CONFORMANCE';
         CalenderedDateLbl: Label 'CALENDERED DATE:';
@@ -260,22 +298,26 @@ report 50003 "NAC Certificate of Conformance"
         FabricTypeLbl: Label 'FABRIC TYPE(If Applicable):';
         FabricRollsLbl: Label 'FABRIC ROLL No.:';
         SpecificationLimitsLbl: Label 'SPECIFICATION LIMITS (PASS/FAIL)';
-        GaugeLbl: Label 'GAUGE:';
-        DurometerLbl: Label 'DUROMETER';
-        WidthLbl: Label 'WIDTH:';
+        GaugeLbl: Label 'GAUGE (IN):';
+        DurometerLbl: Label 'DUROMETER:';
+        WidthLbl: Label 'WIDTH (IN)';
+        WidthHeaderLbl: Label 'WIDTH (IN):';
         PlyAdhesionLbl: Label 'PLY ADHESION:';
         SurfaceAppearanceLbl: Label 'SURFACE APPEARANCE:';
-        Pickuplbl: Label 'PICK UP';
+        Pickuplbl: Label 'PICK UP (%):';
         FinishedRollDetailLbl: Label 'FINISHED ROLL DETAIL';
         RollLbl: Label 'ROLL';
-        LengthftLbl: Label 'LENGTH(FT)';
-        WeightLbl: Label 'WEIGHT';
+        LengthftLbl: Label 'LENGTH (FT)';
+        WeightLbl: Label 'WEIGHT (LB)';
         BatchLbl: Label 'BATCH';
-        SerialNoLbl: Label 'Serial No';
+        UnitofMeasureLbl: Label 'UNIT OF MEASURE';
+        CustomerItemRefLbl: Label 'CUSTOMER ITEM REF. NO.:';
+        SerialNoLbl: Label 'SERIAL #';
         CertifiedByLbl: Label 'Certified By';
         DateLbl: Label 'Date';
         CompoundItemList: List of [Code[20]];
         CompoundLotNoList: List of [Code[50]];
+        FabricItemList: List of [Code[20]];
         Length_Line: Decimal;
         Width_Line: Decimal;
 }

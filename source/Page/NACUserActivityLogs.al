@@ -8,9 +8,6 @@ page 50002 "NAC User Activity Logs"
     UsageCategory = Administration;
     SourceTable = "NAC User Activity Log";
     Editable = false;
-    InsertAllowed = false;
-    ModifyAllowed = false;
-    DeleteAllowed = false;
     SourceTableView = sorting(EntryNo) order(descending);
     layout
     {
@@ -24,7 +21,7 @@ page 50002 "NAC User Activity Logs"
                 field("User Log In"; Rec."Log DateTime")
                 {
                 }
-                field(CompanyName; Rec.CompanyName)
+                field("Company Name"; Rec."Company Name")
                 {
                 }
             }

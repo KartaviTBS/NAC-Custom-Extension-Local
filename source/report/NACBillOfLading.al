@@ -12,6 +12,8 @@ report 50000 "NAC Bill of Lading"
 {
     Caption = 'Dynamic Ship Bill of Lading';
     DefaultRenderingLayout = NACBillOfLadingRDLCLayout;
+    UsageCategory = Administration;
+    ApplicationArea = All;
 
     dataset
     {
@@ -34,7 +36,7 @@ report 50000 "NAC Bill of Lading"
                 IncludeCaption = true;
                 // The bill of lading number created by the shipper to identify the shipment.
             }
-            column(DocumentNoBarcode; DocNoBarcode.Picture) { }
+            column(DocumentNoBarcode; DocumentNumberBarcode) { }
             column(ShipmentDate; "Shipment Date")
             {
                 IncludeCaption = true;
@@ -135,7 +137,7 @@ report 50000 "NAC Bill of Lading"
                 // The Pro number assigned by the carrier to track the shipment.
                 // The pro number is used if an LTL carrier hauls the shipment.
             }
-            column(ShipProNumberBarcode; ProNumberBarcode.Picture) { }
+            column(ShipProNumberBarcode; ProNumberBarcode) { }
             column(ShipTrailerNo; TrailerNo)
             {
                 // Placeholder. Not used in base.
@@ -245,11 +247,15 @@ report 50000 "NAC Bill of Lading"
                 shipAgent: Record "Shipping Agent";
                 barcodeGen: Codeunit "IWX Barcode Generation";
                 tempBlob: Codeunit "Temp Blob";
+                BarcodeFontProvider: Interface "Barcode Font Provider";
+                BarcodeSymbology: Enum "Barcode Symbology";
                 outStr: OutStream;
                 inStr: InStream;
             begin
                 // dataitem orderBuffer
                 GroupLicensePlates();
+                BarcodeFontProvider := Enum::"Barcode Font Provider"::IDAutomation1D;
+                BarcodeSymbology := Enum::"Barcode Symbology"::Code39;
 
                 if (shipAgent.Get(orderBuffer."Shipping Agent Code")) then begin
                     CarrierName := shipAgent.Name;
@@ -262,17 +268,20 @@ report 50000 "NAC Bill of Lading"
                 SIDNo := orderBuffer."Document No.";
                 FOBTo := orderBuffer."Shipment Method Code" = 'FOB';
 
-                barcodeGen.Generate39Barcode(tempBlob, "Document No.", 100, 20);
-                DocNoBarcode.Picture.CreateOutStream(outStr);
-                tempBlob.CreateInStream(inStr);
-                CopyStream(outStr, inStr);
+
+                // barcodeGen.Generate39Barcode(tempBlob, "Document No.", 100, 20);
+                // DocNoBarcode.Picture.CreateOutStream(outStr);
+                // tempBlob.CreateInStream(inStr);
+                // CopyStream(outStr, inStr);
+                DocumentNumberBarcode := BarcodeFontProvider.EncodeFont("Document No.", BarcodeSymbology);
 
                 if (ProNumber <> '') then begin
-                    Clear(tempBlob);
-                    barcodeGen.Generate39Barcode(tempBlob, ProNumber, 100, 20);
-                    ProNumberBarcode.Picture.CreateOutStream(outStr);
-                    tempBlob.CreateInStream(inStr);
-                    CopyStream(outStr, inStr);
+                    ProNumberBarcode := BarcodeFontProvider.EncodeFont(ProNumber, BarcodeSymbology);
+                    // Clear(tempBlob);
+                    // barcodeGen.Generate39Barcode(tempBlob, ProNumber, 100, 20);
+                    // ProNumberBarcode.Picture.CreateOutStream(outStr);
+                    // tempBlob.CreateInStream(inStr);
+                    // CopyStream(outStr, inStr);
                 end;
             end;
         }
@@ -447,6 +456,7 @@ report 50000 "NAC Bill of Lading"
         salesLine: Record "Sales Line";
         transferHeader: Record "Transfer Header";
         transferLine: Record "Transfer Line";
+        WarehouseShipmentLine: Record "Warehouse Shipment Line";
         item: Record Item;
         recRef: RecordRef;
         sourceLine: Variant;
@@ -455,48 +465,50 @@ report 50000 "NAC Bill of Lading"
         unitPrice: Decimal;
         discount: Decimal;
     begin
+        WarehouseShipmentLine.Get(lpLineUsage."Source No.", lpLineUsage."Source Line No.");
+        salesLine.Get(WarehouseShipmentLine."Source Subtype", WarehouseShipmentLine."Source No.", WarehouseShipmentLine."Source Line No.");
         // Common.GetSourceLineVariant(lpLineUsage, sourceLine);
         // AddressMgmt.GetRecordRef(sourceLine, recRef, true);
 
-        case recRef.Number() of
-            Database::"Sales Line":
-                begin
-                    recRef.SetTable(salesLine);
-                    if (salesHeader.Get(salesLine."Document Type", salesLine."Document No.")) then begin
-                        if (salesHeader."External Document No." <> '') then begin
-                            tempOrder := salesHeader."External Document No.";
-                        end else begin
-                            tempOrder := salesHeader."No.";
-                        end;
-
-                        if (IsValueDiscounted) and (salesLine."Line Discount %" > 0) then begin
-                            discount := 1 / salesLine."Line Discount %";
-                        end else begin
-                            discount := 1;
-                        end;
-                        unitPrice := salesLine."Unit Price" * discount;
-                        orderDesc := salesHeader."Shipment Method Code";
-                    end;
-                end;
-            Database::"Transfer Line":
-                begin
-                    recRef.SetTable(transferLine);
-                    if (transferHeader.Get(transferLine."Document No.")) then begin
-                        if (transferHeader."External Document No." <> '') then begin
-                            tempOrder := transferHeader."External Document No.";
-                        end else begin
-                            tempOrder := transferHeader."No.";
-                        end;
-
-                        item.Get(transferLine."Item No.");
-                        unitPrice := item."Unit Price";
-                        orderDesc := transferHeader."Shipment Method Code";
-                    end;
-                end;
-            else begin
-                Error(BadSourceDocErr);
+        // case recRef.Number() of
+        //     Database::"Sales Line":
+        //         begin
+        //             recRef.SetTable(salesLine);
+        if (salesHeader.Get(salesLine."Document Type", salesLine."Document No.")) then begin
+            if (salesHeader."External Document No." <> '') then begin
+                tempOrder := salesHeader."External Document No.";
+            end else begin
+                tempOrder := salesHeader."No.";
             end;
+
+            if (IsValueDiscounted) and (salesLine."Line Discount %" > 0) then begin
+                discount := 1 / salesLine."Line Discount %";
+            end else begin
+                discount := 1;
+            end;
+            unitPrice := salesLine."Unit Price" * discount;
+            orderDesc := salesHeader."Shipment Method Code";
         end;
+        //         end;
+        //     Database::"Transfer Line":
+        //         begin
+        //             recRef.SetTable(transferLine);
+        //             if (transferHeader.Get(transferLine."Document No.")) then begin
+        //                 if (transferHeader."External Document No." <> '') then begin
+        //                     tempOrder := transferHeader."External Document No.";
+        //                 end else begin
+        //                     tempOrder := transferHeader."No.";
+        //                 end;
+
+        //                 item.Get(transferLine."Item No.");
+        //                 unitPrice := item."Unit Price";
+        //                 orderDesc := transferHeader."Shipment Method Code";
+        //             end;
+        //         end;
+        //     else begin
+        //         Error(BadSourceDocErr);
+        //     end;
+        // end;
 
         if (not OrderPackageCount.Get(lpHeader."No.")) then begin
             OrderPackageCount.Init();
@@ -1006,7 +1018,7 @@ report 50000 "NAC Bill of Lading"
         PackageOptionsGlobal: Record "DSHIP Package Options" temporary;
         OrderPackageCount: Record "IWX LP Header" temporary;
         DocNoBarcode: Record "Company Information" temporary;
-        ProNumberBarcode: Record "Company Information" temporary;
+        ProNoBarcode: Record "Company Information" temporary;
         DShipSetup: Record "DSHIP Setup";
         PackMgmt: Codeunit "DSHIP Package Management";
         ListMgmt: Codeunit "DSHIP Package List Management";
@@ -1014,6 +1026,8 @@ report 50000 "NAC Bill of Lading"
         EmbeddedLpMgmt: Codeunit "DSHIP Embedded Lp Mgmt.";
         EventPublisher: Codeunit "DSHIP Event Publisher";
         Common: Codeunit "DSHIP Common";
+        DocumentNumberBarcode: Text;
+        ProNumberBarcode: text;
         ProNumber: Text;
         TrailerNo: Text;
         SealNumber: Text;

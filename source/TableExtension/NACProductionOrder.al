@@ -18,7 +18,7 @@ tableextension 51014 NACProductionOrder extends "Production Order"
             Caption = 'Machine Center';
             TableRelation = "Machine Center"."No.";
         }
-        field(51002; "NAC Quantity of Roll"; decimal)
+        field(51002; "NAC Quantity of Roll"; Integer)
         {
             Caption = 'Quantity of Roll';
         }

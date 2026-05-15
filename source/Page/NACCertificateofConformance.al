@@ -126,7 +126,7 @@ page 50003 "NAC Certificate of Conformance"
                             ApplicationArea = All;
                             Editable = false;
                             DecimalPlaces = 3 : 3;
-                            Caption = 'Gauge';
+                            Caption = 'GAUGE (IN)';
                             ToolTip = 'Specifies the Gauge measurement value.';
                         }
                         field("NAC Gauge P/F"; Rec."NAC Gauge P/F")
@@ -141,7 +141,7 @@ page 50003 "NAC Certificate of Conformance"
                         ShowCaption = false;
                         field("NAC Durometer"; Durometer)
                         {
-                            Caption = 'Durometer';
+                            Caption = 'DUROMETER';
                             ApplicationArea = All;
                             ToolTip = 'Specifies the Durometer measurement value.';
                         }
@@ -158,7 +158,7 @@ page 50003 "NAC Certificate of Conformance"
                         field("NAC Width"; Width)
                         {
                             ApplicationArea = All;
-                            Caption = 'Width';
+                            Caption = 'WIDTH (IN)';
                             Editable = false;
                             ToolTip = 'Specifies the Width measurement value.';
                         }
@@ -176,6 +176,7 @@ page 50003 "NAC Certificate of Conformance"
                         field("NAC Pick Up"; Rec."NAC Pick Up")
                         {
                             ApplicationArea = All;
+                            Caption = 'PICK UP (%)';
                             ToolTip = 'Specifies the Pick Up measurement value.';
                         }
                         field(Test; Test)
@@ -246,9 +247,8 @@ page 50003 "NAC Certificate of Conformance"
         SalesLine.SetRange("Document No.", vSalesNo);
         SalesLine.SetRange(Type, SalesLine.Type::Item);
         SalesLine.SetRange("No.", Rec."Source No.");
-        if SalesLine.FindFirst() then begin
+        if SalesLine.FindFirst() then
             CustItemRefNo := SalesLine."Item Reference No.";
-        end;
 
         if Item.Get(Rec."Source No.") then begin
             Gauge := Item."NAC Gauge (IN)";
@@ -280,10 +280,13 @@ page 50003 "NAC Certificate of Conformance"
                 end;
                 if Item.Get(rItemLConsumption."Item No.") then
                     if UpperCase(Item."Item Category Code") = 'POLY' then
-                        if FabricType = '' then
-                            FabricType := Item."No."
-                        else
-                            FabricType += ' - ' + Item."No.";
+                        if not FabricItemList.Contains(rItemLConsumption."Item No.") then begin
+                            FabricItemList.Add(rItemLConsumption."Item No.");
+                            if FabricType = '' then
+                                FabricType := Item."No."
+                            else
+                                FabricType += ' - ' + Item."No.";
+                        end;
             Until rItemLConsumption.Next() = 0;
     End;
 
@@ -292,8 +295,9 @@ page 50003 "NAC Certificate of Conformance"
         rItemLConsumption: Record "Item Ledger Entry";
         CompoundItemList: List of [Code[20]];
         CompoundLotNoList: List of [Code[50]];
+        FabricItemList: List of [Code[20]];
         Test: Text;
-        CustItemRefNo: Code[20];
+        CustItemRefNo: Code[50];
         vSalesNo: Code[20];
         vBillNo: Code[20];
         vBillName: Text[100];
@@ -304,7 +308,7 @@ page 50003 "NAC Certificate of Conformance"
         vExtDocNo: Code[50];
         RubberCompound: Text;
         RubberCompoundLot: Text;
-        FabricType: Code[20];
+        FabricType: Text;
         Gauge: Decimal;
         Width: Decimal;
         Durometer: Text[10];
