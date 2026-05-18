@@ -25,16 +25,16 @@ page 50004 "NAC COC Lines"
                     Caption = 'ROLL #';
                     ToolTip = 'Specifies the value of the Roll No. field.';
                 }
+                field(Length; Length)
+                {
+                    ApplicationArea = all;
+                    Caption = 'LENGTH';
+                    ToolTip = 'Specifies the length of the material.';
+                }
                 field("Unit of Measure Code"; UOM)
                 {
                     Caption = 'UNIT OF MEASURE';
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
-                }
-                field(Length; Length)
-                {
-                    ApplicationArea = all;
-                    Caption = 'LENGTH (FT)';
-                    ToolTip = 'Specifies the length of the material in feet.';
                 }
                 field(Width; Width)
                 {

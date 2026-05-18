@@ -24,67 +24,6 @@
       <rd:DataSourceID>5ea52fe2-4863-47e6-9d56-86372aea9530</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="diItem_No_">
-          <DataField>diItem_No_</DataField>
-        </Field>
-        <Field Name="trecItems_No">
-          <DataField>trecItems_No</DataField>
-        </Field>
-        <Field Name="trecItems_Description">
-          <DataField>trecItems_Description</DataField>
-        </Field>
-        <Field Name="trecItems_LotNo">
-          <DataField>trecItems_LotNo</DataField>
-        </Field>
-        <Field Name="trecItems_BatchNo">
-          <DataField>trecItems_BatchNo</DataField>
-        </Field>
-        <Field Name="trecItems_SerialNo">
-          <DataField>trecItems_SerialNo</DataField>
-        </Field>
-        <Field Name="fldBarcode">
-          <DataField>fldBarcode</DataField>
-        </Field>
-        <Field Name="fldLotBarcode">
-          <DataField>fldLotBarcode</DataField>
-        </Field>
-        <Field Name="fldSerialBarcode">
-          <DataField>fldSerialBarcode</DataField>
-        </Field>
-        <Field Name="fldBatchBarcode">
-          <DataField>fldBatchBarcode</DataField>
-        </Field>
-        <Field Name="fldLotQuantityBarcode">
-          <DataField>fldLotQuantityBarcode</DataField>
-        </Field>
-        <Field Name="diNumCopies_Number">
-          <DataField>diNumCopies_Number</DataField>
-        </Field>
-        <Field Name="fldQuantity">
-          <DataField>fldQuantity</DataField>
-        </Field>
-        <Field Name="fldQuantityFormat">
-          <DataField>fldQuantityFormat</DataField>
-        </Field>
-        <Field Name="fldUnitOfMeasure">
-          <DataField>fldUnitOfMeasure</DataField>
-        </Field>
-        <Field Name="fldExpiryDate">
-          <DataField>fldExpiryDate</DataField>
-        </Field>
-        <Field Name="WarehouseClassCode">
-          <DataField>WarehouseClassCode</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1552,4 +1491,65 @@ End Function
 </Code>
   <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="diItem_No_">
+          <DataField>diItem_No_</DataField>
+        </Field>
+        <Field Name="trecItems_No">
+          <DataField>trecItems_No</DataField>
+        </Field>
+        <Field Name="trecItems_Description">
+          <DataField>trecItems_Description</DataField>
+        </Field>
+        <Field Name="trecItems_LotNo">
+          <DataField>trecItems_LotNo</DataField>
+        </Field>
+        <Field Name="trecItems_BatchNo">
+          <DataField>trecItems_BatchNo</DataField>
+        </Field>
+        <Field Name="trecItems_SerialNo">
+          <DataField>trecItems_SerialNo</DataField>
+        </Field>
+        <Field Name="fldBarcode">
+          <DataField>fldBarcode</DataField>
+        </Field>
+        <Field Name="fldLotBarcode">
+          <DataField>fldLotBarcode</DataField>
+        </Field>
+        <Field Name="fldSerialBarcode">
+          <DataField>fldSerialBarcode</DataField>
+        </Field>
+        <Field Name="fldBatchBarcode">
+          <DataField>fldBatchBarcode</DataField>
+        </Field>
+        <Field Name="fldLotQuantityBarcode">
+          <DataField>fldLotQuantityBarcode</DataField>
+        </Field>
+        <Field Name="diNumCopies_Number">
+          <DataField>diNumCopies_Number</DataField>
+        </Field>
+        <Field Name="fldQuantity">
+          <DataField>fldQuantity</DataField>
+        </Field>
+        <Field Name="fldQuantityFormat">
+          <DataField>fldQuantityFormat</DataField>
+        </Field>
+        <Field Name="fldUnitOfMeasure">
+          <DataField>fldUnitOfMeasure</DataField>
+        </Field>
+        <Field Name="fldExpiryDate">
+          <DataField>fldExpiryDate</DataField>
+        </Field>
+        <Field Name="WarehouseClassCode">
+          <DataField>WarehouseClassCode</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

@@ -176,7 +176,7 @@ page 50003 "NAC Certificate of Conformance"
                         field("NAC Pick Up"; Rec."NAC Pick Up")
                         {
                             ApplicationArea = All;
-                            Caption = 'PICK UP (%)';
+                            Caption = 'PICKUP (%)';
                             ToolTip = 'Specifies the Pick Up measurement value.';
                         }
                         field(Test; Test)
@@ -230,6 +230,7 @@ page 50003 "NAC Certificate of Conformance"
     var
         NACCustoms: Codeunit NAC_Customs;
         SalesLine: Record "Sales Line";
+        ItemLedgerEntries: Record "Item Ledger Entry";
     Begin
         CLEAR(vSO);
         CLEAR(vSellName);
@@ -288,6 +289,14 @@ page 50003 "NAC Certificate of Conformance"
                                 FabricType += ' - ' + Item."No.";
                         end;
             Until rItemLConsumption.Next() = 0;
+
+        if Rec."NAC Quantity of Roll" = 0 then begin
+            ItemLedgerEntries.Reset();
+            ItemLedgerEntries.SetRange("Entry Type", ItemLedgerEntries."Entry Type"::Output);
+            ItemLedgerEntries.SetRange("Order No.", Rec."No.");
+            Rec."NAC Quantity of Roll" := ItemLedgerEntries.Count;
+            Rec.Modify();
+        end;
     End;
 
     var

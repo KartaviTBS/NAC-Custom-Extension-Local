@@ -282,6 +282,15 @@ codeunit 51000 NACSubscribers
         ProdOrderComponent."NAC Prod. Bom Line No." := ProductionBOMLine."Line No.";
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ReportManagement, OnAfterSubstituteReport, '', false, false)]
+    local procedure ReportManagement_OnAfterSubstituteReport(ReportId: Integer; var NewReportId: Integer)
+    begin
+        case ReportId of
+            Report::"DSHIP Bill of Lading":
+                NewReportId := Report::"NAC Bill of Lading";
+        end;
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"System Initialization", OnAfterLogin, '', false, false)]
     local procedure OnAfterLogin()
     begin
@@ -296,14 +305,5 @@ codeunit 51000 NACSubscribers
         NACSystemAccessWarning.LookupMode(true);
         NACSystemAccessWarning.Editable(false);
         NACSystemAccessWarning.RunModal();
-    end;
-
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::ReportManagement, OnAfterSubstituteReport, '', false, false)]
-    local procedure ReportManagement_OnAfterSubstituteReport(ReportId: Integer; var NewReportId: Integer)
-    begin
-        case ReportId of
-            Report::"DSHIP Bill of Lading":
-                NewReportId := Report::"NAC Bill of Lading";
-        end;
     end;
 }

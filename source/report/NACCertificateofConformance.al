@@ -27,7 +27,7 @@ report 50003 "NAC Certificate of Conformance"
             { }
             column(NAC_Quantity_of_roll; "NAC Quantity of Roll") { }
             column(RubberCompoundLot; RubberCompoundLot) { }
-            column(Calender_date; CurrentDateTime)
+            column(Calender_date; CalenderDate)
             { }
             column(NACFabricRollS_ProductionOrder; "NAC Fabric Roll'S")
             {
@@ -186,6 +186,7 @@ report 50003 "NAC Certificate of Conformance"
                                 end;
                         end;
                     end;
+                    CalenderDate := "Item Ledger Entry"."Posting Date";
                 end;
             }
             trigger OnAfterGetRecord()
@@ -272,6 +273,7 @@ report 50003 "NAC Certificate of Conformance"
         vBillName: Text[100];
         UOM: Code[20];
         vSO: Boolean;
+        CalenderDate: date;
         vSellNo: Code[20];
         vSellName: Text[100];
         vRequestedDate: Date;
@@ -287,32 +289,32 @@ report 50003 "NAC Certificate of Conformance"
         Durometer: Text;
         NoteTxt: Label 'North American Calendering certifies the following materials were calendered to the specifications required according to the purchase order referenced above.';
         CertificateofConforanceLbl: Label 'CERTIFICATE OF CONFORMANCE';
-        CalenderedDateLbl: Label 'CALENDERED DATE:';
-        PurchaseOrderLbl: Label 'PURCHASE ORDER:';
-        NacItemNumberLbl: Label 'NAC ITEM NUMBER:';
-        QuantityofRollsLbl: Label 'QUANTITY OF ROLLS:';
-        CustomerItemandDescription: Label 'CUSTOMER ITEM/DESCRIPTION:';
-        RubberCompoundLbl: Label 'COMPOUND:';
+        CalenderedDateLbl: Label 'CALENDERED DATE';
+        PurchaseOrderLbl: Label 'PURCHASE ORDER';
+        NacItemNumberLbl: Label 'NAC ITEM NUMBER';
+        QuantityofRollsLbl: Label 'QUANTITY OF ROLLS';
+        CustomerItemandDescription: Label 'DESCRIPTION';
+        RubberCompoundLbl: Label 'COMPOUND';
         CustomerSuppliedLbl: Label 'CUSTOMER SUPPLIED';
-        RubberCompoundLotLbl: Label 'COMPOUND LOT No.:';
-        FabricTypeLbl: Label 'FABRIC TYPE(If Applicable):';
-        FabricRollsLbl: Label 'FABRIC ROLL No.:';
+        RubberCompoundLotLbl: Label 'COMPOUND LOT';
+        FabricTypeLbl: Label 'FABRIC TYPE (If Applicable)';
+        FabricRollsLbl: Label 'FABRIC LOT';
         SpecificationLimitsLbl: Label 'SPECIFICATION LIMITS (PASS/FAIL)';
-        GaugeLbl: Label 'GAUGE (IN):';
-        DurometerLbl: Label 'DUROMETER:';
+        GaugeLbl: Label 'GAUGE (IN)';
+        DurometerLbl: Label 'DUROMETER';
         WidthLbl: Label 'WIDTH (IN)';
-        WidthHeaderLbl: Label 'WIDTH (IN):';
+        WidthHeaderLbl: Label 'WIDTH (IN)';
         PlyAdhesionLbl: Label 'PLY ADHESION:';
-        SurfaceAppearanceLbl: Label 'SURFACE APPEARANCE:';
-        Pickuplbl: Label 'PICK UP (%):';
+        SurfaceAppearanceLbl: Label 'SURFACE APPEARANCE';
+        Pickuplbl: Label 'PICKUP (%)';
         FinishedRollDetailLbl: Label 'FINISHED ROLL DETAIL';
         RollLbl: Label 'ROLL';
-        LengthftLbl: Label 'LENGTH (FT)';
+        LengthftLbl: Label 'LENGTH';
         WeightLbl: Label 'WEIGHT (LB)';
         BatchLbl: Label 'BATCH';
         UnitofMeasureLbl: Label 'UNIT OF MEASURE';
-        CustomerItemRefLbl: Label 'CUSTOMER ITEM REF. NO.:';
-        SerialNoLbl: Label 'SERIAL #';
+        CustomerItemRefLbl: Label 'CUSTOMER ITEM REF.';
+        SerialNoLbl: Label 'SERIAL';
         CertifiedByLbl: Label 'Certified By';
         DateLbl: Label 'Date';
         CompoundItemList: List of [Code[20]];
