@@ -13,291 +13,189 @@ page 50005 "NAC System Access Warning"
     {
         area(Content)
         {
-            group(HeaderGroup)
+            grid(MainGrid)
             {
+                GridLayout = Rows;
                 ShowCaption = false;
-                field(AuthorizedAccessLabel; AuthorizedAccessTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Style = Unfavorable;
-                    StyleExpr = true;
-                    Editable = false;
-                    MultiLine = false;
-                }
-            }
-
-            group(WarningGroup)
-            {
-                Caption = 'System Access Warning';
-
-                field(WarningText; WarningBodyTxt)
+                field(WaringPageContent; WaringPageContent)
                 {
                     ApplicationArea = All;
                     ShowCaption = false;
                     Editable = false;
                     MultiLine = true;
+                    ExtendedDatatype = RichContent;
                 }
             }
-            label(ConfidentialHeaderGroup)
-            {
-                ApplicationArea = All;
-                Caption = 'CONFIDENTIAL & PROPRIETARY DATA PROTECTED ON THIS SYSTEM';
-
-            }
-            group(CustomerCommercialGroup)
-            {
-                Caption = 'Customer & Commercial Data';
-
-
-
-                field(CustData_CustomerLists; CustData_CustomerListsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer lists & contact data';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Customer lists & contact data';
-                }
-                field(CustData_Pricing; CustData_PricingTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Pricing & quote information';
-                    Editable = false;
-                    ToolTip = 'Pricing & quote information';
-                }
-                field(CustData_ContractTerms; CustData_ContractTermsTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Contract terms & agreements';
-                    Editable = false;
-                    ToolTip = 'Contract terms & agreements';
-                }
-                field(CustData_SalesForecasts; CustData_SalesForecastsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Sales forecasts & pipeline data';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Sales forecasts & pipeline data';
-                }
-                field(CustData_CreditTerms; CustData_CreditTermsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Credit terms & payment history';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Credit terms & payment history';
-                }
-                field(CustData_Drawings; CustData_DrawingsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer-provided drawings & specs';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Customer-provided drawings & specs';
-                }
-
-
-                field(CustData_ProprietaryData; CustData_ProprietaryDataTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customer-provided proprietary data';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Customer-provided proprietary data';
-                }
-                field(CustData_VendorSupplier; CustData_VendorSupplierTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Vendor & supplier data';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Vendor & supplier data';
-                }
-            }
-
-            group(ManufacturingGroup)
-            {
-                Caption = 'Manufacturing & Process Data';
-
-
-                field(Mfg_Formulations; Mfg_FormulationsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Compound formulations & mix ratios';
-                    Editable = false;
-                    ShowCaption = false;
-                    ToolTip = 'Compound formulations & mix ratios';
-                }
-                field(Mfg_ProcessParams; Mfg_ProcessParamsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Process parameters & machine settings';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Process parameters & machine settings';
-                }
-
-
-                field(Mfg_PartNumbers; Mfg_PartNumbersTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Part numbers & specifications';
-                    Editable = false;
-                    ShowCaption = false;
-                    ToolTip = 'Part numbers & specifications';
-                }
-                field(Mfg_BOM; Mfg_BOMTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Bills of materials (BOMs)';
-                    Editable = false;
-                    ShowCaption = false;
-                    ToolTip = 'Bills of materials (BOMs)';
-                }
-
-
-                field(Mfg_Tooling; Mfg_ToolingTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Tooling designs & mold specifications';
-                    Editable = false;
-                    ShowCaption = false;
-                    ToolTip = 'Tooling designs & mold specifications';
-                }
-                field(Mfg_QC; Mfg_QCTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'QC standards & rejection thresholds';
-                    Editable = false;
-                    ToolTip = 'QC standards & rejection thresholds';
-                    ShowCaption = false;
-
-                }
-                field(Mfg_ProductionSchedules; Mfg_ProductionSchedulesTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Production schedules & capacity data';
-                    Editable = false;
-                    ToolTip = 'Production schedules & capacity data';
-                    ShowCaption = false;
-                }
-                field(Mfg_ScrapRates; Mfg_ScrapRatesTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Scrap rates & yield data';
-                    Editable = false;
-                    ShowCaption = false;
-                    ToolTip = 'Scrap rates & yield data';
-                }
-            }
-
-            group(TechnicalEngineeringGroup)
-            {
-                Caption = 'Technical & Engineering Data';
-
-
-                field(Tech_CADFiles; Tech_CADFilesTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'CAD files & product drawings';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'CAD files & product drawings';
-                }
-                field(Tech_RnD; Tech_RnDTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'R&D data & prototype designs';
-                    Editable = false;
-                    ToolTip = 'R&D data & prototype designs';
-                    ShowCaption = false;
-                }
-
-
-                field(Tech_MaterialCerts; Tech_MaterialCertsTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Material certifications & test results';
-                    Editable = false;
-                    ToolTip = 'Material certifications & test results';
-                }
-                field(Tech_RegulatoryCompliance; Tech_RegulatoryComplianceTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Regulatory compliance documentation';
-                    Editable = false;
-                    ToolTip = 'Regulatory compliance documentation';
-                }
-
-
-                field(Tech_MaterialSafety; Tech_MaterialSafetyTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Material safety & testing records';
-                    Editable = false;
-                    ToolTip = 'Material safety & testing records';
-                }
-                field(Tech_DevNotes; Tech_DevNotesTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Development notes & innovation data';
-                    Editable = false;
-                    ToolTip = 'Development notes & innovation data';
-                }
-
-            }
-
-            group(FinancialDataGroup)
-            {
-                Caption = 'Financial Data';
-
-                field(Fin_RawMaterialCosts; Fin_RawMaterialCostsTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Raw material costs & supplier pricing';
-                    Editable = false;
-                    ToolTip = 'Raw material costs & supplier pricing';
-                }
-                field(Fin_ProfitMargins; Fin_ProfitMarginsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Profit margins & cost structures';
-                    Editable = false;
-                    ToolTip = 'Profit margins & cost structures';
-                    ShowCaption = false;
-                }
-
-
-                field(Fin_InternalReports; Fin_InternalReportsTxt)
-                {
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    Caption = 'Internal reports & financial analyses';
-                    Editable = false;
-                    ToolTip = 'Internal reports & financial analyses';
-                }
-                field(Fin_InventoryLevels; Fin_InventoryLevelsTxt)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Inventory levels & reorder data';
-                    ShowCaption = false;
-                    Editable = false;
-                    ToolTip = 'Inventory levels & reorder data';
-                }
-
-            }
-
         }
     }
+
+    trigger OnOpenPage()
+    begin
+        WaringPageContent :=
+'<div style="font-family:Segoe UI; font-size:13px; color:#404040; padding:10px;">' +
+
+    '<div style="text-align:center; color:#c94f3d; font-weight:bold; margin-bottom:20px;">' +
+        'AUTHORIZED ACCESS ONLY - ALL ACTIVITY IS MONITORED AND LOGGED' +
+    '</div>' +
+
+    '<div style="border-left:4px solid #d84c3f; background-color:#f5f5f5; padding:15px; margin-bottom:25px;">' +
+        '<div style="font-weight:bold; font-size:16px; margin-bottom:12px;">' +
+            'System Access Warning' +
+        '</div>' +
+
+        '<div style="line-height:1.7;">' +
+            'You are accessing a private, proprietary computer system owned and operated by North American Calendering (NAC). Unauthorized access or misuse of this system is strictly prohibited and may result in civil and/or criminal penalties under applicable federal and state law.' +
+        '</div>' +
+    '</div>' +
+
+    '<div style="font-weight:bold; color:#5a5a5a; margin-bottom:12px;">' +
+        'CONFIDENTIAL & PROPRIETARY DATA PROTECTED ON THIS SYSTEM' +
+    '</div>' +
+
+    '<table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:20px;">' +
+
+        '<tr>' +
+            '<td colspan="2" style="font-weight:bold; padding:8px 0;">Customer & Commercial Data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Customer lists & contact data</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Pricing & quote information</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Contract terms & agreements</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Sales forecasts & pipeline data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Credit terms & payment history</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Customer-provided drawings & specs</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Customer-provided proprietary data</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Vendor & supplier data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td colspan="2" style="font-weight:bold; padding:16px 0 8px 0;">Manufacturing & Process Data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Compound formulations & mix ratios</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Process parameters & machine settings</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Part numbers & specifications</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Bills of materials (BOMs)</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Tooling designs & mold specifications</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• QC standards & rejection thresholds</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Production schedules & capacity data</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Scrap rates & yield data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td colspan="2" style="font-weight:bold; padding:16px 0 8px 0;">Technical & Engineering Data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• CAD files & product drawings</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• R&D, data & prototype designs</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Material certifications & test results</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Regulatory compliance documentation</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Material safety & testing records</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Development notes & innovation data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td colspan="2" style="font-weight:bold; padding:16px 0 8px 0;">Financial Data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Raw material costs & supplier pricing</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Profit margins & cost structures</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Internal reports & financial analyses</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Inventory levels & reorder data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td colspan="2" style="font-weight:bold; padding:16px 0 8px 0;">People & Organizational Data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Employee names & HR records</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Compensation & payroll information</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Org charts & reporting structures</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Performance & disciplinary records</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Recruiting pipeline & candidate data</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Benefits & personnel files</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td colspan="2" style="font-weight:bold; padding:16px 0 8px 0;">IT & Systems Data</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• System credentials & access codes</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Network configurations & architecture</td>' +
+        '</tr>' +
+
+        '<tr>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• Software licenses & system documentation</td>' +
+            '<td style="border:1px solid #d9d9d9; padding:8px;">• ERP data exports & system reports</td>' +
+        '</tr>' +
+
+    '</table>' +
+
+    '<div style="line-height:1.8; margin-top:15px; margin-bottom:25px;">' +
+
+        '<span style="font-weight:bold;">' +
+            'Copying, transmitting, downloading, or retaining any information accessed through this system is strictly prohibited ' +
+        '</span>' +
+
+        'without prior written authorization from the President of NAC. This prohibition applies to all employees, contractors, and third-party users and remains in effect following separation from the company. NAC''s confidentiality obligations extend to data entrusted to us by customers, vendors, and suppliers, all of which is protected under applicable non-disclosure and confidentiality agreements.' +
+
+    '</div>' +
+
+    '<div style="border:2px solid #d84c3f; padding:15px; margin-bottom:30px; line-height:1.8;">' +
+
+        '<span style="font-weight:bold;">EMPLOYEE ACKNOWLEDGMENT:</span> ' +
+
+        'By proceeding past this notice, I confirm that I have read and understand this system access notice. I acknowledge that I am an authorized user and agree that any unauthorized access, copying, or disclosure of company or third-party data is prohibited and may subject me to disciplinary action and/or legal liability.' +
+
+    '</div>' +
+
+    '<div style="text-align:center; color:#6b6b6b; font-size:12px; line-height:1.8;">' +
+        'NAC Information Security Policy • Rev. 2026 • For legal review and approval' +
+        '<br>' +
+        '<i>DRAFT — Pending legal review. Not yet in effect.</i>' +
+    '</div>' +
+
+'</div>';
+    end;
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
@@ -320,33 +218,5 @@ page 50005 "NAC System Access Warning"
     end;
 
     var
-
-        AuthorizedAccessTxt: Label 'AUTHORIZED ACCESS ONLY · ALL ACTIVITY IS MONITORED AND LOGGED', Comment = 'Header warning label';
-        WarningBodyTxt: Label 'You are accessing a private, proprietary computer system owned and operated by North American Calendering (NAC). Unauthorized access or misuse of this system is strictly prohibited and may result in civil and/or criminal penalties under applicable federal and state law.', Comment = 'System access warning body text';
-        CustData_CustomerListsTxt: Label '• Customer lists & contact data', Comment = 'Customer commercial data item';
-        CustData_PricingTxt: Label '• Pricing & quote information', Comment = 'Customer commercial data item';
-        CustData_ContractTermsTxt: Label '• Contract terms & agreements', Comment = 'Customer commercial data item';
-        CustData_SalesForecastsTxt: Label '• Sales forecasts & pipeline data', Comment = 'Customer commercial data item';
-        CustData_CreditTermsTxt: Label '• Credit terms & payment history', Comment = 'Customer commercial data item';
-        CustData_DrawingsTxt: Label '• Customer-provided drawings & specs', Comment = 'Customer commercial data item';
-        CustData_ProprietaryDataTxt: Label '• Customer-provided proprietary data', Comment = 'Customer commercial data item';
-        CustData_VendorSupplierTxt: Label '• Vendor & supplier data', Comment = 'Customer commercial data item';
-        Mfg_FormulationsTxt: Label '• Compound formulations & mix ratios', Comment = 'Manufacturing data item';
-        Mfg_ProcessParamsTxt: Label '• Process parameters & machine settings', Comment = 'Manufacturing data item';
-        Mfg_PartNumbersTxt: Label '• Part numbers & specifications', Comment = 'Manufacturing data item';
-        Mfg_BOMTxt: Label '• Bills of materials (BOMs)', Comment = 'Manufacturing data item';
-        Mfg_ToolingTxt: Label '• Tooling designs & mold specifications', Comment = 'Manufacturing data item';
-        Mfg_QCTxt: Label '• QC standards & rejection thresholds', Comment = 'Manufacturing data item';
-        Mfg_ProductionSchedulesTxt: Label '• Production schedules & capacity data', Comment = 'Manufacturing data item';
-        Mfg_ScrapRatesTxt: Label '• Scrap rates & yield data', Comment = 'Manufacturing data item';
-        Tech_CADFilesTxt: Label '• CAD files & product drawings', Comment = 'Technical data item';
-        Tech_RnDTxt: Label '• R&D data & prototype designs', Comment = 'Technical data item';
-        Tech_MaterialCertsTxt: Label '• Material certifications & test results', Comment = 'Technical data item';
-        Tech_RegulatoryComplianceTxt: Label '• Regulatory compliance documentation', Comment = 'Technical data item';
-        Tech_MaterialSafetyTxt: Label '• Material safety & testing records', Comment = 'Technical data item';
-        Tech_DevNotesTxt: Label '• Development notes & innovation data', Comment = 'Technical data item';
-        Fin_RawMaterialCostsTxt: Label '• Raw material costs & supplier pricing', Comment = 'Financial data item';
-        Fin_ProfitMarginsTxt: Label '• Profit margins & cost structures', Comment = 'Financial data item';
-        Fin_InternalReportsTxt: Label '• Internal reports & financial analyses', Comment = 'Financial data item';
-        Fin_InventoryLevelsTxt: Label '• Inventory levels & reorder data', Comment = 'Financial data item';
+        WaringPageContent: Text;
 }
