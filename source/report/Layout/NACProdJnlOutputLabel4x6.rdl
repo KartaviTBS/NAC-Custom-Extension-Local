@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-20T07:31:17.9013598Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-05-22T09:52:24.8895667Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -512,7 +512,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -667,7 +669,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -819,7 +823,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!MFG_Date.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>M-dd-yyyy</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -979,7 +985,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1070,7 +1078,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Width (In)</Value>
+                                  <Value>Width (IN)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1134,7 +1142,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1225,7 +1235,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Length (ft)</Value>
+                                  <Value>Length (FT)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1289,7 +1299,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1380,7 +1392,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Weight (lb)</Value>
+                                  <Value>Weight (LB)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1444,7 +1456,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1599,7 +1613,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1682,6 +1698,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox10">
                           <rd:DefaultName>Textbox4</rd:DefaultName>
                           <CanGrow>true</CanGrow>
@@ -1752,7 +1769,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -2603,6 +2622,12 @@ End Function
         </Field>
         <Field Name="SalesOrderNo">
           <DataField>SalesOrderNo</DataField>
+        </Field>
+        <Field Name="RollNoLbl">
+          <DataField>RollNoLbl</DataField>
+        </Field>
+        <Field Name="Ledger_RollNo">
+          <DataField>Ledger_RollNo</DataField>
         </Field>
       </Fields>
       <Query>

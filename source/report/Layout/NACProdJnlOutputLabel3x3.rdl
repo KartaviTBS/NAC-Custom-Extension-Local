@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-20T07:29:57.7966736Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-05-22T09:36:56.1233228Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -238,7 +238,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -386,7 +388,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -521,6 +525,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox6">
                           <rd:DefaultName>Textbox6</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -531,6 +536,7 @@
                                   <Value>=Fields!MFG_Date.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Format>M-dd-yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -684,7 +690,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -772,7 +780,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Width (In)</Value>
+                                  <Value>Width (IN)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -832,7 +840,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -920,7 +930,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Length (ft)</Value>
+                                  <Value>Length (FT)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -980,7 +990,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1068,7 +1080,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Weight (lb)</Value>
+                                  <Value>Weight (LB)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -1128,7 +1140,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1276,7 +1290,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1427,7 +1443,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1923,7 +1941,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Height>3in</Height>
+            <Height>2.99997in</Height>
             <Width>2.99792in</Width>
             <Style>
               <Border>
@@ -2194,6 +2212,12 @@ End Function
         </Field>
         <Field Name="SalesOrderNo">
           <DataField>SalesOrderNo</DataField>
+        </Field>
+        <Field Name="RollNoLbl">
+          <DataField>RollNoLbl</DataField>
+        </Field>
+        <Field Name="Ledger_RollNo">
+          <DataField>Ledger_RollNo</DataField>
         </Field>
       </Fields>
       <Query>

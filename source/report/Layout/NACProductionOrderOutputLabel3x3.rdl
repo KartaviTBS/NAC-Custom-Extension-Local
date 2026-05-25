@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-20T07:31:44.9169464Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-05-22T09:34:18.1671271Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -225,6 +225,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="CustomerPO">
                           <rd:DefaultName>CustomerPO</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -238,7 +239,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -373,6 +376,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="trecItems_Description">
                           <rd:DefaultName>trecItems_Description</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -386,7 +390,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -521,6 +527,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox6">
                           <rd:DefaultName>Textbox6</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -531,6 +538,7 @@
                                   <Value>=Fields!MFG_Date.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Format>M-dd-yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -671,6 +679,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="GuageOrPickup">
                           <rd:DefaultName>GuageOrPickup</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -684,7 +693,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -772,7 +783,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Width (In)</Value>
+                                  <Value>Width (IN)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -819,6 +830,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="width">
                           <rd:DefaultName>width</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -832,7 +844,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -920,7 +934,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Length (ft)</Value>
+                                  <Value>Length (FT)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -967,6 +981,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Length">
                           <rd:DefaultName>Length</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -980,7 +995,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1068,7 +1085,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Weight (lb)</Value>
+                                  <Value>Weight (LB)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -1115,6 +1132,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Weight">
                           <rd:DefaultName>Weight</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -1128,7 +1146,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1263,6 +1283,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox16">
                           <rd:DefaultName>Textbox16</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -1276,7 +1297,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1413,6 +1436,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox10">
                           <rd:DefaultName>Textbox8</rd:DefaultName>
                           <CanGrow>true</CanGrow>
@@ -1427,7 +1451,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
@@ -1923,7 +1949,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Height>3in</Height>
+            <Height>3.00002in</Height>
             <Width>2.99792in</Width>
             <Style>
               <Border>
@@ -1932,7 +1958,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>3in</Height>
+        <Height>3.00002in</Height>
         <Style />
       </Body>
       <Width>2.99792in</Width>

@@ -252,7 +252,7 @@ page 50003 "NAC Certificate of Conformance"
             CustItemRefNo := SalesLine."Item Reference No.";
 
         if Item.Get(Rec."Source No.") then begin
-            Gauge := Item."NAC Gauge (IN)";
+            Gauge := Item."NAC OAG (IN)";
             Width := Item."NAC CAL Width (IN)";
             Durometer := Item."NAC Durometer";
         end;

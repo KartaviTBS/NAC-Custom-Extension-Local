@@ -73,6 +73,7 @@ report 50001 "NAC Prod. Jnl. Output Label"
                             //if ("Lot No." <> '') then
                             trecItems."Lot No. Filter" := "Lot No.";
                             trecItems."Net Weight" := "NAC Weight (LB)";
+                            trecItems."NAC Roll No." := "NAC Roll No.";
 
                             //if (bIncludeQty) then begin
                             // trecItems."Unit Price" := "Quantity (Base)";
@@ -150,6 +151,8 @@ report 50001 "NAC Prod. Jnl. Output Label"
                             column(BillCustomerNo; vBillNo) { }
                             column(BillCustomerName; vBillName) { }
                             column(SalesOrderNo; vSalesOrderNo) { }
+                            column(RollNoLbl; RollNoLbl) { }
+                            column(Ledger_RollNo; trecItems."NAC Roll No.") { }
 
                             trigger OnAfterGetRecord()
                             var
@@ -174,7 +177,7 @@ report 50001 "NAC Prod. Jnl. Output Label"
                                     GuageOrPickup := tRecItems."NAC Pickup(%)";
                                     GuageOrPickupLbl := tRecItems.FieldCaption("NAC Pickup(%)");
                                 end else begin
-                                    GuageOrPickup := tRecItems."NAC OAG (IN)";
+                                    GuageOrPickup := Round(tRecItems."NAC OAG (IN)", 0.001);
                                     GuageOrPickupLbl := tRecItems.FieldCaption("NAC Gauge (IN)");
                                 end;
 
@@ -364,4 +367,5 @@ report 50001 "NAC Prod. Jnl. Output Label"
         GuageOrPickupLbl: Text;
         QRCodeText: Text;
         QRCodelOTText: Text;
+        RollNoLbl: Label 'Roll No.';
 }

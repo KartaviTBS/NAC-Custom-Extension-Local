@@ -187,7 +187,7 @@ report 51001 NACProductionOrderOutputLabel
                                 GuageOrPickup := tRecItems."NAC Pickup(%)";
                                 GuageOrPickupLbl := tRecItems.FieldCaption("NAC Pickup(%)");
                             end else begin
-                                GuageOrPickup := tRecItems."NAC OAG (IN)";
+                                GuageOrPickup := Round(tRecItems."NAC OAG (IN)", 0.001);
                                 GuageOrPickupLbl := tRecItems.FieldCaption("NAC Gauge (IN)");
                             end;
 

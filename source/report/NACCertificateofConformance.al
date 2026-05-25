@@ -216,7 +216,7 @@ report 50003 "NAC Certificate of Conformance"
                 end;
 
                 if Item.Get(ProductionOrder."Source No.") then begin
-                    Gauge := Round(Item."NAC Gauge (IN)", 0.001);
+                    Gauge := Round(Item."NAC OAG (IN)", 0.001);
                     Width := Item."NAC CAL Width (IN)";
                     Durometer := Item."NAC Durometer";
                 end;

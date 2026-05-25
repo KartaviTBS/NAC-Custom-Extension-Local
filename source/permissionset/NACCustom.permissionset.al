@@ -51,5 +51,13 @@ permissionset 50000 NAC_Custom
         codeunit "NAC Sales Event Subscribers"=X,
         codeunit "NAC Upgrade"=X,
         page "NAC System Access Warning"=X,
-        page "NAC User Activity Logs"=X;
+        page "NAC User Activity Logs"=X,
+        tabledata "NAC Posted LP Info."=RIMD,
+        table "NAC Posted LP Info."=X,
+        report "NAC Certificate of Conformance"=X,
+        report "NAC Posted Whse Shipment"=X,
+        report "NAC Posted Whse. Roll List"=X,
+        codeunit "NAC Posted Whse LP Info Update"=X,
+        page "NAC Certificate of Conformance"=X,
+        page "NAC COC Lines"=X;
 }
