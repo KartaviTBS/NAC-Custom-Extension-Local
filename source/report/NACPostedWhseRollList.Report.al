@@ -97,28 +97,70 @@ report 50004 "NAC Posted Whse. Roll List"
                     column(SalesShipAddress_7; ShipAddress[7]) { }
                     column(SalesShipAddress_8; ShipAddress[8]) { }
                     column(UOM; UOM) { }
-                    column(Length; Length) { }
 
                     dataitem(LPInfo; "NAC Posted LP Info.")
                     {
                         DataItemLinkReference = "Warehouse Shipment Line";
                         DataItemLink = "Posted WSHIP No." = field("No."), "Posted WSHIP Line No." = field("Line No.");
-                        column(LPN_No; "LPL License Plate No.") { IncludeCaption = true; }
-                        column(LPN_Line_No_; "LPL Line No") { IncludeCaption = true; }
-                        column(LPN_Line_Type; "LPL Type") { IncludeCaption = true; }
-                        column(LPN_Line_LPN_TypeNo_; "LPL No.") { IncludeCaption = true; }
-                        column(LPN_Line_Variant_Code; "LPL Variant Code") { IncludeCaption = true; }
-                        column(LPN_Line_Description; "LPL Description") { IncludeCaption = true; }
-                        column(LPN_Line_Quantity; "LPL Quantity") { IncludeCaption = true; }
-                        column(LPN_Line_Serial_No_; "LPL Serial No.") { IncludeCaption = true; }
-                        column(LPN_Line_Lot_No_; "LPL Lot No.") { IncludeCaption = true; }
-                        column(LPN_Line_Unit_of_Measure_Code; "LPL Unit of Measure Code") { IncludeCaption = true; }
-                        column(Shipment_Gross_Weight; "LPH Shipment Gross Weight") { IncludeCaption = true; }
-                        column(Shipment_Tare_Weight; ItemLedger."NAC Weight (LB)") { IncludeCaption = true; }
-                        column(LineProdOrder; ItemLedger."Order No.") { }
-                        column(Roll_No; ItemLedger."NAC Roll No.") { }
-                        column(vCompound; vCompound) { }
-                        column(LPNLength; Length) { }
+
+                        column(LPN_No; "LPL License Plate No.")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_No_; "LPL Line No")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_Type; "LPL Type")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_LPN_TypeNo_; "LPL No.")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_Variant_Code; "LPL Variant Code")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_Description; "LPL Description")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_Quantity; "LPL Quantity")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_Serial_No_; "LPL Serial No.")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_Lot_No_; "LPL Lot No.")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LPN_Line_Unit_of_Measure_Code; "LPL Unit of Measure Code")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(Shipment_Gross_Weight; "LPH Shipment Gross Weight")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(Shipment_Tare_Weight; ItemLedger."NAC Weight (LB)")
+                        {
+                            IncludeCaption = true;
+                        }
+                        column(LineProdOrder; ItemLedger."Order No.")
+                        {
+                        }
+                        column(Roll_No; ItemLedger."NAC Roll No.")
+                        {
+                        }
+                        column(vCompound; vCompound)
+                        {
+                        }
+                        column(Length; Length) { }
 
                         trigger OnAfterGetRecord()
                         var
@@ -157,10 +199,11 @@ report 50004 "NAC Posted Whse. Roll List"
                                     end;
 
                                     rItemLConsumption.Reset();
+                                    rItemLConsumption.SetCurrentKey("Item No.", "Variant Code", "Lot No.", "Entry Type");
                                     rItemLConsumption.SetRange("Order No.", ItemLedger."Order No.");
                                     rItemLConsumption.SetRange("Order Line No.", ItemLedger."Order Line No.");
                                     rItemLConsumption.SetRange("Variant Code", "LPL Variant Code");
-                                    rItemLConsumption.SetRange("Entry Type", rItemLConsumption."Entry Type"::Consumption);
+                                    rItemLConsumption.SetRange("Entry Type", ItemLedger."Entry Type"::Consumption);
                                     if rItemLConsumption.FindSet() then
                                         repeat
                                             rItemLConsumption.CalcFields("NAC Compound");
