@@ -226,11 +226,48 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                     LabelReport.Run();
                 end;
             }
+            action("NAC Start License Plate")
+            {
+                ApplicationArea = Manufacturing;
+                Caption = 'Start License Plate';
+                Image = CreateInventoryPickup;
+                ToolTip = 'Creates a new License Plate and links it to the current Production Order.';
+                trigger OnAction()
+                var
+                    NACLPMgt: Codeunit "NAC Prod. Order LP Management";
+                begin
+                    NACLPMgt.StartLicensePlate(Rec);
+                end;
+            }
+
+            action("NAC End License Plate")
+            {
+                ApplicationArea = Manufacturing;
+                Caption = 'Stop License Plate';
+                Image = CloseDocument;
+                ToolTip = 'Ends the active License Plate, requires weight entry, and prints the LP Label.';
+
+                trigger OnAction()
+                var
+                    NACLPMgt: Codeunit "NAC Prod. Order LP Management";
+                begin
+                    NACLPMgt.EndLicensePlate(Rec);
+                end;
+            }
         }
         addafter("ItemTrackingLines_Promoted")
         {
 
             actionref(AutoLotNumber_Promoted; AutoLotNumber)
+            {
+            }
+        }
+        addafter("&Print_Promoted")
+        {
+            actionref(NAC_LP_Start_Promoted; "NAC Start License Plate")
+            {
+            }
+            actionref(NAC_LP_End_Promoted; "NAC End License Plate")
             {
             }
         }
@@ -243,6 +280,7 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
 
     var
         CanSelectItemTrackingOnLines: Boolean;
+        ProductionOrderLPManagement: Codeunit "NAC Prod. Order LP Management";
 
     procedure SplitQuantityIntoRolls(Quantity: Decimal; RollSize: Decimal): List of [Decimal]
     var
