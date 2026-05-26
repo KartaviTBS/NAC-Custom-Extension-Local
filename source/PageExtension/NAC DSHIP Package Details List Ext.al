@@ -9,13 +9,17 @@ pageextension 50011 "NAC DSHIP Packege Details List" extends "DSHIP Package Deta
         }
     }
 
-    trigger OnClosePage()
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
         if not ProductionUsages then
             exit;
-        if Rec."Shipment Gross Weight" <= 0 then
+        if Rec."Shipment Gross Weight" <= 0 then begin
             Error(StrSubstNo('Shipment gross weight must be entered before closing the License Plate %1.', Rec."No."));
+            exit(false);
+        end;
+        exit(true);
     end;
+
 
     var
         ProductionUsages: Boolean;
