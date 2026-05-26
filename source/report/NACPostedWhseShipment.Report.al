@@ -189,59 +189,20 @@ report 50005 "NAC Posted Whse Shipment"
                         DataItemLinkReference = "Warehouse Shipment Line";
                         DataItemLink = "Posted WSHIP No." = field("No."), "Posted WSHIP Line No." = field("Line No.");
 
-                        column(LPN_No; "LPL License Plate No.")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_Type; "LPL Type")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_LPN_TypeNo_; "LPL No.")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_Variant_Code; "LPL Variant Code")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_Description; "LPL Description")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_Quantity; "LPL Quantity")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_Serial_No_; "LPL Serial No.")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_Lot_No_; "LPL Lot No.")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LPN_Line_Unit_of_Measure_Code; "LPL Unit of Measure Code")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(Shipment_Gross_Weight; "LPH Shipment Gross Weight")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(Shipment_Tare_Weight; "LPH Shipment Tare Weight")
-                        {
-                            IncludeCaption = true;
-                        }
-                        column(LineProdOrder; ItemLedger."Order No.")
-                        {
-                        }
-                        column(RollProdOrder; ItemLedger."NAC Weight (LB)")
-                        {
-                        }
-                        column(Length; Length)
-                        {
-                        }
+                        column(LPN_No; "LPL License Plate No.") { IncludeCaption = true; }
+                        column(LPN_Line_Type; "LPL Type") { IncludeCaption = true; }
+                        column(LPN_Line_LPN_TypeNo_; "LPL No.") { IncludeCaption = true; }
+                        column(LPN_Line_Variant_Code; "LPL Variant Code") { IncludeCaption = true; }
+                        column(LPN_Line_Description; "LPL Description") { IncludeCaption = true; }
+                        column(LPN_Line_Quantity; "LPL Quantity") { IncludeCaption = true; }
+                        column(LPN_Line_Serial_No_; "LPL Serial No.") { IncludeCaption = true; }
+                        column(LPN_Line_Lot_No_; "LPL Lot No.") { IncludeCaption = true; }
+                        column(LPN_Line_Unit_of_Measure_Code; "LPL Unit of Measure Code") { IncludeCaption = true; }
+                        column(Shipment_Gross_Weight; "LPH Shipment Gross Weight") { IncludeCaption = true; }
+                        column(Shipment_Tare_Weight; "LPH Shipment Tare Weight") { IncludeCaption = true; }
+                        column(LineProdOrder; ItemLedger."Order No.") { }
+                        column(RollProdOrder; ItemLedger."NAC Weight (LB)") { }
+                        column(Length; Length) { }
 
                         trigger OnAfterGetRecord()
                         var
@@ -251,6 +212,7 @@ report 50005 "NAC Posted Whse Shipment"
                             Clear(ProdOrder);
                             Clear(ProdLine);
                             Clear(ProdRout);
+
                             ItemLedger.SetCurrentKey("Item No.", "Variant Code", "Lot No.", "Entry Type");
                             ItemLedger.SetRange("Item No.", "LPL No.");
                             ItemLedger.SetRange("Variant Code", "LPL Variant Code");
@@ -354,6 +316,7 @@ report 50005 "NAC Posted Whse Shipment"
 
     var
         ItemLedger: Record "Item Ledger Entry";
+        LPNHeader: Record "IWX LP Header";
         Location: Record Location;
         ProdOrder: Record "Production Order";
         ProdLine: Record "Prod. Order Line";
