@@ -97,108 +97,170 @@ report 50004 "NAC Posted Whse. Roll List"
                     column(SalesShipAddress_7; ShipAddress[7]) { }
                     column(SalesShipAddress_8; ShipAddress[8]) { }
                     column(UOM; UOM) { }
-                    column(Length; Length) { }
 
-                    dataitem(LPInfo; "NAC Posted LP Info.")
+                    dataitem("IWX LP Line Usage"; "IWX LP Line Usage")
                     {
                         DataItemLinkReference = "Warehouse Shipment Line";
-                        DataItemLink = "Posted WSHIP No." = field("No."), "Posted WSHIP Line No." = field("Line No.");
-                        column(LPN_No; "LPL License Plate No.") { IncludeCaption = true; }
-                        column(LPN_Line_No_; "LPL Line No") { IncludeCaption = true; }
-                        column(LPN_Line_Type; "LPL Type") { IncludeCaption = true; }
-                        column(LPN_Line_LPN_TypeNo_; "LPL No.") { IncludeCaption = true; }
-                        column(LPN_Line_Variant_Code; "LPL Variant Code") { IncludeCaption = true; }
-                        column(LPN_Line_Description; "LPL Description") { IncludeCaption = true; }
-                        column(LPN_Line_Quantity; "LPL Quantity") { IncludeCaption = true; }
-                        column(LPN_Line_Serial_No_; "LPL Serial No.") { IncludeCaption = true; }
-                        column(LPN_Line_Lot_No_; "LPL Lot No.") { IncludeCaption = true; }
-                        column(LPN_Line_Unit_of_Measure_Code; "LPL Unit of Measure Code") { IncludeCaption = true; }
-                        column(Shipment_Gross_Weight; "LPH Shipment Gross Weight") { IncludeCaption = true; }
-                        column(Shipment_Tare_Weight; ItemLedger."NAC Weight (LB)") { IncludeCaption = true; }
-                        column(LineProdOrder; ItemLedger."Order No.") { }
-                        column(Roll_No; ItemLedger."NAC Roll No.") { }
-                        column(vCompound; vCompound) { }
-                        column(LPNLength; Length) { }
+                        DataItemLink = "Source No." = field("Whse. Shipment No."), "Source Line No." = field("Whse Shipment Line No.");
+                        DataItemTableView = sorting("Source Document", "Source No.", "Source Line No.");
 
-                        trigger OnAfterGetRecord()
-                        var
-                            rItemLConsumption: Record "Item Ledger Entry";
-                            TypeHelper: Codeunit "Type Helper";
-                            vLine: Text;
-                            vDescLot: Text;
-                            QtyRoundingPrecision: Decimal;
-                        begin
-                            Clear(ItemLedger);
-                            Clear(ProdOrder);
-                            Clear(ProdLine);
-                            Clear(ProdRout);
-                            Clear(vCompound);
-                            Clear(rItemLConsumption);
-                            Clear(vLine);
-                            Clear(vDescLot);
+                        dataitem("IWX LP Line"; "IWX LP Line")
+                        {
+                            DataItemLinkReference = "IWX LP Line Usage";
+                            DataItemLink = "License Plate No." = field("License Plate No."), "Line No." = field("License Plate Line No.");
+                            DataItemTableView = sorting("License Plate No.", "Line No.");
 
-                            ItemLedger.SetCurrentKey("Item No.", "Variant Code", "Lot No.", "Entry Type");
-                            ItemLedger.SetRange("Item No.", "LPL No.");
-                            ItemLedger.SetRange("Variant Code", "LPL Variant Code");
-                            ItemLedger.SetRange("Lot No.", "LPL Lot No.");
-                            ItemLedger.SetRange("Entry Type", ItemLedger."Entry Type"::Output);
-                            if ItemLedger.FindFirst() then
-                                if ItemLedger."Order Type" = ItemLedger."Order Type"::Production then begin
-                                    ProdOrder.Reset();
-                                    ProdOrder.SetCurrentKey("No.", Status);
-                                    ProdOrder.SetFilter("No.", ItemLedger."Order No.");
-                                    if ProdOrder.FindFirst() then begin
-                                        ProdLine.Reset();
-                                        ProdLine.SetRange(Status, ProdOrder.Status);
-                                        ProdLine.SetRange("Prod. Order No.", ProdOrder."No.");
-                                        ProdLine.SetRange("Line No.", ItemLedger."Order Line No.");
-                                        if ProdLine.FindFirst() then
-                                            ProdRout.Reset();
+                            column(LPN_No; "License Plate No.")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_No_; "Line No.")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_Type; Type)
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_LPN_TypeNo_; "No.")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_Variant_Code; "Variant Code")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_Description; Description)
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_Quantity; Quantity)
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_Serial_No_; "Serial No.")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_Lot_No_; "Lot No.")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LPN_Line_Unit_of_Measure_Code; "Unit of Measure Code")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(Shipment_Gross_Weight; LPNHeader."Shipment Gross Weight")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(Shipment_Tare_Weight; ItemLedger."NAC Weight (LB)")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(LineProdOrder; ItemLedger."Order No.")
+                            {
+                            }
+                            column(Roll_No; ItemLedger."NAC Roll No.")
+                            {
+                            }
+                            column(vCompound; vCompound)
+                            {
+                            }
+                            column(Length; Length) { }
+
+                            trigger OnAfterGetRecord()
+                            var
+                                rItemLConsumption: Record "Item Ledger Entry";
+                                TypeHelper: Codeunit "Type Helper";
+                                vLine: Text;
+                                vDescLot: Text;
+                                QtyRoundingPrecision: Decimal;
+                            begin
+                                Clear(LPNHeader);
+                                Clear(ItemLedger);
+                                Clear(ProdOrder);
+                                Clear(ProdLine);
+                                Clear(ProdRout);
+                                Clear(vCompound);
+                                Clear(rItemLConsumption);
+                                Clear(vLine);
+                                Clear(vDescLot);
+                                ItemLedger.SetCurrentKey("Item No.", "Variant Code", "Lot No.", "Entry Type");
+                                ItemLedger.SetRange("Item No.", "IWX LP Line"."No.");
+                                ItemLedger.SetRange("Variant Code", "IWX LP Line"."Variant Code");
+                                ItemLedger.SetRange("Lot No.", "IWX LP Line"."Lot No.");
+                                ItemLedger.SetRange("Entry Type", ItemLedger."Entry Type"::Output);
+                                if ItemLedger.FindFirst() then
+                                    if ItemLedger."Order Type" = ItemLedger."Order Type"::Production then begin
+                                        ProdOrder.Reset();
+                                        ProdOrder.SetCurrentKey("No.", Status);
+                                        ProdOrder.SetFilter("No.", ItemLedger."Order No.");
+                                        if ProdOrder.FindFirst() then begin
+                                            ProdLine.Reset();
+                                            ProdLine.SetRange(Status, ProdOrder.Status);
+                                            ProdLine.SetRange("Prod. Order No.", ProdOrder."No.");
+                                            ProdLine.SetRange("Line No.", ItemLedger."Order Line No.");
+                                            if ProdLine.FindFirst() then
+                                                ProdRout.Reset();
+                                        end;
+
+                                        rItemLConsumption.Reset();
+                                        rItemLConsumption.SetCurrentKey("Item No.", "Variant Code", "Lot No.", "Entry Type");
+                                        rItemLConsumption.SetRange("Order No.", ItemLedger."Order No.");
+                                        rItemLConsumption.SetRange("Order Line No.", ItemLedger."Order Line No.");
+                                        rItemLConsumption.SetRange("Variant Code", "IWX LP Line"."Variant Code");
+                                        rItemLConsumption.SetRange("Entry Type", ItemLedger."Entry Type"::Consumption);
+                                        if rItemLConsumption.FindSet() then
+                                            repeat
+                                                rItemLConsumption.CalcFields("NAC Compound");
+                                                if rItemLConsumption."NAC Compound" then begin
+                                                    Clear(vLine);
+                                                    if rItemLConsumption."Lot No." <> '' then
+                                                        vDescLot := rItemLConsumption.Description + '/' + rItemLConsumption."Lot No."
+                                                    else
+                                                        vDescLot := rItemLConsumption.Description;
+                                                    if vLine = '' then
+                                                        vLine := vDescLot
+                                                    else
+                                                        vLine := TypeHelper.CRLFSeparator() + vDescLot;
+                                                end;
+                                            until rItemLConsumption.Next() = 0;
+                                        vCompound := vLine;
                                     end;
 
-                                    rItemLConsumption.Reset();
-                                    rItemLConsumption.SetRange("Order No.", ItemLedger."Order No.");
-                                    rItemLConsumption.SetRange("Order Line No.", ItemLedger."Order Line No.");
-                                    rItemLConsumption.SetRange("Variant Code", "LPL Variant Code");
-                                    rItemLConsumption.SetRange("Entry Type", rItemLConsumption."Entry Type"::Consumption);
-                                    if rItemLConsumption.FindSet() then
-                                        repeat
-                                            rItemLConsumption.CalcFields("NAC Compound");
-                                            if rItemLConsumption."NAC Compound" then begin
-                                                Clear(vLine);
-                                                if rItemLConsumption."Lot No." <> '' then
-                                                    vDescLot := rItemLConsumption.Description + '/' + rItemLConsumption."Lot No."
-                                                else
-                                                    vDescLot := rItemLConsumption.Description;
-                                                if vLine = '' then
-                                                    vLine := vDescLot
-                                                else
-                                                    vLine := TypeHelper.CRLFSeparator() + vDescLot;
-                                            end;
-                                        until rItemLConsumption.Next() = 0;
-                                    vCompound := vLine;
+                                if LPNHeader.Get("IWX LP Line"."License Plate No.") then;
+
+                                Length := 0;
+                                UOM := '';
+
+                                if LPNHeader.Get("IWX LP Line"."License Plate No.") then;
+
+                                if ("Warehouse Shipment Line"."NAC Req. Unit of Measure" <> '') and
+                                    ("Warehouse Shipment Line"."NAC Req. UoM Use in Reports") then begin
+                                    QtyRoundingPrecision := "Warehouse Shipment Line"."NAC Req. Qty. Rounding Prec." = 0 ? 0.01 : "Warehouse Shipment Line"."NAC Req. Qty. Rounding Prec.";
+                                    Length := Round("Quantity (Base)" / "Warehouse Shipment Line"."NAC Qty. per Unit of Measure", QtyRoundingPrecision);
+                                    UOM := "Warehouse Shipment Line"."NAC Req. Unit of Measure Code";
+                                end
+                                else if ("Warehouse Shipment Line"."NAC Req. Unit of Measure" = '') and
+                                    ("Warehouse Shipment Line"."NAC UoM Use in Reports") then begin
+                                    Length := Quantity;
+                                    UOM := "Warehouse Shipment Line"."Unit of Measure Code";
+                                end
+                                else begin
+                                    Item.Get("Warehouse Shipment Line"."Item No.");
+                                    Length := "Quantity (Base)";
+                                    UOM := Item."Base Unit of Measure";
                                 end;
-
-                            Length := 0;
-                            UOM := '';
-
-                            if ("Warehouse Shipment Line"."NAC Req. Unit of Measure" <> '') and
-                                ("Warehouse Shipment Line"."NAC Req. UoM Use in Reports") then begin
-                                QtyRoundingPrecision := "Warehouse Shipment Line"."NAC Req. Qty. Rounding Prec." = 0 ? 0.01 : "Warehouse Shipment Line"."NAC Req. Qty. Rounding Prec.";
-                                Length := Round("LPL Quantity (Base)" / "Warehouse Shipment Line"."NAC Qty. per Unit of Measure", QtyRoundingPrecision);
-                                UOM := "Warehouse Shipment Line"."NAC Req. Unit of Measure Code";
-                            end else if ("Warehouse Shipment Line"."NAC Req. Unit of Measure" = '') and
-                                ("Warehouse Shipment Line"."NAC UoM Use in Reports") then begin
-                                Length := "LPL Quantity";
-                                UOM := "Warehouse Shipment Line"."Unit of Measure Code";
-                            end else begin
-                                Item.Get("Warehouse Shipment Line"."Item No.");
-                                Length := "LPL Quantity (Base)";
-                                UOM := Item."Base Unit of Measure";
                             end;
+                        }
+
+                        trigger OnPreDataItem()
+                        begin
+                            //IWX LP Line Usage
+                            SetRange("Source Document", "IWX LP Line Usage"."Source Document"::Shipment);
                         end;
                     }
-
                     trigger OnAfterGetRecord()
                     var
                         SalesDocType: Enum "Sales Document Type";
@@ -275,6 +337,7 @@ report 50004 "NAC Posted Whse. Roll List"
     }
 
     var
+        LPNHeader: record "IWX LP Header";
         ItemLedger: Record "Item Ledger Entry";
         Location: Record Location;
         ProdOrder: Record "Production Order";

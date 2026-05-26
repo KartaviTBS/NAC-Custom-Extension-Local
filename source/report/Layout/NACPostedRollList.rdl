@@ -3011,12 +3011,6 @@ End Function
         <Field Name="UOM">
           <DataField>UOM</DataField>
         </Field>
-        <Field Name="Length">
-          <DataField>Length</DataField>
-        </Field>
-        <Field Name="LengthFormat">
-          <DataField>LengthFormat</DataField>
-        </Field>
         <Field Name="LPN_No">
           <DataField>LPN_No</DataField>
         </Field>
@@ -3071,11 +3065,11 @@ End Function
         <Field Name="vCompound">
           <DataField>vCompound</DataField>
         </Field>
-        <Field Name="LPNLength">
-          <DataField>LPNLength</DataField>
+        <Field Name="Length">
+          <DataField>Length</DataField>
         </Field>
-        <Field Name="LPNLengthFormat">
-          <DataField>LPNLengthFormat</DataField>
+        <Field Name="LengthFormat">
+          <DataField>LengthFormat</DataField>
         </Field>
       </Fields>
       <Query>
