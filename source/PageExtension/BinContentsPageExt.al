@@ -1,25 +1,25 @@
-pageextension 50101 "Bin Contents Page Ext" extends "Bin Contents"
+pageextension 50101 "NAC Bin Contents" extends "Bin Contents"
 {
     layout
     {
         addfirst(FactBoxes)
         {
-            part(BinLotFactbox; "Bin Contents Lot Factbox")
+            part(TrackingDetails; "NAC Bin Content Tracking Dtls")
             {
                 ApplicationArea = All;
-                Caption = 'Bin Lot Information';
+                Caption = 'Tracking Details';
             }
         }
     }
 
     trigger OnAfterGetCurrRecord()
     begin
-        UpdateFactbox();
+        RefreshTrackingDtls();
     end;
 
-    local procedure UpdateFactbox()
+    local procedure RefreshTrackingDtls()
     begin
-        CurrPage.BinLotFactbox.Page.SetFilters(
+        CurrPage.TrackingDetails.Page.PopulateTrackingDtls(
             Rec."Location Code",
             Rec."Bin Code",
             Rec."Item No.",
