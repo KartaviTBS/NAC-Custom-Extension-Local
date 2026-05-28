@@ -5,6 +5,7 @@ using Microsoft.Inventory.Ledger;
 using Microsoft.Sales.Document;
 using Microsoft.Manufacturing.Document;
 using Microsoft.Inventory.Tracking;
+using Microsoft.Inventory.Journal;
 using Microsoft.Sales.Customer;
 
 codeunit 51001 NAC_Customs
@@ -175,4 +176,32 @@ codeunit 51001 NAC_Customs
         end;
     end;
 
+    Procedure GetLastRollNo(ItemJournal: Record "Item Journal Line"): Integer
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+        MaxRollNo: Integer;
+    begin
+        ItemLedgerEntry.Reset();
+        ItemLedgerEntry.SetRange("Order Type", ItemJournal."Order Type");
+        ItemLedgerEntry.SetRange("Order No.", ItemJournal."Order No.");
+        ItemLedgerEntry.SetRange("Entry Type", ItemJournal."Entry Type"::Output);
+        if ItemLedgerEntry.FindLast() then
+            repeat
+                if ItemLedgerEntry."NAC Roll No." > MaxRollNo then
+                    MaxRollNo := ItemLedgerEntry."NAC Roll No.";
+            until ItemLedgerEntry.Next() = 0;
+        exit(MaxRollNo)
+    end;
+
+    procedure RollNoExist(ItemJournal: Record "Item Journal Line"): Boolean
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        ItemLedgerEntry.Reset();
+        ItemLedgerEntry.SetRange("Order Type", ItemJournal."Order Type");
+        ItemLedgerEntry.SetRange("Order No.", ItemJournal."Order No.");
+        ItemLedgerEntry.SetRange("Entry Type", ItemJournal."Entry Type"::Output);
+        ItemLedgerEntry.SetRange("NAC Roll No.", itemJournal."NAC Roll No.");
+        exit(not ItemLedgerEntry.IsEmpty());
+    end;
 }
