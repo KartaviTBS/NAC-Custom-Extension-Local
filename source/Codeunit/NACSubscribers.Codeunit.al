@@ -177,9 +177,17 @@ codeunit 51000 NACSubscribers
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnBeforeInsertItemLedgEntry, '', false, false)]
     local procedure "Item Jnl.-Post Line_OnBeforeInsertItemLedgEntry"(ItemJournalLine: Record "Item Journal Line"; var ItemLedgerEntry: Record "Item Ledger Entry")
+    var
+        NACCustoms: codeunit NAC_Customs;
     begin
         ItemLedgerEntry."NAC Weight (LB)" := ItemJournalLine."NAC Weight (LB)";
         ItemLedgerEntry."NAC Roll No." := ItemJournalLine."NAC Roll No.";
+
+        if NACCustoms.RollNoExist(ItemJournalLine) then
+            ItemLedgerEntry."NAC Roll No." := 0;
+
+        if ItemLedgerEntry."NAC Roll No." = 0 then
+            ItemLedgerEntry."NAC Roll No." := NACCustoms.GetLastRollNo(ItemJournalLine) + 1;
     end;
 
     var
