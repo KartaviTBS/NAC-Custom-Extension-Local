@@ -20,7 +20,7 @@ pageextension 50003 "NAC Item Tracking Lines" extends "Item Tracking Lines"
             field("NAC Roll No."; Rec."NAC Roll No.")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Roll No. field.', Comment = '%';
+                ToolTip = 'Specifies the value of the Roll No. field.';
             }
         }
     }

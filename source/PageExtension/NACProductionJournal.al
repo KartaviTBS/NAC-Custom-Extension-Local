@@ -90,6 +90,7 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                     ItemJnlLineReserve: Codeunit "Item Jnl. Line-Reserve";
                     ProdRoutingLine: record "Prod. Order Routing Line";
                     ReservationEntry: Record "Reservation Entry";
+                    NACCustoms: Codeunit NAC_Customs;
                     vWin: Dialog;
                     cCount: Integer;
                     vSelection: Integer;
