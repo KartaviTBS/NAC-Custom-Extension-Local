@@ -28,7 +28,7 @@ pageextension 51034 "NAC Machine Center" extends "Machine Center Card"
             Group(Devices)
             {
                 Caption = 'Devices';
-                field("Label 4*6 Printer"; Rec."NAC Label 4*6 Printer")
+                field("Label 4 * 6 Printer"; Rec."NAC Label 4 * 6 Printer")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Label 4 * 6 Printer field.';
@@ -37,7 +37,6 @@ pageextension 51034 "NAC Machine Center" extends "Machine Center Card"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Label 3 * 3 Printer field.';
-
                 }
             }
         }

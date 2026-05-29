@@ -13,7 +13,7 @@ using Microsoft.Manufacturing.Document;
 report 50001 "NAC Prod. Jnl. Output Label"
 {
     ApplicationArea = All;
-    DefaultRenderingLayout = "Production Output Label 4x6";
+    DefaultRenderingLayout = "OutputLabel4x6";
     Caption = 'NAC Production Order Output Label';
 
     dataset
@@ -248,13 +248,13 @@ report 50001 "NAC Prod. Jnl. Output Label"
     }
     rendering
     {
-        layout("Production Output Label 4x6")
+        layout("OutputLabel4x6")
         {
             Type = RDLC;
             Caption = 'NAC Production Order Output Label 4x6';
             LayoutFile = 'source/report/Layout/NACProdJnlOutputLabel4x6.rdl';
         }
-        layout("Production Output Label 3x3")
+        layout("OutputLabel3x3")
         {
             Type = RDLC;
             Caption = 'NAC Production Order Output Label 3x3';

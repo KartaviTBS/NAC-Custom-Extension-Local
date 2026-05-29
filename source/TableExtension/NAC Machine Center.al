@@ -13,15 +13,17 @@ tableextension 51015 "NAC Machine Center" extends "Machine Center"
             Caption = 'Lot No. Creation';
             OptionMembers = " ",Declaration,Approval;
         }
-        field(51002; "NAC Label 4*6 Printer"; Text[1200])
+        field(51002; "NAC Label 4 * 6 Printer"; Text[1200])
         {
-            caption = 'Label 4 * 6 Printer';
+            Caption = 'Label 4 * 6 Printer';
             TableRelation = Printer;
+            DataClassification = CustomerContent;
         }
         field(51003; "NAC Label 3 * 3 Printer"; Text[1200])
         {
-            caption = 'Label 3 * 3 Printer';
+            Caption = 'Label 3 * 3 Printer';
             TableRelation = Printer;
+            DataClassification = CustomerContent;
         }
     }
 

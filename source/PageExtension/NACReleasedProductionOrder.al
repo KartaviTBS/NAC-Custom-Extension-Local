@@ -18,23 +18,6 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
             field("NAC Machine Center"; Rec."NAC Machine Center")
             {
                 ApplicationArea = All;
-
-                // trigger OnValidate()
-                // var
-                //     MachineCenter: Record "Machine Center";
-                // begin
-                //     if Rec."NAC Machine Center" = '' then begin
-                //         Rec."NAC Label 4*6 Printer" := '';
-                //         Rec."NAC Label 3 * 3 Printer" := '';
-                //         exit;
-                //     end;
-
-                //     if not MachineCenter.Get(Rec."NAC Machine Center") then
-                //         exit;
-
-                //     Rec."NAC Label 4*6 Printer" := MachineCenter."NAC Label 4*6 Printer";
-                //     Rec."NAC Label 3 * 3 Printer" := MachineCenter."NAC Label 3 * 3 Printer";
-                // end;
             }
             field(NACTrialRun; Rec."NAC Trial Run")
             {
@@ -66,24 +49,6 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
                 Editable = False;
             }
         }
-        addafter(Posting)
-        {
-            // Group(Devices)
-            // {
-            //     Caption = 'Devices';
-
-            //     field("Label 4*6 Printer"; Rec."NAC Label 4*6 Printer")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the 4x6 label printer for this production order. Defaults from the Machine Center but can be changed here.';
-            //     }
-            //     field("Label 3 * 3 Printer"; Rec."NAC Label 3 * 3 Printer")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the 3x3 label printer for this production order. Defaults from the Machine Center but can be changed here.';
-            //     }
-            // }
-        }
     }
 
     actions
@@ -99,7 +64,7 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
 
                 trigger OnAction()
                 begin
-                    PrintOutputLabels(LabelSize::"4x6");
+                    Customs.ProductionOutputLabelPrint(Rec, LabelSize::"4x6", false);
                 end;
             }
             action(NACOutputLabels3x3)
@@ -111,7 +76,7 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
 
                 trigger OnAction()
                 begin
-                    PrintOutputLabels(LabelSize::"3x3");
+                    Customs.ProductionOutputLabelPrint(Rec, LabelSize::"3x3", false);
                 end;
             }
             action("Production Movement")
@@ -159,67 +124,10 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
         NACCustoms.GetProductionInfo(Rec, vSO, vSalesNo, vSellName, vSellNo, vBillName, vBillNo, vRequestedDate, vExtDocNo);
     end;
 
-    local procedure PrintOutputLabels(Size: Enum "NAC Label Size")
     var
-        LabelReport: Report NACProductionOrderOutputLabel;
-        ProdOrder: Record "Production Order";
-        MachineCenter: Record "Machine Center";
-        PrinterName: Text;
-        LayoutName: Text[250];
-        NoPrinterAssignedMsg: Label 'No %1 printer is assigned to this production order. Please set one in the Devices FastTab or on the Machine Center Card.', Comment = '%1 = label size e.g. 4x6';
-    begin
-        MachineCenter.Get(Rec."NAC Machine Center");
-        case Size of
-            LabelSize::"4x6":
-                begin
-                    PrinterName := MachineCenter."NAC Label 4*6 Printer";
-                    LayoutName := 'OutputLabel4x6';
-                end;
-            LabelSize::"3x3":
-                begin
-                    PrinterName := MachineCenter."NAC Label 3 * 3 Printer";
-                    LayoutName := 'OutputLabel3x3';
-                end;
-        end;
-
-        if PrinterName = '' then begin
-            Message(NoPrinterAssignedMsg, Format(Size));
-            exit;
-        end;
-
-        SetPrinterForReport(Report::NACProductionOrderOutputLabel, CopyStr(PrinterName, 1, 250));
-        SetLayoutForReport(LayoutName);
-        Commit();
-        ProdOrder := Rec;
-        ProdOrder.SetRecFilter();
-        LabelReport.SetTableView(ProdOrder);
-        LabelReport.Run();
-    end;
-
-    local procedure SetLayoutForReport(LayoutName: Text[250])
-    var
-        ReportLayoutSelection: Record "Report Layout Selection";
-    begin
-        ReportLayoutSelection.SetTempLayoutSelectedName(LayoutName);
-    end;
-
-    local procedure SetPrinterForReport(ReportId: Integer; PrinterName: Text[250])
-    var
-        PrinterSelection: Record "Printer Selection";
-    begin
-        if not PrinterSelection.Get(UserId(), ReportId) then begin
-            PrinterSelection.Init();
-            PrinterSelection."User ID" := UserId();
-            PrinterSelection."Report ID" := ReportId;
-            PrinterSelection.Insert();
-        end;
-        PrinterSelection."Printer Name" := PrinterName;
-        PrinterSelection.Modify();
-    end;
-
-    var
-        ManuPrintReport: Codeunit "Manu. Print Report";
         rSalesH: Record "Sales Header";
+        LabelSize: Enum "NAC Label Size";
+        Customs: Codeunit NAC_Customs;
         vSalesNo: Code[20];
         vBillNo: Code[20];
         vBillName: Text[100];
@@ -228,5 +136,4 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
         vSellName: Text[100];
         vRequestedDate: Date;
         vExtDocNo: Code[50];
-        LabelSize: Enum "NAC Label Size";
 }

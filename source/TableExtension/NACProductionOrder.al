@@ -78,15 +78,5 @@ tableextension 51014 NACProductionOrder extends "Production Order"
             TableRelation = "Purchase Header"."No." where("Document Type" = const(Order));
             DataClassification = CustomerContent;
         }
-        // field(51018; "NAC Label 4*6 Printer"; Text[250])
-        // {
-        //     caption = 'Label 4 * 6 Printer';
-        //     TableRelation = Printer;
-        // }
-        // field(51019; "NAC Label 3 * 3 Printer"; Text[250])
-        // {
-        //     caption = 'Label 3 * 3 Printer';
-        //     TableRelation = Printer;
-        // }
     }
 }
