@@ -18,23 +18,6 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
             field("NAC Machine Center"; Rec."NAC Machine Center")
             {
                 ApplicationArea = All;
-
-                // trigger OnValidate()
-                // var
-                //     MachineCenter: Record "Machine Center";
-                // begin
-                //     if Rec."NAC Machine Center" = '' then begin
-                //         Rec."NAC Label 4*6 Printer" := '';
-                //         Rec."NAC Label 3 * 3 Printer" := '';
-                //         exit;
-                //     end;
-
-                //     if not MachineCenter.Get(Rec."NAC Machine Center") then
-                //         exit;
-
-                //     Rec."NAC Label 4*6 Printer" := MachineCenter."NAC Label 4*6 Printer";
-                //     Rec."NAC Label 3 * 3 Printer" := MachineCenter."NAC Label 3 * 3 Printer";
-                // end;
             }
             field(NACTrialRun; Rec."NAC Trial Run")
             {
@@ -65,24 +48,6 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
                 Caption = 'Sales Order No';
                 Editable = False;
             }
-        }
-        addafter(Posting)
-        {
-            // Group(Devices)
-            // {
-            //     Caption = 'Devices';
-
-            //     field("Label 4*6 Printer"; Rec."NAC Label 4*6 Printer")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the 4x6 label printer for this production order. Defaults from the Machine Center but can be changed here.';
-            //     }
-            //     field("Label 3 * 3 Printer"; Rec."NAC Label 3 * 3 Printer")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the 3x3 label printer for this production order. Defaults from the Machine Center but can be changed here.';
-            //     }
-            // }
         }
     }
 
