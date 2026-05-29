@@ -1,6 +1,10 @@
 namespace NACCustom.NACCustom;
 
 using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Journal;
+using Microsoft.Manufacturing.MachineCenter;
+using System.Device;
+using Microsoft.Foundation.Reporting;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Sales.Document;
 using Microsoft.Manufacturing.Document;
@@ -175,4 +179,89 @@ codeunit 51001 NAC_Customs
         end;
     end;
 
+    Procedure GetLastRollNo(ItemJournal: Record "Item Journal Line"): Integer
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+        MaxRollNo: Integer;
+    begin
+        ItemLedgerEntry.Reset();
+        ItemLedgerEntry.SetRange("Order Type", ItemJournal."Order Type");
+        ItemLedgerEntry.SetRange("Order No.", ItemJournal."Order No.");
+        ItemLedgerEntry.SetRange("Entry Type", ItemJournal."Entry Type"::Output);
+        if ItemLedgerEntry.FindLast() then
+            repeat
+                if ItemLedgerEntry."NAC Roll No." > MaxRollNo then
+                    MaxRollNo := ItemLedgerEntry."NAC Roll No.";
+            until ItemLedgerEntry.Next() = 0;
+        exit(MaxRollNo)
+    end;
+
+    procedure RollNoExist(ItemJournal: Record "Item Journal Line"): Boolean
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        ItemLedgerEntry.Reset();
+        ItemLedgerEntry.SetRange("Order Type", ItemJournal."Order Type");
+        ItemLedgerEntry.SetRange("Order No.", ItemJournal."Order No.");
+        ItemLedgerEntry.SetRange("Entry Type", ItemJournal."Entry Type"::Output);
+        ItemLedgerEntry.SetRange("NAC Roll No.", itemJournal."NAC Roll No.");
+        exit(not ItemLedgerEntry.IsEmpty());
+    end;
+
+    procedure ProductionOutputLabelPrint(ProdOrder: Record "Production Order"; LabelSize: enum "NAC Label Size"; IsJournal: Boolean)
+    var
+        MachineCenter: Record "Machine Center";
+        ReportLayoutSelection: Record "Report Layout Selection";
+        ProductionOrderOutputLabel: Report NACProductionOrderOutputLabel;
+        ProdJnlOutputLabel: Report "NAC Prod. Jnl. Output Label";
+        PrinterName: Text;
+        LayoutName: Text[250];
+        ReportID: Integer;
+    begin
+        if MachineCenter.Get(ProdOrder."NAC Machine Center") then;
+        case LabelSize of
+            LabelSize::"4x6":
+                begin
+                    PrinterName := MachineCenter."NAC Label 4 * 6 Printer";
+                    LayoutName := 'OutputLabel4x6';
+                end;
+            LabelSize::"3x3":
+                begin
+                    PrinterName := MachineCenter."NAC Label 3 * 3 Printer";
+                    LayoutName := 'OutputLabel3x3';
+                end;
+        end;
+
+        if IsJournal then
+            ReportID := Report::"NAC Prod. Jnl. Output Label"
+        else
+            ReportID := Report::NACProductionOrderOutputLabel;
+
+        if PrinterName <> '' then
+            SetPrinterSelection(ReportID, CopyStr(PrinterName, 1, 250));
+        ReportLayoutSelection.SetTempLayoutSelectedName(LayoutName);
+        Commit();
+        ProdOrder.SetRecFilter();
+        if IsJournal then begin
+            ProdJnlOutputLabel.SetTableView(ProdOrder);
+            ProdJnlOutputLabel.Run();
+        end else begin
+            ProductionOrderOutputLabel.SetTableView(ProdOrder);
+            ProductionOrderOutputLabel.Run();
+        end;
+    end;
+
+    local procedure SetPrinterSelection(ReportId: Integer; PrinterName: Text[250])
+    var
+        PrinterSelection: Record "Printer Selection";
+    begin
+        if not PrinterSelection.Get(UserId(), ReportId) then begin
+            PrinterSelection.Init();
+            PrinterSelection."User ID" := UserId();
+            PrinterSelection."Report ID" := ReportId;
+            PrinterSelection.Insert();
+        end;
+        PrinterSelection."Printer Name" := PrinterName;
+        PrinterSelection.Modify();
+    end;
 }

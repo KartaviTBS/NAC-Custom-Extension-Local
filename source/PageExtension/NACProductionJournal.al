@@ -137,7 +137,7 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                             end;
                             If ItemJournal."Lot No." <> '' then
                                 CLEAR(vContinue);
-                            LastRollNo := GetLastRollNo(ItemJournal);
+                            LastRollNo := Customs.GetLastRollNo(ItemJournal);
                             If vContinue THEN BEGIN
                                 Case ItemJournal.Type of
                                     ItemJournal.Type::"Machine Center":
@@ -209,21 +209,28 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
         }
         addlast("P&osting")
         {
-            action(NACOutputLabels)
+            action(NACOutputLabels4x6)
             {
                 ApplicationArea = All;
-                Caption = 'Print Output Labels';
+                Caption = 'Print 4x6 Output Labels';
                 Image = OutputJournal;
+                ToolTip = 'Print production output labels using the 4x6 layout on the printer assigned to this production order.';
 
                 trigger OnAction()
-                var
-                    LabelReport: Report "NAC Prod. Jnl. Output Label";
-                    lrProdOrder: Record "Production Order";
                 begin
-                    lrProdOrder := ProdOrder;
-                    lrProdOrder.SetRecFilter();
-                    LabelReport.SetTableView(lrProdOrder);
-                    LabelReport.Run();
+                    Customs.ProductionOutputLabelPrint(ProdOrder, LabelSize::"4x6", true);
+                end;
+            }
+            action(NACOutputLabels3x3)
+            {
+                ApplicationArea = All;
+                Caption = 'Print 3x3 Output Labels';
+                Image = OutputJournal;
+                ToolTip = 'Print production output labels using the 3x3 layout on the printer assigned to this production order.';
+
+                trigger OnAction()
+                begin
+                    Customs.ProductionOutputLabelPrint(ProdOrder, LabelSize::"3x3", true);
                 end;
             }
         }
@@ -262,20 +269,8 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
         exit(RollList);
     end;
 
-    local procedure GetLastRollNo(var ItemJournal: Record "Item Journal Line"): Integer
     var
-        ItemLedgerEntry: Record "Item Ledger Entry";
-        MaxRollNo: Integer;
-    begin
-        ItemLedgerEntry.Reset();
-        ItemLedgerEntry.SetRange("Order Type", ItemJournal."Order Type");
-        ItemLedgerEntry.SetRange("Order No.", ItemJournal."Order No.");
-        ItemLedgerEntry.SetRange("Entry Type", ItemJournal."Entry Type"::Output);
-        if ItemLedgerEntry.FindLast() then
-            repeat
-                if ItemLedgerEntry."NAC Roll No." > MaxRollNo then
-                    MaxRollNo := ItemLedgerEntry."NAC Roll No.";
-            until ItemLedgerEntry.Next() = 0;
-        exit(MaxRollNo)
-    end;
+
+        LabelSize: Enum "NAC Label Size";
+        Customs: Codeunit NAC_Customs;
 }
