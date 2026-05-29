@@ -2,7 +2,7 @@
     "id": "cb04840f-e777-40a7-a7b9-04d5d5f6f708",
     "name": "NAC-Customs",
     "publisher": "Tessera Holdings Inc.",
-    "version": "27.0.3.5270",
+    "version": "27.0.3.5280",
     "brief": "",
     "description": "",
     "privacyStatement": "",
@@ -56,7 +56,7 @@
         "allowDownloadingSource": false,
         "includeSourceInSymbolFile": false
     },
-    "runtime": "16.0",
+    "runtime": "17.0",
     "features": [
         "NoImplicitWith"
     ]
