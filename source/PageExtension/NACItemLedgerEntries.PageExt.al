@@ -17,6 +17,17 @@ pageextension 51043 NACItemLedgerEntries extends "Item Ledger Entries"
                 ApplicationArea = All;
             }
         }
+        addafter("Item No.")
+        {
+            field("NAC Expiration Date"; Rec."NAC Expiration Date")
+            {
+                ApplicationArea = All;
+            }
+            field("NAC MFG Date"; Rec."NAC MFG Date")
+            {
+                ApplicationArea = All;
+            }
+        }
     }
     actions
     {
