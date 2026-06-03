@@ -9,7 +9,6 @@ using Microsoft.Inventory.Ledger;
 using Microsoft.Sales.Document;
 using Microsoft.Manufacturing.Document;
 using Microsoft.Inventory.Tracking;
-using Microsoft.Inventory.Journal;
 using Microsoft.Sales.Customer;
 
 codeunit 51001 NAC_Customs
