@@ -1,4 +1,4 @@
-codeunit 50003 "NAC Prod. Order Pick Mgt."
+codeunit 50003 "NAC Prod. Picking Enhancement"
 {
     [EventSubscriber(ObjectType::Report, Report::"Whse.-Source - Create Document", 'OnAfterGetRecordProdOrderComponent', '', false, false)]
     local procedure WhseSourceCreateDocument_OnAfterGetRecordProdOrderComponent(var ProdOrderComponent: Record "Prod. Order Component"; var SkipProdOrderComp: Boolean)
