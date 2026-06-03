@@ -12,10 +12,10 @@ using System.Text;
 
 report 51000 NACItemBarcodeLabel
 {
-    DefaultLayout = RDLC;
-    RDLCLayout = 'source/report/Layout/NACItemBarcodeLabel.rdl';
-
-    ApplicationArea = All;
+    // DefaultLayout = RDLC;
+    // RDLCLayout = 'source/report/Layout/NACItemBarcodeLabel.rdl';
+    DefaultRenderingLayout = "NACUpdatedItemBarcodeLabel";
+    // ApplicationArea = All;
     Caption = 'NAC Warehouse Insight Item Barcode Label';
 
     dataset
@@ -33,7 +33,7 @@ report 51000 NACItemBarcodeLabel
                 DataItemTableView = SORTING("Item No.", Open, "Variant Code", Positive, "Location Code", "Posting Date", "Lot No.", "Serial No.") ORDER(Ascending) WHERE(Open = CONST(true));
                 DataItemLinkReference = diItem;
                 DataItemLink = "Item No." = field("No.");
-                RequestFilterFields = "Lot No.";
+                RequestFilterFields = "Document No.";
 
                 trigger OnAfterGetRecord()
                 var
@@ -148,6 +148,9 @@ report 51000 NACItemBarcodeLabel
                 column(fldLotBarcode; QRCodeLotNo) //trecLotBarcode.Picture
                 {
                 }
+                column(QRCodeNoandLot; QRCodeNoandLot)
+                {
+                }
                 column(fldSerialBarcode; trecSerialBarcode.Picture)
                 {
                 }
@@ -183,7 +186,7 @@ report 51000 NACItemBarcodeLabel
                     Clear(trecSerialBarcode);
                     Clear(trecQuantityBarcode);
                     BarcodeFontProvider2D := Enum::"Barcode Font Provider 2D"::IDAutomation2D;
-                    BarcodeSymbology2D := Enum::"Barcode Symbology 2D"::"QR-Code";
+                    BarcodeSymbology2D := Enum::"Barcode Symbology 2D"::"Data Matrix";
 
                     cuWHICommon.Create2DBarcode(trecBarcode, trecItems."No. 2", recWHISetup."Barcode Dot Size", recWHISetup."Barcode Margin Size", recWHISetup."Barcode Image Size");
                     QRCodeNoText := BarcodeFontProvider2D.EncodeFont(trecItems."No. 2", BarcodeSymbology2D);
@@ -203,6 +206,8 @@ report 51000 NACItemBarcodeLabel
                     if (trecItems.TempSerialNo <> '') then
                         cuWHICommon.Create2DBarcode(trecSerialBarcode, trecItems.TempSerialNo, recWHISetup."Barcode Dot Size", recWHISetup."Barcode Margin Size", recWHISetup."Barcode Image Size");
 
+                    cuWHICommon.Create2DBarcode(trecBarcode, trecItems."No. 2" + trecItems.TempLotNo, recWHISetup."Barcode Dot Size", recWHISetup."Barcode Margin Size", recWHISetup."Barcode Image Size");
+                    QRCodeNoandLot := BarcodeFontProvider2D.EncodeFont(trecItems."No. 2" + '@@' + trecItems.TempLotNo, BarcodeSymbology2D);
                 end;
 
                 trigger OnPreDataItem()
@@ -221,6 +226,7 @@ report 51000 NACItemBarcodeLabel
             var
                 vCount: Integer;
             begin
+             
                 vCount := trecItems.Count();
                 SetRange(Number, 1, vCount);
                 if trecItems.Find('-') then;
@@ -252,14 +258,26 @@ report 51000 NACItemBarcodeLabel
         {
         }
     }
-
+    rendering
+    {
+        layout("Item Label")
+        {
+            Type = RDLC;
+            LayoutFile = 'source/report/Layout/NACItemBarcodeLabel.rdl';
+        }
+        layout(NACUpdatedItemBarcodeLabel)
+        {
+            Type = RDLC;
+            LayoutFile = 'source\report\Layout\NACUpdatedItemBarcodeLabel.rdl';
+        }
+    }
     labels
     {
-        lblQuantity = 'Quantity';
+        lblQuantity = 'Qty:';
         lblTrackingNumber = 'Tracking Number:';
-        lblExpiratonDate = 'Expiration Date';
-        lblLotNo = 'Lot No.';
-        lblItemNo = 'Item No.';
+        lblExpiratonDate = 'Ex:';
+        lblLotNo = 'Lot:';
+        lblItemNo = 'Item:';
         lblDescription = 'Description';
         BatchLbl = 'Batch';
     }
@@ -272,9 +290,9 @@ report 51000 NACItemBarcodeLabel
         dQuantity := 0;
         codTrackingNumber := '';
         dtExpiryDate := 0D;
-
+        // ItemNoFilter := '';
+        // DocumentNoFilter := '';
         recWHISetup.Get();
-
         // Item Format //
         // No. = Unique identifier (t_0, t_1, etc)
         // No. 2 = Item number
@@ -288,7 +306,7 @@ report 51000 NACItemBarcodeLabel
 
     trigger OnPreReport()
     begin
-
+        // SetDocumentNo(DocumentNo);
         if not GuiAllowed() then begin
             // get quantity from receiving
             dQuantity := cuSessionHelper.GetValueAsDecimal('label_quantity');
@@ -304,6 +322,7 @@ report 51000 NACItemBarcodeLabel
             //codItemNumber := cuSessionHelper.GetExtendedValue('label_item_number');
             //liEntryNo := cuSessionHelper.GetExtendedValue('label_ledger_entry_number');
         end;
+
     end;
 
     /// <summary>
@@ -340,6 +359,8 @@ report 51000 NACItemBarcodeLabel
         QRCodeQtyText: Text;
         QRCodeLotNo: Text;
         QRCodeBatch: Text;
+        QRCodeNoandLot: Text;
+
 
     protected Var
         dQuantity: Decimal;
@@ -348,6 +369,8 @@ report 51000 NACItemBarcodeLabel
         dtExpiryDate: Date;
         sExpiryDate: Text;
         LedgerEntries: Integer;
+        ItemNoFilter: Code[20];
+        DocumentNoFilter: Code[20];
 
     Procedure ExternalLableEntry(InItem: Code[20]; InSerialNo: Code[20]; InLotNo: Code[20]; InBatchNo: Code[20]; InQuantity: Decimal; InUOM: Code[10])
     var
@@ -382,6 +405,11 @@ report 51000 NACItemBarcodeLabel
         End;
     end;
 
+    procedure SetFilters(ItemNo: Code[20]; DocumentNo: Code[20])
+    begin
+        ItemNoFilter := ItemNo;
+        DocumentNoFilter := DocumentNo;
+    end;
 }
 
 
