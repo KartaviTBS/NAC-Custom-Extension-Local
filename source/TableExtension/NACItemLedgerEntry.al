@@ -30,6 +30,16 @@ tableextension 51017 NACItemLedgerEntry extends "Item Ledger Entry"
             Caption = 'Output Label Printed';
             DataClassification = CustomerContent;
         }
+        field(51117; "NAC MFG Date"; Date)
+        {
+            Caption = 'Manufacturing Date';
+            DataClassification = CustomerContent;
+        }
+        field(51118; "NAC Expiration Date"; Date)
+        {
+            Caption = 'Manufacturing Expiration Date';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
