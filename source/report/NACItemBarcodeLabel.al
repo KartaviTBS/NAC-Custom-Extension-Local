@@ -14,7 +14,7 @@ report 51000 NACItemBarcodeLabel
 {
     // DefaultLayout = RDLC;
     // RDLCLayout = 'source/report/Layout/NACItemBarcodeLabel.rdl';
-    DefaultRenderingLayout = "NACUpdatedItemBarcodeLabel";
+    DefaultRenderingLayout = "Item Label - Receipt";
     // ApplicationArea = All;
     Caption = 'NAC Warehouse Insight Item Barcode Label';
 
@@ -24,9 +24,6 @@ report 51000 NACItemBarcodeLabel
         {
             PrintOnlyIfDetail = false;
             RequestFilterFields = "No.";
-            column(diItem_No_; "No.")
-            {
-            }
 
             dataitem(diItemLedgerEntry; "Item Ledger Entry")
             {
@@ -130,6 +127,9 @@ report 51000 NACItemBarcodeLabel
                 column(trecItems_No; trecItems."No. 2")
                 {
                 }
+                column(diItem_No_; trecItems."No.")
+                {
+                }
                 column(trecItems_Description; trecItems.Description + ' ' + trecItems."Description 2")
                 {
                 }
@@ -226,7 +226,7 @@ report 51000 NACItemBarcodeLabel
             var
                 vCount: Integer;
             begin
-             
+
                 vCount := trecItems.Count();
                 SetRange(Number, 1, vCount);
                 if trecItems.Find('-') then;
@@ -265,10 +265,11 @@ report 51000 NACItemBarcodeLabel
             Type = RDLC;
             LayoutFile = 'source/report/Layout/NACItemBarcodeLabel.rdl';
         }
-        layout(NACUpdatedItemBarcodeLabel)
+        layout("Item Label - Receipt")
         {
             Type = RDLC;
-            LayoutFile = 'source\report\Layout\NACUpdatedItemBarcodeLabel.rdl';
+            caption = 'Item Label - Receipt';
+            LayoutFile = 'source\report\Layout\NACItemBarcodeLabelRcpt.rdl';
         }
     }
     labels
