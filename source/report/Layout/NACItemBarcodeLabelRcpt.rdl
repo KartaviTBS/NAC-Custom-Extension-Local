@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-06-03T14:02:40.3770045Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-06-04T11:57:24.7117772Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -31,11 +31,11 @@
         <CommandText />
       </Query>
       <Fields>
-        <Field Name="diItem_No_">
-          <DataField>diItem_No_</DataField>
-        </Field>
         <Field Name="trecItems_No">
           <DataField>trecItems_No</DataField>
+        </Field>
+        <Field Name="diItem_No_">
+          <DataField>diItem_No_</DataField>
         </Field>
         <Field Name="trecItems_Description">
           <DataField>trecItems_Description</DataField>
@@ -96,12 +96,12 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>5.5in</Width>
+                  <Width>7.5in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>8in</Height>
+                  <Height>10in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -111,21 +111,20 @@
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>2.75in</Width>
+                                    <Width>3.75in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.75in</Width>
+                                    <Width>3.75in</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
                                   <TablixRow>
-                                    <Height>0.4079in</Height>
+                                    <Height>0.6in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox5">
                                             <rd:DefaultName>Textbox1</rd:DefaultName>
-                                            <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
@@ -133,7 +132,7 @@
                                                   <TextRun>
                                                     <Value>Warehouse Class Code</Value>
                                                     <Style>
-                                                      <FontSize>11pt</FontSize>
+                                                      <FontSize>30pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -162,13 +161,12 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.5in</Height>
+                                    <Height>0.85in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox6">
                                             <rd:DefaultName>Textbox1</rd:DefaultName>
-                                            <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
@@ -176,7 +174,7 @@
                                                   <TextRun>
                                                     <Value>=Fields!WarehouseClassCode.Value</Value>
                                                     <Style>
-                                                      <FontSize>18pt</FontSize>
+                                                      <FontSize>40pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
                                                   </TextRun>
@@ -205,13 +203,12 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>2in</Height>
+                                    <Height>3in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox9">
                                             <rd:DefaultName>Textbox4</rd:DefaultName>
-                                            <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
@@ -220,7 +217,7 @@
                                                     <Value>=Fields!fldBarcode.Value</Value>
                                                     <Style>
                                                       <FontFamily>IDAutomation2D</FontFamily>
-                                                      <FontSize>30pt</FontSize>
+                                                      <FontSize>50pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -247,7 +244,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.4in</Height>
+                                    <Height>0.85in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -255,16 +252,22 @@
                                             <ReportItems>
                                               <Textbox Name="Textbox80">
                                                 <rd:DefaultName>Textbox80</rd:DefaultName>
-                                                <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
                                                 <Paragraphs>
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>=Parameters!lblItemNo.Value &amp; Fields!trecItems_No.Value</Value>
+                                                        <Value>=Parameters!lblItemNo.Value</Value>
                                                         <Style>
-                                                          <FontSize>18pt</FontSize>
+                                                          <FontSize>40pt</FontSize>
                                                           <FontWeight>Bold</FontWeight>
+                                                        </Style>
+                                                      </TextRun>
+                                                      <TextRun>
+                                                        <Value>=Fields!trecItems_No.Value</Value>
+                                                        <Style>
+                                                          <FontSize>40pt</FontSize>
+                                                          <FontWeight>Normal</FontWeight>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
@@ -275,8 +278,8 @@
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.4in</Height>
-                                                <Width>2.75in</Width>
+                                                <Height>0.85in</Height>
+                                                <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
@@ -304,28 +307,34 @@
                                             <ReportItems>
                                               <Textbox Name="Textbox82">
                                                 <rd:DefaultName>Textbox82</rd:DefaultName>
-                                                <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
                                                 <Paragraphs>
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>=Parameters!lblQuantity.Value &amp; Fields!fldQuantity.Value</Value>
+                                                        <Value>=Parameters!lblQuantity.Value</Value>
                                                         <Style>
-                                                          <FontSize>18pt</FontSize>
+                                                          <FontSize>40pt</FontSize>
                                                           <FontWeight>Bold</FontWeight>
+                                                        </Style>
+                                                      </TextRun>
+                                                      <TextRun>
+                                                        <Value>=Fields!fldQuantity.Value</Value>
+                                                        <Style>
+                                                          <FontSize>40pt</FontSize>
+                                                          <FontWeight>Normal</FontWeight>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
                                                     <Style>
-                                                      <TextAlign>Left</TextAlign>
+                                                      <TextAlign>Center</TextAlign>
                                                     </Style>
                                                   </Paragraph>
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.4in</Height>
-                                                <Width>2.75in</Width>
+                                                <Height>0.85in</Height>
+                                                <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
@@ -350,7 +359,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.4in</Height>
+                                    <Height>0.85in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -363,8 +372,7 @@
                                                   <TextRun>
                                                     <Value>=Fields!trecItems_Description.Value</Value>
                                                     <Style>
-                                                      <FontSize>18pt</FontSize>
-                                                      <FontWeight>Bold</FontWeight>
+                                                      <FontSize>40pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -392,50 +400,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.4in</Height>
-                                    <TablixCells>
-                                      <TablixCell>
-                                        <CellContents>
-                                          <Textbox Name="Textbox47">
-                                            <rd:DefaultName>Textbox3</rd:DefaultName>
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value>=Parameters!lblDescription.Value</Value>
-                                                    <Style>
-                                                      <FontSize>18pt</FontSize>
-                                                      <FontWeight>Bold</FontWeight>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style>
-                                                  <TextAlign>Center</TextAlign>
-                                                </Style>
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <ZIndex>11</ZIndex>
-                                            <Style>
-                                              <Border>
-                                                <Style>None</Style>
-                                              </Border>
-                                              <VerticalAlign>Middle</VerticalAlign>
-                                              <PaddingLeft>2pt</PaddingLeft>
-                                              <PaddingRight>2pt</PaddingRight>
-                                              <PaddingTop>2pt</PaddingTop>
-                                              <PaddingBottom>2pt</PaddingBottom>
-                                            </Style>
-                                          </Textbox>
-                                          <ColSpan>2</ColSpan>
-                                        </CellContents>
-                                      </TablixCell>
-                                      <TablixCell />
-                                    </TablixCells>
-                                  </TablixRow>
-                                  <TablixRow>
-                                    <Height>0.4in</Height>
+                                    <Height>0.85in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -443,16 +408,22 @@
                                             <ReportItems>
                                               <Textbox Name="Textbox91">
                                                 <rd:DefaultName>Textbox91</rd:DefaultName>
-                                                <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
                                                 <Paragraphs>
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>=Parameters!lblLotNo.Value &amp; Fields!trecItems_LotNo.Value</Value>
+                                                        <Value>=Parameters!lblLotNo.Value</Value>
                                                         <Style>
-                                                          <FontSize>18pt</FontSize>
+                                                          <FontSize>40pt</FontSize>
                                                           <FontWeight>Bold</FontWeight>
+                                                        </Style>
+                                                      </TextRun>
+                                                      <TextRun>
+                                                        <Value>=Fields!trecItems_LotNo.Value</Value>
+                                                        <Style>
+                                                          <FontSize>40pt</FontSize>
+                                                          <FontWeight>Normal</FontWeight>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
@@ -463,8 +434,8 @@
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.4in</Height>
-                                                <Width>2.75in</Width>
+                                                <Height>0.85in</Height>
+                                                <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
@@ -491,28 +462,34 @@
                                             <ReportItems>
                                               <Textbox Name="Textbox94">
                                                 <rd:DefaultName>Textbox91</rd:DefaultName>
-                                                <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
                                                 <Paragraphs>
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>=Parameters!lblExpiratonDate.Value &amp; Fields!fldExpiryDate.Value</Value>
+                                                        <Value>=Parameters!lblExpiratonDate.Value</Value>
                                                         <Style>
-                                                          <FontSize>18pt</FontSize>
+                                                          <FontSize>40pt</FontSize>
                                                           <FontWeight>Bold</FontWeight>
+                                                        </Style>
+                                                      </TextRun>
+                                                      <TextRun>
+                                                        <Value>=Fields!fldExpiryDate.Value</Value>
+                                                        <Style>
+                                                          <FontSize>40pt</FontSize>
+                                                          <FontWeight>Normal</FontWeight>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
                                                     <Style>
-                                                      <TextAlign>Left</TextAlign>
+                                                      <TextAlign>Center</TextAlign>
                                                     </Style>
                                                   </Paragraph>
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.4in</Height>
-                                                <Width>2.75in</Width>
+                                                <Height>0.85in</Height>
+                                                <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
@@ -536,13 +513,12 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>2in</Height>
+                                    <Height>3in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="Textbox21">
                                             <rd:DefaultName>Textbox4</rd:DefaultName>
-                                            <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
@@ -551,7 +527,7 @@
                                                     <Value>=Fields!QRCodeNoandLot.Value</Value>
                                                     <Style>
                                                       <FontFamily>IDAutomation2D</FontFamily>
-                                                      <FontSize>30pt</FontSize>
+                                                      <FontSize>50pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -601,13 +577,12 @@
                                       <TablixMember />
                                       <TablixMember />
                                       <TablixMember />
-                                      <TablixMember />
                                     </TablixMembers>
                                   </TablixMember>
                                 </TablixMembers>
                               </TablixRowHierarchy>
-                              <Height>6.5079in</Height>
-                              <Width>5.5in</Width>
+                              <Height>10in</Height>
+                              <Width>7.5in</Width>
                               <Style>
                                 <Border>
                                   <Style>None</Style>
@@ -659,25 +634,25 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Height>8in</Height>
-            <Width>5.5in</Width>
+            <Height>10in</Height>
+            <Width>7.5in</Width>
             <DataElementOutput>NoOutput</DataElementOutput>
             <Style>
               <FontSize>8pt</FontSize>
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>8in</Height>
+        <Height>10in</Height>
         <Style />
       </Body>
-      <Width>5.5in</Width>
+      <Width>7.5in</Width>
       <Page>
         <InteractiveHeight>2in</InteractiveHeight>
         <InteractiveWidth>3.5in</InteractiveWidth>
-        <LeftMargin>1.5in</LeftMargin>
-        <RightMargin>1.5in</RightMargin>
-        <TopMargin>1.5in</TopMargin>
-        <BottomMargin>1.5in</BottomMargin>
+        <LeftMargin>0.5in</LeftMargin>
+        <RightMargin>0.5in</RightMargin>
+        <TopMargin>0.5in</TopMargin>
+        <BottomMargin>0.5in</BottomMargin>
         <Style />
       </Page>
     </ReportSection>
