@@ -1,5 +1,6 @@
 namespace NACCustom.NACCustom;
 using Microsoft.Purchases.History;
+using Microsoft.Warehouse.Structure;
 using System.Environment.Configuration;
 using Microsoft.Warehouse.Activity;
 using Microsoft.Purchases.Document;

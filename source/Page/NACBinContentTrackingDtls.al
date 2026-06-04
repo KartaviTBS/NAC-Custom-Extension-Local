@@ -1,89 +1,106 @@
 page 50100 "NAC Bin Content Tracking Dtls"
 {
-    Caption = 'Bin Content Tracking Details';
+    Caption = 'Lot Numbers for Selected Bin';
     PageType = ListPart;
-    SourceTable = "Warehouse Entry";
+    SourceTable = "Lot Bin Buffer";
     SourceTableTemporary = true;
-    Editable = false;
-    RefreshOnActivate = true;
 
     layout
     {
-        area(Content)
+        area(content)
         {
-            repeater(LotLines)
+            repeater(Control7)
             {
-                field(LotNo; Rec."Lot No.")
+                ShowCaption = false;
+                field("Lot No."; Rec."Lot No.")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Lot No.';
-                    ToolTip = 'Specifies the lot number for items in this bin.';
+                    ApplicationArea = Warehouse;
+                    ToolTip = 'Specifies the lot number that exists in the bin.';
                 }
-                field(SumQtyBase; Rec."Qty. (Base)")
+                field("NAC Package No."; Rec."NAC Package No.")
                 {
                     ApplicationArea = All;
-                    Caption = 'Quantity';
-                    ToolTip = 'Specifies the total quantity (base UoM) for this lot in the bin.';
+                    ToolTip = 'Specifies the package number that exists in the bin.';
                 }
-                field(ExpirationDate; Rec."Expiration Date")
+                field("Qty. (Base)"; Rec."Qty. (Base)")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Expiration Date';
-                    ToolTip = 'Specifies the expiration date linked to the lot number.';
+                    ApplicationArea = Warehouse;
+                    ToolTip = 'Specifies how many items with the lot number exist in the bin.';
                 }
-                field(BatchNo; Rec."Package No.")
+                field("NAC Expiration Date"; Rec."NAC Expiration Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the batch (package) number linked to the lot.';
+                    ToolTip = 'Specifies the value of the NAC Expiration Date field.';
                 }
             }
         }
     }
 
-    var
-        BinContentByItemTracking: Query "Bin Content by Item Tracking";
-        EntryNoCounter: Integer;
+    actions
+    {
+    }
 
-    procedure PopulateTrackingDtls(LocationCode: Code[10]; BinCode: Code[20]; ItemNo: Code[20]; UnitOfMeasureCode: Code[10])
-    var
-        WarehouseEntry: Record "Warehouse Entry";
-        ExistingPackageNo: Code[50];
+    trigger OnFindRecord(Which: Text): Boolean
     begin
+        FillTempTable();
+        exit(Rec.Find(Which));
+    end;
+
+    local procedure FillTempTable()
+    var
+        LotNosByBinCode: Query "Lot Numbers by Bin";
+        WarehouseEntry: Record "Warehouse Entry";
+    begin
+        LotNosByBinCode.SetRange(Item_No, Rec.GetRangeMin("Item No."));
+        LotNosByBinCode.SetRange(Variant_Code, Rec.GetRangeMin("Variant Code"));
+        LotNosByBinCode.SetRange(Location_Code, Rec.GetRangeMin("Location Code"));
+        LotNosByBinCode.SetRange(Bin_Code, Rec.GetRangeMin("Bin Code"));
+        LotNosByBinCode.SetFilter(Lot_No, '<>%1', '');
+        LotNosByBinCode.Open();
+
         Rec.DeleteAll();
-        EntryNoCounter := 0;
 
-        BinContentByItemTracking.SetRange(Location_Code, LocationCode);
-        BinContentByItemTracking.SetRange(Bin_Code, BinCode);
-        BinContentByItemTracking.SetRange(Item_No, ItemNo);
-        BinContentByItemTracking.SetRange(Unit_of_Measure_Code, UnitOfMeasureCode);
-        BinContentByItemTracking.Open();
-        while BinContentByItemTracking.Read() do begin
-            WarehouseEntry.Reset();
-            WarehouseEntry.SetCurrentKey("Item No.", "Bin Code", "Location Code", "Lot No.");
-            WarehouseEntry.SetRange("Location Code", BinContentByItemTracking.Location_Code);
-            WarehouseEntry.SetRange("Bin Code", BinContentByItemTracking.Bin_Code);
-            WarehouseEntry.SetRange("Item No.", BinContentByItemTracking.Item_No);
-            WarehouseEntry.SetRange("Lot No.", BinContentByItemTracking.Lot_No);
-            WarehouseEntry.SetRange("Package No.", BinContentByItemTracking.Package_No);
-            WarehouseEntry.SetFilter("Expiration Date", '<>%1', 0D);
-            if WarehouseEntry.FindFirst() then
-                Rec."Expiration Date" := WarehouseEntry."Expiration Date"
-            else
-                Rec."Expiration Date" := 0D;
-
-            EntryNoCounter += 1;
+        while LotNosByBinCode.Read() do begin
             Rec.Init();
-            Rec."Entry No." := EntryNoCounter;
-            Rec."Location Code" := BinContentByItemTracking.Location_Code;
-            Rec."Bin Code" := BinContentByItemTracking.Bin_Code;
-            Rec."Item No." := BinContentByItemTracking.Item_No;
-            Rec."Unit of Measure Code" := BinContentByItemTracking.Unit_of_Measure_Code;
-            Rec."Lot No." := BinContentByItemTracking.Lot_No;
-            Rec."Serial No." := BinContentByItemTracking.Serial_No;
-            Rec."Package No." := BinContentByItemTracking.Package_No;
-            Rec."Qty. (Base)" := BinContentByItemTracking.Sum_Qty_Base;
-            if Rec.Insert() then;
+            Rec."Item No." := LotNosByBinCode.Item_No;
+            Rec."Variant Code" := LotNosByBinCode.Variant_Code;
+            Rec."Zone Code" := LotNosByBinCode.Zone_Code;
+            Rec."Bin Code" := LotNosByBinCode.Bin_Code;
+            Rec."Location Code" := LotNosByBinCode.Location_Code;
+            Rec."Lot No." := LotNosByBinCode.Lot_No;
+            if Rec.Find() then begin
+                Rec."NAC Package No." := LotNosByBinCode.Package_No;
+                WarehouseEntry.Reset();
+                WarehouseEntry.SetCurrentKey("Item No.", "Bin Code", "Location Code", "Lot No.");
+                WarehouseEntry.SetRange("Location Code", LotNosByBinCode.Location_Code);
+                WarehouseEntry.SetRange("Bin Code", LotNosByBinCode.Bin_Code);
+                WarehouseEntry.SetRange("Item No.", LotNosByBinCode.Item_No);
+                WarehouseEntry.SetRange("Lot No.", LotNosByBinCode.Lot_No);
+                WarehouseEntry.SetRange("Package No.", LotNosByBinCode.Package_No);
+                WarehouseEntry.SetFilter("Expiration Date", '<>%1', 0D);
+                if WarehouseEntry.FindFirst() then
+                    Rec."NAC Expiration Date" := WarehouseEntry."Expiration Date"
+                else
+                    Rec."NAC Expiration Date" := 0D;
+                Rec."Qty. (Base)" += LotNosByBinCode.Sum_Qty_Base;
+                Rec.Modify();
+            end else begin
+                Rec."NAC Package No." := LotNosByBinCode.Package_No;
+                WarehouseEntry.Reset();
+                WarehouseEntry.SetCurrentKey("Item No.", "Bin Code", "Location Code", "Lot No.");
+                WarehouseEntry.SetRange("Location Code", LotNosByBinCode.Location_Code);
+                WarehouseEntry.SetRange("Bin Code", LotNosByBinCode.Bin_Code);
+                WarehouseEntry.SetRange("Item No.", LotNosByBinCode.Item_No);
+                WarehouseEntry.SetRange("Lot No.", LotNosByBinCode.Lot_No);
+                WarehouseEntry.SetRange("Package No.", LotNosByBinCode.Package_No);
+                WarehouseEntry.SetFilter("Expiration Date", '<>%1', 0D);
+                if WarehouseEntry.FindFirst() then
+                    Rec."NAC Expiration Date" := WarehouseEntry."Expiration Date"
+                else
+                    Rec."NAC Expiration Date" := 0D;
+                Rec."Qty. (Base)" := LotNosByBinCode.Sum_Qty_Base;
+                Rec.Insert();
+            end;
         end;
-        BinContentByItemTracking.Close();
     end;
 }
