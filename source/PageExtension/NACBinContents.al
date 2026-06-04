@@ -7,23 +7,13 @@ pageextension 50101 "NAC Bin Contents" extends "Bin Contents"
             part(TrackingDetails; "NAC Bin Content Tracking Dtls")
             {
                 ApplicationArea = All;
-                Caption = 'Tracking Details';
+
+                SubPageLink = "Item No." = field("Item No."),
+                              "Variant Code" = field("Variant Code"),
+                              "Location Code" = field("Location Code"),
+                              "Bin Code" = field("Bin Code");
+                Caption = 'Lot Numbers for Selected Bin';
             }
         }
     }
-
-    trigger OnAfterGetCurrRecord()
-    begin
-        RefreshTrackingDtls();
-    end;
-
-    local procedure RefreshTrackingDtls()
-    begin
-        CurrPage.TrackingDetails.Page.PopulateTrackingDtls(
-            Rec."Location Code",
-            Rec."Bin Code",
-            Rec."Item No.",
-            Rec."Unit of Measure Code"
-        );
-    end;
 }
