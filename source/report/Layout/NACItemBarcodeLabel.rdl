@@ -1494,11 +1494,11 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="diItem_No_">
-          <DataField>diItem_No_</DataField>
-        </Field>
         <Field Name="trecItems_No">
           <DataField>trecItems_No</DataField>
+        </Field>
+        <Field Name="diItem_No_">
+          <DataField>diItem_No_</DataField>
         </Field>
         <Field Name="trecItems_Description">
           <DataField>trecItems_Description</DataField>
