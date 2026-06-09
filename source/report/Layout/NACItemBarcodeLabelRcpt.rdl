@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-06-04T11:57:24.7117772Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-06-08T10:47:20.9588470Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -24,70 +24,6 @@
       <rd:DataSourceID>5ea52fe2-4863-47e6-9d56-86372aea9530</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="trecItems_No">
-          <DataField>trecItems_No</DataField>
-        </Field>
-        <Field Name="diItem_No_">
-          <DataField>diItem_No_</DataField>
-        </Field>
-        <Field Name="trecItems_Description">
-          <DataField>trecItems_Description</DataField>
-        </Field>
-        <Field Name="trecItems_LotNo">
-          <DataField>trecItems_LotNo</DataField>
-        </Field>
-        <Field Name="trecItems_BatchNo">
-          <DataField>trecItems_BatchNo</DataField>
-        </Field>
-        <Field Name="trecItems_SerialNo">
-          <DataField>trecItems_SerialNo</DataField>
-        </Field>
-        <Field Name="fldBarcode">
-          <DataField>fldBarcode</DataField>
-        </Field>
-        <Field Name="fldLotBarcode">
-          <DataField>fldLotBarcode</DataField>
-        </Field>
-        <Field Name="QRCodeNoandLot">
-          <DataField>QRCodeNoandLot</DataField>
-        </Field>
-        <Field Name="fldSerialBarcode">
-          <DataField>fldSerialBarcode</DataField>
-        </Field>
-        <Field Name="fldBatchBarcode">
-          <DataField>fldBatchBarcode</DataField>
-        </Field>
-        <Field Name="fldLotQuantityBarcode">
-          <DataField>fldLotQuantityBarcode</DataField>
-        </Field>
-        <Field Name="diNumCopies_Number">
-          <DataField>diNumCopies_Number</DataField>
-        </Field>
-        <Field Name="fldQuantity">
-          <DataField>fldQuantity</DataField>
-        </Field>
-        <Field Name="fldQuantityFormat">
-          <DataField>fldQuantityFormat</DataField>
-        </Field>
-        <Field Name="fldUnitOfMeasure">
-          <DataField>fldUnitOfMeasure</DataField>
-        </Field>
-        <Field Name="fldExpiryDate">
-          <DataField>fldExpiryDate</DataField>
-        </Field>
-        <Field Name="WarehouseClassCode">
-          <DataField>WarehouseClassCode</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -119,7 +55,7 @@
                                 </TablixColumns>
                                 <TablixRows>
                                   <TablixRow>
-                                    <Height>0.6in</Height>
+                                    <Height>0.5in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -161,7 +97,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.85in</Height>
+                                    <Height>0.8in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -203,7 +139,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>3in</Height>
+                                    <Height>3.3in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -217,7 +153,7 @@
                                                     <Value>=Fields!fldBarcode.Value</Value>
                                                     <Style>
                                                       <FontFamily>IDAutomation2D</FontFamily>
-                                                      <FontSize>50pt</FontSize>
+                                                      <FontSize>70pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
@@ -244,7 +180,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.85in</Height>
+                                    <Height>0.8in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -278,7 +214,7 @@
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.85in</Height>
+                                                <Height>0.8in</Height>
                                                 <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
@@ -333,7 +269,7 @@
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.85in</Height>
+                                                <Height>0.8in</Height>
                                                 <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
@@ -359,7 +295,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.85in</Height>
+                                    <Height>0.8in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -400,7 +336,7 @@
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
-                                    <Height>0.85in</Height>
+                                    <Height>0.8in</Height>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
@@ -434,7 +370,7 @@
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.85in</Height>
+                                                <Height>0.8in</Height>
                                                 <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
@@ -488,7 +424,7 @@
                                                 </Paragraphs>
                                                 <Top>0in</Top>
                                                 <Left>0in</Left>
-                                                <Height>0.85in</Height>
+                                                <Height>0.8in</Height>
                                                 <Width>3.75in</Width>
                                                 <Style>
                                                   <Border>
@@ -802,4 +738,68 @@ End Function
 </Code>
   <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="trecItems_No">
+          <DataField>trecItems_No</DataField>
+        </Field>
+        <Field Name="diItem_No_">
+          <DataField>diItem_No_</DataField>
+        </Field>
+        <Field Name="trecItems_Description">
+          <DataField>trecItems_Description</DataField>
+        </Field>
+        <Field Name="trecItems_LotNo">
+          <DataField>trecItems_LotNo</DataField>
+        </Field>
+        <Field Name="trecItems_BatchNo">
+          <DataField>trecItems_BatchNo</DataField>
+        </Field>
+        <Field Name="trecItems_SerialNo">
+          <DataField>trecItems_SerialNo</DataField>
+        </Field>
+        <Field Name="fldBarcode">
+          <DataField>fldBarcode</DataField>
+        </Field>
+        <Field Name="fldLotBarcode">
+          <DataField>fldLotBarcode</DataField>
+        </Field>
+        <Field Name="QRCodeNoandLot">
+          <DataField>QRCodeNoandLot</DataField>
+        </Field>
+        <Field Name="fldSerialBarcode">
+          <DataField>fldSerialBarcode</DataField>
+        </Field>
+        <Field Name="fldBatchBarcode">
+          <DataField>fldBatchBarcode</DataField>
+        </Field>
+        <Field Name="fldLotQuantityBarcode">
+          <DataField>fldLotQuantityBarcode</DataField>
+        </Field>
+        <Field Name="diNumCopies_Number">
+          <DataField>diNumCopies_Number</DataField>
+        </Field>
+        <Field Name="fldQuantity">
+          <DataField>fldQuantity</DataField>
+        </Field>
+        <Field Name="fldQuantityFormat">
+          <DataField>fldQuantityFormat</DataField>
+        </Field>
+        <Field Name="fldUnitOfMeasure">
+          <DataField>fldUnitOfMeasure</DataField>
+        </Field>
+        <Field Name="fldExpiryDate">
+          <DataField>fldExpiryDate</DataField>
+        </Field>
+        <Field Name="WarehouseClassCode">
+          <DataField>WarehouseClassCode</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
