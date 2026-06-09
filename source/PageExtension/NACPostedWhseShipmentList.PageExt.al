@@ -20,7 +20,7 @@ pageextension 50010 NACPostedWhseShipmentList extends "Posted Whse. Shipment Lis
                 var
                     PostedWhseShipLine: Record "Posted Whse. Shipment Line";
                     ReportLayoutSelection: Record "Report Layout Selection";
-                    NACPostedWhseShipOutputLabel: Report NACPostedWhseShipOutputLabel;
+                    NACPostedWhseShipOutputLabel: Report "NAC Whse. Ship. Output Label";
                 begin
                     PostedWhseShipLine.SetRange("No.", Rec."No.");
                     ReportLayoutSelection.SetTempLayoutSelectedName('OutputLabel3x3');
@@ -39,7 +39,7 @@ pageextension 50010 NACPostedWhseShipmentList extends "Posted Whse. Shipment Lis
                 var
                     PostedWhseShipLine: Record "Posted Whse. Shipment Line";
                     ReportLayoutSelection: Record "Report Layout Selection";
-                    NACPostedWhseShipOutputLabel: Report NACPostedWhseShipOutputLabel;
+                    NACPostedWhseShipOutputLabel: Report "NAC Whse. Ship. Output Label";
                 begin
                     PostedWhseShipLine.SetRange("No.", Rec."No.");
                     ReportLayoutSelection.SetTempLayoutSelectedName('OutputLabel4x6');

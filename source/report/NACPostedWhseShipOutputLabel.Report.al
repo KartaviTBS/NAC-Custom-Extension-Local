@@ -13,11 +13,11 @@ using System.Text;
 using Microsoft.Manufacturing.Document;
 using Microsoft.Warehouse.History;
 
-report 51008 NACPostedWhseShipOutputLabel
+report 51008 "NAC Whse. Ship. Output Label"
 {
     ApplicationArea = All;
     DefaultRenderingLayout = "OutputLabel4x6";
-    Caption = 'NAC Posted Whse Ship Output Label';
+    Caption = 'NAC Production Order Output Label';
 
     dataset
     {
@@ -25,102 +25,94 @@ report 51008 NACPostedWhseShipOutputLabel
         {
 
             RequestFilterFields = "No.";
-            dataitem(ShippedILE; "Item Ledger Entry")
+            dataitem(WhseShipItemLedgerEntry; "Item Ledger Entry")
             {
                 DataItemLinkReference = "Posted Whse. Shipment Line";
-                DataItemLink = "Document No." = field("Posted Source No."), "Item No." = field("Item No.");
-
-                dataitem(diItemLedgerEntry; "Item Ledger Entry")
+                DataItemTableView = where("Document Type" = const("Sales Shipment"));
+                DataItemLink = "Document No." = field("Posted Source No."), "Document Line No." = field("Source Line No.");
+                dataitem(ItemApplicationEntry; "Item Application Entry")
                 {
-                    DataItemLinkReference = ShippedILE;
-                    DataItemTableView = SORTING("Item No.", Open, "Variant Code", Positive, "Location Code", "Posting Date", "Lot No.", "Serial No.") ORDER(Ascending)
-                            WHERE("Entry Type" = CONST(Output), "Order Type" = CONST(Production));
-                    DataItemLink = "Item No." = field("Item No."), "Lot No." = field("Lot No.");
-                    RequestFilterFields = "Lot No.", "NAC Roll No.";
+                    DataItemLinkReference = WhseShipItemLedgerEntry;
+                    DataItemTableView = where("Cost Application" = const(true));
+                    DataItemLink = "Outbound Item Entry No." = field("Entry No."), "Item Ledger Entry No." = field("Entry No.");
+                    dataitem(diItemLedgerEntry; "Item Ledger Entry")
+                    {
+                        DataItemTableView = SORTING("Item No.", Open, "Variant Code", Positive, "Location Code", "Posting Date", "Lot No.", "Serial No.") ORDER(Ascending);
+                        RequestFilterFields = "Lot No.", "NAC Roll No.";
 
-                    trigger OnPreDataItem()
-                    begin
-                        if ShippedILE."Lot No." = '' then
-                            CurrReport.Break();
-                    end;
-
-                    trigger OnAfterGetRecord()
-                    var
-                        lrecItem: Record Item;
-                        RoutingLine: Record "Prod. Order Routing Line";
-                        ReservationEntry: Record "Reservation Entry";
-                        rSalesHeader: Record "Sales Header";
-                        SalesEnum: Enum "Sales Document Type";
-                        rBillCustomer: Record Customer;
-                        rSellCustomer: Record Customer;
-                        ProductionOrderLine: Record "Prod. Order Line";
-                    begin
-                        if PrintedILE.Contains(diItemLedgerEntry."Entry No.") then
-                            CurrReport.Skip();
-
-                        PrintedILE.Add(diItemLedgerEntry."Entry No.");
-
-                        if ProductionOrderLine.Get(ProductionOrderLine.Status::Finished, diItemLedgerEntry."Order No.", diItemLedgerEntry."Order Line No.") then begin
-                        end else if ProductionOrderLine.Get(ProductionOrderLine.Status::Released, diItemLedgerEntry."Order No.", diItemLedgerEntry."Order Line No.") then begin
+                        trigger OnPreDataItem()
+                        var
+                            InboundItemLedgerEntry: Record "Item Ledger Entry";
+                        begin
+                            InboundItemLedgerEntry.Get(ItemApplicationEntry."Inbound Item Entry No.");
+                            diItemLedgerEntry.SetRange("Entry Type", diItemLedgerEntry."Entry Type"::Output);
+                            diItemLedgerEntry.SetRange("Order Type", diItemLedgerEntry."Order Type"::Production);
+                            diItemLedgerEntry.SetRange("Order No.", InboundItemLedgerEntry."Order No.");
+                            diItemLedgerEntry.SetRange("Order Line No.", InboundItemLedgerEntry."Order Line No.");
                         end;
 
-                        RoutingLine.RESET;
-                        RoutingLine.SETRANGE(Status, ProductionOrderLine.Status);
-                        RoutingLine.SETRANGE("Prod. Order No.", ProductionOrderLine."Prod. Order No.");
-                        RoutingLine.SETRANGE("Routing Reference No.", ProductionOrderLine."Line No.");
-                        RoutingLine.SETRANGE("Routing No.", ProductionOrderLine."Routing No.");
-                        RoutingLine.SETFILTER("Next Operation No.", '=%1', '');
-                        If RoutingLine.FINDLAST THEN;
+                        trigger OnAfterGetRecord()
+                        var
+                            lrecItem: Record Item;
+                            RoutingLine: Record "Prod. Order Routing Line";
+                            ReservationEntry: Record "Reservation Entry";
+                            rSalesHeader: Record "Sales Header";
+                            SalesEnum: Enum "Sales Document Type";
+                            rBillCustomer: Record Customer;
+                            rSellCustomer: Record Customer;
+                            ProductionOrderLine: Record "Prod. Order Line";
+                        begin
+                            if PrintedILE.Contains(diItemLedgerEntry."Entry No.") then
+                                CurrReport.Skip();
 
-                        lrecItem.Get(diItemLedgerEntry."Item No.");
-                        trecItems.Init();
-                        trecItems := lrecItem;
-                        trecItems."No." := StrSubstNo('t_%1', iCount); // unique counter
-                        trecItems."No. 2" := lrecItem."No.";
-                        trecItems."Lot No. Filter" := '';
-                        trecItems."Unit Price" := 0;
-                        trecItems."Base Unit of Measure" := '';
-                        trecItems."Last Date Modified" := diItemLedgerEntry."Expiration Date";
+                            PrintedILE.Add(diItemLedgerEntry."Entry No.");
 
-                        trecItems."Serial No. Filter" := diItemLedgerEntry."Serial No.";
-                        trecItems."Lot No. Filter" := diItemLedgerEntry."Lot No.";
-                        trecItems."Net Weight" := diItemLedgerEntry."NAC Weight (LB)";
-                        trecItems."NAC Roll No." := diItemLedgerEntry."NAC Roll No.";
+                            if ProductionOrderLine.Get(ProductionOrderLine.Status::Finished, diItemLedgerEntry."Order No.", diItemLedgerEntry."Order Line No.") then begin
+                            end else if ProductionOrderLine.Get(ProductionOrderLine.Status::Released, diItemLedgerEntry."Order No.", diItemLedgerEntry."Order Line No.") then begin
+                            end;
 
-                        trecItems."Unit Price" := diItemLedgerEntry.Quantity;
-                        trecItems."Base Unit of Measure" := diItemLedgerEntry."Unit of Measure Code";
-                        trecItems.TempEntryNo := diItemLedgerEntry."Entry No.";
+                            RoutingLine.RESET;
+                            RoutingLine.SETRANGE(Status, ProductionOrderLine.Status);
+                            RoutingLine.SETRANGE("Prod. Order No.", ProductionOrderLine."Prod. Order No.");
+                            RoutingLine.SETRANGE("Routing Reference No.", ProductionOrderLine."Line No.");
+                            RoutingLine.SETRANGE("Routing No.", ProductionOrderLine."Routing No.");
+                            RoutingLine.SETFILTER("Next Operation No.", '=%1', '');
+                            If RoutingLine.FINDLAST THEN;
 
-                        trecItems.MfgDate := diItemLedgerEntry."Posting Date";
-                        trecItems."NAC Length (FT)" := diItemLedgerEntry.Quantity;
-                        tRecItems.NAC_Rolls := RoutingLine.NAC_Rolls;
+                            lrecItem.Get(diItemLedgerEntry."Item No.");
+                            trecItems.Init();
+                            trecItems := lrecItem;
+                            trecItems."No." := StrSubstNo('t_%1', iCount); // unique counter
+                            trecItems."No. 2" := lrecItem."No.";
+                            trecItems."Lot No. Filter" := '';
+                            trecItems."Unit Price" := 0;
+                            trecItems."Base Unit of Measure" := '';
+                            trecItems."Last Date Modified" := diItemLedgerEntry."Expiration Date";
 
-                        trecItems.Insert();
-                        iCount := iCount + 1;
+                            trecItems."Serial No. Filter" := diItemLedgerEntry."Serial No.";
+                            trecItems."Lot No. Filter" := diItemLedgerEntry."Lot No.";
+                            trecItems."Net Weight" := diItemLedgerEntry."NAC Weight (LB)";
+                            trecItems."NAC Roll No." := diItemLedgerEntry."NAC Roll No.";
 
-                        If diItemLedgerEntry."Lot No." <> '' THEN begin
-                            Clear(ReservationEntry);
-                            ReservationEntry.RESET;
-                            ReservationEntry.SetRange("Lot No.", diItemLedgerEntry."Lot No.");
-                            ReservationEntry.SetRange("Source Type", Database::"Sales Line");
-                            if ReservationEntry.FINDFIRST THEN begin
-                                SalesEnum := Enum::"Sales Document Type".FromInteger(ReservationEntry."Source Subtype");
-                                If rSalesHeader.GET(SalesEnum, ReservationEntry."Source ID") Then begin
-                                    vSO := True;
-                                    vSalesOrderNo := rSalesHeader."No.";
-                                    vExtDocNo := rSalesHeader."External Document No.";
-                                    IF rSellCustomer.GET(rSalesHeader."Sell-to Customer No.") Then Begin
-                                        vSellNo := rSalesHeader."Sell-to Customer No.";
-                                        vSellName := rSellCustomer.Name;
-                                    End;
-                                    IF rBillCustomer.GET(rSalesHeader."Bill-to Customer No.") Then Begin
-                                        vBillNo := rSalesHeader."Bill-to Customer No.";
-                                        vBillName := rBillCustomer.Name;
-                                    End;
-                                end;
-                            end else begin
-                                if "Posted Whse. Shipment Line"."Source Document" = "Posted Whse. Shipment Line"."Source Document"::"Sales Order" then begin
-                                    if rSalesHeader.Get(rSalesHeader."Document Type"::Order, "Posted Whse. Shipment Line"."Source No.") then begin
+                            trecItems."Unit Price" := diItemLedgerEntry.Quantity;
+                            trecItems."Base Unit of Measure" := diItemLedgerEntry."Unit of Measure Code";
+                            trecItems.TempEntryNo := diItemLedgerEntry."Entry No.";
+
+                            trecItems.MfgDate := diItemLedgerEntry."Posting Date";
+                            trecItems."NAC Length (FT)" := diItemLedgerEntry.Quantity;
+                            tRecItems.NAC_Rolls := RoutingLine.NAC_Rolls;
+
+                            trecItems.Insert();
+                            iCount := iCount + 1;
+
+                            If diItemLedgerEntry."Lot No." <> '' THEN begin
+                                Clear(ReservationEntry);
+                                ReservationEntry.RESET;
+                                ReservationEntry.SetRange("Lot No.", diItemLedgerEntry."Lot No.");
+                                ReservationEntry.SetRange("Source Type", Database::"Sales Line");
+                                if ReservationEntry.FINDFIRST THEN begin
+                                    SalesEnum := Enum::"Sales Document Type".FromInteger(ReservationEntry."Source Subtype");
+                                    If rSalesHeader.GET(SalesEnum, ReservationEntry."Source ID") Then begin
                                         vSO := True;
                                         vSalesOrderNo := rSalesHeader."No.";
                                         vExtDocNo := rSalesHeader."External Document No.";
@@ -133,10 +125,27 @@ report 51008 NACPostedWhseShipOutputLabel
                                             vBillName := rBillCustomer.Name;
                                         End;
                                     end;
+                                end else begin
+                                    if "Posted Whse. Shipment Line"."Source Document" = "Posted Whse. Shipment Line"."Source Document"::"Sales Order" then begin
+                                        if rSalesHeader.Get(rSalesHeader."Document Type"::Order, "Posted Whse. Shipment Line"."Source No.") then begin
+                                            vSO := True;
+                                            vSalesOrderNo := rSalesHeader."No.";
+                                            vExtDocNo := rSalesHeader."External Document No.";
+                                            IF rSellCustomer.GET(rSalesHeader."Sell-to Customer No.") Then Begin
+                                                vSellNo := rSalesHeader."Sell-to Customer No.";
+                                                vSellName := rSellCustomer.Name;
+                                            End;
+                                            IF rBillCustomer.GET(rSalesHeader."Bill-to Customer No.") Then Begin
+                                                vBillNo := rSalesHeader."Bill-to Customer No.";
+                                                vBillName := rBillCustomer.Name;
+                                            End;
+                                        end;
+                                    end;
                                 end;
                             end;
                         end;
-                    end;
+                    }
+
                 }
             }
             dataitem(diLabels; "Integer")
