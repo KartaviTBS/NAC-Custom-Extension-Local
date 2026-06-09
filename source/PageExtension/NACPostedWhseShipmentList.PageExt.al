@@ -18,14 +18,9 @@ pageextension 50010 NACPostedWhseShipmentList extends "Posted Whse. Shipment Lis
 
                 trigger OnAction()
                 var
-                    PostedWhseShipLine: Record "Posted Whse. Shipment Line";
-                    ReportLayoutSelection: Record "Report Layout Selection";
-                    NACPostedWhseShipOutputLabel: Report "NAC Whse. Ship. Output Label";
+                    Customs: Codeunit NAC_Customs;
                 begin
-                    PostedWhseShipLine.SetRange("No.", Rec."No.");
-                    ReportLayoutSelection.SetTempLayoutSelectedName('OutputLabel3x3');
-                    NACPostedWhseShipOutputLabel.SetTableView(PostedWhseShipLine);
-                    NACPostedWhseShipOutputLabel.RunModal();
+                    Customs.PostedWhseShipmentOutputLabelPrint(Rec, Enum::"NAC Label Size"::"3x3");
                 end;
             }
             action(PrintOutputLabels4x6)
@@ -37,14 +32,9 @@ pageextension 50010 NACPostedWhseShipmentList extends "Posted Whse. Shipment Lis
 
                 trigger OnAction()
                 var
-                    PostedWhseShipLine: Record "Posted Whse. Shipment Line";
-                    ReportLayoutSelection: Record "Report Layout Selection";
-                    NACPostedWhseShipOutputLabel: Report "NAC Whse. Ship. Output Label";
+                    Customs: Codeunit NAC_Customs;
                 begin
-                    PostedWhseShipLine.SetRange("No.", Rec."No.");
-                    ReportLayoutSelection.SetTempLayoutSelectedName('OutputLabel4x6');
-                    NACPostedWhseShipOutputLabel.SetTableView(PostedWhseShipLine);
-                    NACPostedWhseShipOutputLabel.RunModal();
+                    Customs.PostedWhseShipmentOutputLabelPrint(Rec, Enum::"NAC Label Size"::"4x6");
                 end;
             }
         }

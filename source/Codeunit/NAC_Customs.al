@@ -10,6 +10,7 @@ using Microsoft.Sales.Document;
 using Microsoft.Manufacturing.Document;
 using Microsoft.Inventory.Tracking;
 using Microsoft.Sales.Customer;
+using Microsoft.Warehouse.History;
 
 codeunit 51001 NAC_Customs
 {
@@ -237,7 +238,8 @@ codeunit 51001 NAC_Customs
         else
             ReportID := Report::NACProductionOrderOutputLabel;
 
-        SetPrinterSelection(ReportID, CopyStr(PrinterName, 1, 250));
+        if PrinterName <> '' then
+            SetPrinterSelection(ReportID, CopyStr(PrinterName, 1, 250));
         ReportLayoutSelection.SetTempLayoutSelectedName(LayoutName);
         Commit();
         ProdOrder.SetRecFilter();
@@ -248,6 +250,64 @@ codeunit 51001 NAC_Customs
             ProductionOrderOutputLabel.SetTableView(ProdOrder);
             ProductionOrderOutputLabel.Run();
         end;
+    end;
+
+    procedure PostedWhseShipmentOutputLabelPrint(PostedWhseShipHeader: Record "Posted Whse. Shipment Header"; LabelSize: enum "NAC Label Size")
+    var
+        MachineCenter: Record "Machine Center";
+        ReportLayoutSelection: Record "Report Layout Selection";
+        NACPostedWhseShipOutputLabel: Report "NAC Whse. Ship. Output Label";
+        PostedWhseShipLine: Record "Posted Whse. Shipment Line";
+        WhseShipItemLedgerEntry: Record "Item Ledger Entry";
+        ItemApplicationEntry: Record "Item Application Entry";
+        diItemLedgerEntry: Record "Item Ledger Entry";
+        ProdOrder: Record "Production Order";
+        PrinterName: Text;
+        LayoutName: Text[250];
+        ReportID: Integer;
+    begin
+        PostedWhseShipLine.SetRange("No.", PostedWhseShipHeader."No.");
+        if PostedWhseShipLine.FindSet() then
+            repeat
+                WhseShipItemLedgerEntry.SetRange("Document Type", WhseShipItemLedgerEntry."Document Type"::"Sales Shipment");
+                WhseShipItemLedgerEntry.SetRange("Document No.", PostedWhseShipLine."Posted Source No.");
+                WhseShipItemLedgerEntry.SetRange("Document Line No.", PostedWhseShipLine."Source Line No.");
+                if WhseShipItemLedgerEntry.FindFirst() then begin
+                    ItemApplicationEntry.SetRange("Outbound Item Entry No.", WhseShipItemLedgerEntry."Entry No.");
+                    ItemApplicationEntry.SetRange("Item Ledger Entry No.", WhseShipItemLedgerEntry."Entry No.");
+                    if ItemApplicationEntry.FindFirst() then begin
+                        if diItemLedgerEntry.Get(ItemApplicationEntry."Inbound Item Entry No.") then begin
+                            if ProdOrder.Get(ProdOrder.Status::Finished, diItemLedgerEntry."Order No.") then begin
+                                if MachineCenter.Get(ProdOrder."NAC Machine Center") then;
+                            end else if ProdOrder.Get(ProdOrder.Status::Released, diItemLedgerEntry."Order No.") then begin
+                                if MachineCenter.Get(ProdOrder."NAC Machine Center") then;
+                            end;
+                        end;
+                    end;
+                end;
+            until (PostedWhseShipLine.Next() = 0) or (MachineCenter."No." <> '');
+
+        case LabelSize of
+            LabelSize::"4x6":
+                begin
+                    PrinterName := MachineCenter."NAC Label 4 * 6 Printer";
+                    LayoutName := 'OutputLabel4x6';
+                end;
+            LabelSize::"3x3":
+                begin
+                    PrinterName := MachineCenter."NAC Label 3 * 3 Printer";
+                    LayoutName := 'OutputLabel3x3';
+                end;
+        end;
+
+        ReportID := Report::"NAC Whse. Ship. Output Label";
+
+        SetPrinterSelection(ReportID, CopyStr(PrinterName, 1, 250));
+        ReportLayoutSelection.SetTempLayoutSelectedName(LayoutName);
+        Commit();
+        PostedWhseShipLine.SetRange("No.", PostedWhseShipHeader."No.");
+        NACPostedWhseShipOutputLabel.SetTableView(PostedWhseShipLine);
+        NACPostedWhseShipOutputLabel.Run();
     end;
 
     local procedure SetPrinterSelection(ReportId: Integer; PrinterName: Text[250])
