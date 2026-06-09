@@ -15,6 +15,9 @@ using Microsoft.Inventory.Posting;
 using Microsoft.Inventory.Journal;
 using Microsoft.Manufacturing.Journal;
 using Microsoft.Foundation.Reporting;
+using Microsoft.Finance.GeneralLedger.Posting;
+using Microsoft.Purchases.Posting;
+using Microsoft.Inventory.Item;
 using Microsoft.Warehouse.Ledger;
 using Microsoft.Warehouse.Journal;
 
@@ -177,32 +180,28 @@ codeunit 51000 NACSubscribers
             IsHandled := true;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnBeforeInsertItemLedgEntry, '', false, false)]
-    local procedure "Item Jnl.-Post Line_OnBeforeInsertItemLedgEntry"(ItemJournalLine: Record "Item Journal Line"; var ItemLedgerEntry: Record "Item Ledger Entry")
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInitItemLedgEntry, '', false, false)]
+    local procedure "Item Jnl.-Post Line_OnAfterInitItemLedgEntry"(var NewItemLedgEntry: Record "Item Ledger Entry"; var ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer)
     var
         NACCustoms: codeunit NAC_Customs;
     begin
-        ItemLedgerEntry."NAC Weight (LB)" := ItemJournalLine."NAC Weight (LB)";
-        ItemLedgerEntry."NAC Roll No." := ItemJournalLine."NAC Roll No.";
-        ItemLedgerEntry."NAC MFG Date" := ItemJournalLine."NAC MFG Date";
-        ItemLedgerEntry."NAC Expiration Date" := ItemJournalLine."NAC Expiration Date";
-        if (ItemJournalLine."Entry Type" = ItemJournalLine."Entry Type"::Transfer) and (ItemJournalLine.Quantity > 0) then begin
-            if ItemJournalLine."New NAC MFG Date" <> 0D then
-                ItemLedgerEntry."NAC MFG Date" := ItemJournalLine."New NAC MFG Date";
-            if ItemJournalLine."New NAC Expiration Date" <> 0D then
-                ItemLedgerEntry."NAC Expiration Date" := ItemJournalLine."New NAC Expiration Date";
-        end;
-
+        NewItemLedgEntry."NAC Weight (LB)" := ItemJournalLine."NAC Weight (LB)";
+        NewItemLedgEntry."NAC Roll No." := ItemJournalLine."NAC Roll No.";
+        NewItemLedgEntry."NAC MFG Date" := ItemJournalLine."NAC MFG Date";
+        NewItemLedgEntry."NAC MFG Expiration Date" := ItemJournalLine."NAC MFG Expiration Date";
         if NACCustoms.RollNoExist(ItemJournalLine) then
-            ItemLedgerEntry."NAC Roll No." := 0;
+            NewItemLedgEntry."NAC Roll No." := 0;
 
-        if ItemLedgerEntry."NAC Roll No." = 0 then
-            ItemLedgerEntry."NAC Roll No." := NACCustoms.GetLastRollNo(ItemJournalLine) + 1;
+        if NewItemLedgEntry."NAC Roll No." = 0 then
+            NewItemLedgEntry."NAC Roll No." := NACCustoms.GetLastRollNo(ItemJournalLine) + 1;
     end;
 
-    var
-        CheckBeforePostQst: Label 'Check consumption Qty and output Qty before posting. Do you want to continue?';
-
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnInsertTransferEntryOnTransferValues, '', false, false)]
+    local procedure "Item Jnl.-Post Line_OnInsertTransferEntryOnTransferValues"(var NewItemLedgerEntry: Record "Item Ledger Entry"; OldItemLedgerEntry: Record "Item Ledger Entry"; ItemLedgerEntry: Record "Item Ledger Entry"; ItemJournalLine: Record "Item Journal Line"; var TempItemEntryRelation: Record "Item Entry Relation"; var IsHandled: Boolean)
+    begin
+        NewItemLedgerEntry."NAC MFG Date" := ItemJournalLine."NAC New MFG Date";
+        NewItemLedgerEntry."NAC MFG Expiration Date" := ItemJournalLine."NAC New MFG Expiration Date";
+    end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reservation Management", OnBeforeCheckQuantityIsCompletelyReleased, '', false, false)]
     local procedure ReservationManagementOnBeforeCheckQuantityIsCompletelyReleased(ItemTrackingHandling: Option; QtyToRelease: Decimal; DeleteAll: Boolean; CurrentItemTrackingSetup: Record "Item Tracking Setup" temporary; ReservEntry: Record "Reservation Entry"; var IsHandled: Boolean)
@@ -252,22 +251,25 @@ codeunit 51000 NACSubscribers
         end;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnBeforeInsertSetupTempSplitItemJnlLine, '', false, false)]
-    local procedure OnBeforeInsertSetupTempSplitItemJnlLine(var TempTrackingSpecification: Record "Tracking Specification" temporary; var TempItemJournalLine: Record "Item Journal Line" temporary; var PostItemJnlLine: Boolean; var ItemJournalLine2: Record "Item Journal Line"; SignFactor: Integer; FloatingFactor: Decimal)
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnSetupTempSplitItemJnlLineOnBeforeCalcPostItemJnlLine, '', false, false)]
+    local procedure "Item Jnl.-Post Line_OnBeforeInsertSetupTempSplitItemJnlLine"(var TempSplitItemJnlLine: Record "Item Journal Line"; TempTrackingSpecification: Record "Tracking Specification")
     begin
-        if (TempItemJournalLine."Order Type" = TempItemJournalLine."Order Type"::Production) and (TempItemJournalLine."Entry Type" = TempItemJournalLine."Entry Type"::Output) then
+        if (TempSplitItemJnlLine."Order Type" = TempSplitItemJnlLine."Order Type"::Production) and (TempSplitItemJnlLine."Entry Type" = TempSplitItemJnlLine."Entry Type"::Output) then
             if TempTrackingSpecification."NAC Weight (LB)" = 0 then
                 Error('Roll Weight (LB) is blank for Item Tracking Lot No. - %1. Please ensure that Roll Weight (LB) is entered for every line before posting.', TempTrackingSpecification."Lot No.");
-        TempItemJournalLine."NAC Weight (LB)" := TempTrackingSpecification."NAC Weight (LB)";
-        TempItemJournalLine."NAC Roll No." := TempTrackingSpecification."NAC Roll No.";
-        if TempTrackingSpecification."NAC MFG Date" <> 0D then
-            TempItemJournalLine."NAC MFG Date" := TempTrackingSpecification."NAC MFG Date";
-        if TempTrackingSpecification."NAC Expiration Date" <> 0D then
-            TempItemJournalLine."NAC Expiration Date" := TempTrackingSpecification."NAC Expiration Date";
-        if TempTrackingSpecification."New NAC MFG Date" <> 0D then
-            TempItemJournalLine."New NAC MFG Date" := TempTrackingSpecification."New NAC MFG Date";
-        if TempTrackingSpecification."New NAC Expiration Date" <> 0D then
-            TempItemJournalLine."New NAC Expiration Date" := TempTrackingSpecification."New NAC Expiration Date";
+        TempSplitItemJnlLine."NAC Weight (LB)" := TempTrackingSpecification."NAC Weight (LB)";
+        TempSplitItemJnlLine."NAC Roll No." := TempTrackingSpecification."NAC Roll No.";
+        TempSplitItemJnlLine."NAC MFG Date" := TempTrackingSpecification."NAC MFG Date";
+        TempSplitItemJnlLine."NAC MFG Expiration Date" := TempTrackingSpecification."NAC MFG Expiration Date";
+        TempSplitItemJnlLine."NAC New MFG Date" := TempTrackingSpecification."NAC New MFG Date";
+        TempSplitItemJnlLine."NAC New MFG Expiration Date" := TempTrackingSpecification."NAC New MFG Expiration Date";
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnSetupTempSplitItemJnlLineOnAfterCalcPostItemJnlLine, '', false, false)]
+    local procedure "Item Journal Line_OnSetupTempSplitItemJnlLineOnAfterCalcPostItemJnlLine"(var TempSplitItemJnlLine: Record "Item Journal Line"; var TempTrackingSpecification: Record "Tracking Specification" temporary; var PostItemJnlLine: Boolean)
+    begin
+        PostItemJnlLine := PostItemJnlLine or (TempSplitItemJnlLine."NAC MFG Date" <> TempSplitItemJnlLine."NAC New MFG Date")
+                           or (TempSplitItemJnlLine."NAC MFG Expiration Date" <> TempSplitItemJnlLine."NAC New MFG Expiration Date");
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Item Tracking Lines", OnAfterEntriesAreIdentical, '', false, false)]
@@ -276,8 +278,9 @@ codeunit 51000 NACSubscribers
         IdenticalArray[2] := IdenticalArray[2] and (ReservEntry1."NAC Weight (LB)" = ReservEntry2."NAC Weight (LB)")
                                and (ReservEntry1."NAC Roll No." = ReservEntry2."NAC Roll No.")
                                and (ReservEntry1."NAC MFG Date" = ReservEntry2."NAC MFG Date")
-                               and (ReservEntry1."NAC Expiration Date" = ReservEntry2."NAC Expiration Date");
-
+                               and (ReservEntry1."NAC MFG Expiration Date" = ReservEntry2."NAC MFG Expiration Date")
+                               and (ReservEntry1."NAC New MFG Date" = ReservEntry2."NAC MFG Date")
+                               and (ReservEntry1."NAC New MFG Expiration Date" = ReservEntry2."NAC MFG Expiration Date");
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Item Tracking Lines", OnAfterMoveFields, '', false, false)]
@@ -286,30 +289,38 @@ codeunit 51000 NACSubscribers
         ReservEntry."NAC Weight (LB)" := TrkgSpec."NAC Weight (LB)";
         ReservEntry."NAC Roll No." := TrkgSpec."NAC Roll No.";
         ReservEntry."NAC MFG Date" := TrkgSpec."NAC MFG Date";
-        ReservEntry."NAC Expiration Date" := TrkgSpec."NAC Expiration Date";
+        ReservEntry."NAC MFG Expiration Date" := TrkgSpec."NAC MFG Expiration Date";
+        ReservEntry."NAC New MFG Date" := TrkgSpec."NAC New MFG Date";
+        ReservEntry."NAC New MFG Expiration Date" := TrkgSpec."NAC New MFG Expiration Date";
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Tracking Specification", OnAfterCopyTrackingFromReservEntry, '', false, false)]
-    local procedure OnAfterCopyTrackingFromReservEntry(var TrackingSpecification: Record "Tracking Specification"; ReservEntry: Record "Reservation Entry")
-    begin
-        TrackingSpecification."NAC Weight (LB)" := ReservEntry."NAC Weight (LB)";
-        TrackingSpecification."NAC Roll No." := ReservEntry."NAC Roll No.";
-        TrackingSpecification."NAC MFG Date" := ReservEntry."NAC MFG Date";
-        TrackingSpecification."NAC Expiration Date" := ReservEntry."NAC Expiration Date";
-
-    end;
+    // [EventSubscriber(ObjectType::Table, Database::"Tracking Specification", OnAfterCopyTrackingFromReservEntry, '', false, false)]
+    // local procedure OnAfterCopyTrackingFromReservEntry(var TrackingSpecification: Record "Tracking Specification"; ReservEntry: Record "Reservation Entry")
+    // begin
+    //     TrackingSpecification."NAC Weight (LB)" := ReservEntry."NAC Weight (LB)";
+    //     TrackingSpecification."NAC Roll No." := ReservEntry."NAC Roll No.";
+    //     TrackingSpecification."NAC MFG Date" := ReservEntry."NAC MFG Date";
+    //     TrackingSpecification."NAC MFG Expiration Date" := ReservEntry."NAC MFG Expiration Date";
+    //     TrackingSpecification."NAC New MFG Date" := ReservEntry."NAC New MFG Date";
+    //     TrackingSpecification."NAC New MFG Expiration Date" := ReservEntry."NAC New MFG Expiration Date";
+    // end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"WMS Management", OnAfterCreateWhseJnlLine, '', false, false)]
-    local procedure OnAfterCreateWhseJnlLine(var WhseJournalLine: Record "Warehouse Journal Line"; ItemJournalLine: Record "Item Journal Line")
+    local procedure OnAfterCreateWhseJnlLine(var WhseJournalLine: Record "Warehouse Journal Line"; ItemJournalLine: Record "Item Journal Line"; ToTransfer: Boolean)
     begin
         WhseJournalLine."NAC MFG Date" := ItemJournalLine."NAC MFG Date";
-        WhseJournalLine."NAC Expiration Date" := ItemJournalLine."NAC Expiration Date";
-        if (WhseJournalLine."Entry Type" = WhseJournalLine."Entry Type"::Movement) and (WhseJournalLine.Quantity > 0) then begin
-            if ItemJournalLine."New NAC MFG Date" <> 0D then
-                WhseJournalLine."NAC MFG Date" := ItemJournalLine."New NAC MFG Date";
-            if ItemJournalLine."New NAC Expiration Date" <> 0D then
-                WhseJournalLine."NAC Expiration Date" := ItemJournalLine."New NAC Expiration Date";
-        end;
+        WhseJournalLine."NAC MFG Expiration Date" := ItemJournalLine."NAC MFG Expiration Date";
+        // if ToTransfer then begin
+        //     WhseJournalLine."NAC MFG Date" := ItemJournalLine."NAC New MFG Date";
+        //     WhseJournalLine."NAC MFG Expiration Date" := ItemJournalLine."NAC New MFG Expiration Date";
+        // end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse. Jnl.-Register Line", OnBeforeInsertWhseEntry, '', false, false)]
+    local procedure "Whse. Jnl.-Register Line_OnBeforeInsertWhseEntry"(var WarehouseEntry: Record "Warehouse Entry"; WarehouseJournalLine: Record "Warehouse Journal Line")
+    begin
+        WarehouseEntry."NAC MFG Date" := WarehouseJournalLine."NAC MFG Date";
+        WarehouseEntry."NAC MFG Expiration Date" := WarehouseJournalLine."NAC MFG Expiration Date";
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"WHI Whse. Activity Mgmt.", OnBeforeAddDocToLookupList, '', false, false)]
@@ -361,10 +372,6 @@ codeunit 51000 NACSubscribers
         NACSystemAccessWarning.RunModal();
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse. Jnl.-Register Line", OnBeforeInsertWhseEntry, '', false, false)]
-    local procedure "Whse. Jnl.-Register Line_OnBeforeInsertWhseEntry"(var WarehouseEntry: Record "Warehouse Entry"; WarehouseJournalLine: Record "Warehouse Journal Line")
-    begin
-        WarehouseEntry."NAC MFG Date" := WarehouseJournalLine."NAC MFG Date";
-        WarehouseEntry."NAC Expiration Date" := WarehouseJournalLine."NAC Expiration Date";
-    end;
+    var
+        CheckBeforePostQst: Label 'Check consumption Qty and output Qty before posting. Do you want to continue?';
 }

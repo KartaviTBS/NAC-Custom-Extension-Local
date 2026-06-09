@@ -219,7 +219,7 @@ tableextension 51009 "NAC Item" extends Item
             Caption = 'Roll No.';
             DataClassification = CustomerContent;
         }
-        field(51203; "NAC MFG Date Calculation "; DateFormula)
+        field(51203; "NAC MFG Date Calculation"; DateFormula)
         {
             Caption = 'MFG Date Calculation';
             DataClassification = CustomerContent;

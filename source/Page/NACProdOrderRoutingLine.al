@@ -39,16 +39,6 @@ page 51004 NACProdOrderRoutingLine
                     ApplicationArea = All;
                     Editable = False;
                 }
-                field("Starting Date-Time"; Rec."Starting Date-Time")
-                {
-                    ApplicationArea = All;
-                    Editable = False;
-                }
-                field("Ending Date-Time"; Rec."Ending Date-Time")
-                {
-                    ApplicationArea = All;
-                    Editable = False;
-                }
             }
         }
     }

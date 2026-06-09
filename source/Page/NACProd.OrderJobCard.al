@@ -146,25 +146,28 @@ page 51001 "NAC Prod. Order Job Card"
                 Editable = FALSE;
                 SubPageLink = Status = field(Status), "Prod. Order No." = field("Prod. Order No."), "Prod. Order Line No." = field("Line No.");
             }
-            part(ProdRouting; "NACProdOrderRoutingLine")
+            Grid(materialsComments)
             {
-                ShowFilter = False;
-                Caption = '';
-                ApplicationArea = All;
-                Provider = ProdLines;
-                UpdatePropagation = Both;
-                Editable = FALSE;
-                SubPageLink = Status = field(Status), "Prod. Order No." = field("Prod. Order No."), "Routing Reference No." = field("Line No."), "Routing No." = field("Routing No.");
-            }
-            part(Instructions; NACItemComments)
-            {
-                ShowFilter = False;
-                Caption = '';
-                ApplicationArea = All;
-                Provider = ProdLines;
-                UpdatePropagation = Both;
-                Editable = FALSE;
-                SubPageLink = "Table Name" = filter(Item), "No." = field("Item No.");
+                part(ProdRouting; "NACProdOrderRoutingLine")
+                {
+                    ShowFilter = False;
+                    Caption = '';
+                    ApplicationArea = All;
+                    Provider = ProdLines;
+                    UpdatePropagation = Both;
+                    Editable = FALSE;
+                    SubPageLink = Status = field(Status), "Prod. Order No." = field("Prod. Order No."), "Routing Reference No." = field("Line No."), "Routing No." = field("Routing No.");
+                }
+                part(Instructions; NACItemComments)
+                {
+                    ShowFilter = False;
+                    Caption = '';
+                    ApplicationArea = All;
+                    Provider = ProdLines;
+                    UpdatePropagation = Both;
+                    Editable = FALSE;
+                    SubPageLink = "Table Name" = filter(Item), "No." = field("Item No.");
+                }
             }
             part(NACRoutingLineCustomFields; NACRoutingLineCustomFields)
             {
