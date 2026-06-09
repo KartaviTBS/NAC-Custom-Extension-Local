@@ -2,6 +2,7 @@ namespace NACCustom.NACCustom;
 
 using Microsoft.Inventory.Tracking;
 using Microsoft.Inventory.Journal;
+using Microsoft.Inventory.Item;
 
 tableextension 50001 "NAC Tracking Specification" extends "Tracking Specification"
 {
@@ -19,19 +20,23 @@ tableextension 50001 "NAC Tracking Specification" extends "Tracking Specificatio
         }
         field(51116; "NAC MFG Date"; Date)
         {
-            Caption = 'Manufacturing Date';
+            Caption = 'MFG Date';
+            DataClassification = CustomerContent;
         }
-        field(50117; "NAC Expiration Date"; Date)
+        field(50117; "NAC MFG Expiration Date"; Date)
         {
-            Caption = 'Manufacturing Expiration Date';
+            Caption = 'MFG Expiration Date';
+            DataClassification = CustomerContent;
         }
-        field(51118; "New NAC MFG Date"; Date)
+        field(51118; "NAC New MFG Date"; Date)
         {
-            Caption = 'New Manufacturing Date';
+            Caption = 'New MFG Date';
+            DataClassification = CustomerContent;
         }
-        field(51119; "New NAC Expiration Date"; Date)
+        field(51119; "NAC New MFG Expiration Date"; Date)
         {
-            Caption = 'New Manufacturing Expiration Date';
+            Caption = 'New MFG Expiration Date';
+            DataClassification = CustomerContent;
         }
     }
 }

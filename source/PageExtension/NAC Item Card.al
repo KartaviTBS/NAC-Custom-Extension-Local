@@ -16,7 +16,7 @@ pageextension 51025 "NAC Item Card " extends "Item Card"
         }
         addlast(ItemTracking)
         {
-            field("NAC MFG Date Calculation "; Rec."NAC MFG Date Calculation ")
+            field("NAC MFG Date Calculation "; Rec."NAC MFG Date Calculation")
             {
                 ApplicationArea = all;
                 ToolTip = 'Specifies the value of the MFG Date Calculation field.';

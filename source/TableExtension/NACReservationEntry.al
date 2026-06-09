@@ -18,12 +18,22 @@ tableextension 50002 "NAC Reservation Entry" extends "Reservation Entry"
         }
         field(51116; "NAC MFG Date"; Date)
         {
-            Caption = 'Manufacturing Date';
+            Caption = 'MFG Date';
             DataClassification = CustomerContent;
         }
-        field(50117; "NAC Expiration Date"; Date)
+        field(50117; "NAC MFG Expiration Date"; Date)
         {
-            Caption = 'Manufacturing Expiration Date';
+            Caption = 'MFG Expiration Date';
+            DataClassification = CustomerContent;
+        }
+        field(51118; "NAC New MFG Date"; Date)
+        {
+            Caption = 'New MFG Date';
+            DataClassification = CustomerContent;
+        }
+        field(51119; "NAC New MFG Expiration Date"; Date)
+        {
+            Caption = 'New MFG Expiration Date';
             DataClassification = CustomerContent;
         }
     }

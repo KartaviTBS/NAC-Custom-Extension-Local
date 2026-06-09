@@ -13,7 +13,7 @@ pageextension 50019 "NAC Warehouse Entries" extends "Warehouse Entries"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the manufacturing date of the item.';
             }
-            field("NAC Expiration Date"; Rec."NAC Expiration Date")
+            field("NAC MFG Expiration Date"; Rec."NAC MFG Expiration Date")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the manufacturing expiration date of the item.';

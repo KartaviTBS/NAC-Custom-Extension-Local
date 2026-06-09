@@ -32,12 +32,12 @@ tableextension 51017 NACItemLedgerEntry extends "Item Ledger Entry"
         }
         field(51117; "NAC MFG Date"; Date)
         {
-            Caption = 'Manufacturing Date';
+            Caption = 'MFG Date';
             DataClassification = CustomerContent;
         }
-        field(51118; "NAC Expiration Date"; Date)
+        field(51118; "NAC MFG Expiration Date"; Date)
         {
-            Caption = 'Manufacturing Expiration Date';
+            Caption = 'MFG Expiration Date';
             DataClassification = CustomerContent;
         }
     }

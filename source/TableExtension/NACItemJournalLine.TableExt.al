@@ -31,7 +31,7 @@ tableextension 51019 "NAC Item Journal Line" extends "Item Journal Line"
         }
         field(51116; "NAC MFG Date"; Date)
         {
-            Caption = 'Manufacturing Date';
+            Caption = 'MFG Date';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
@@ -40,33 +40,33 @@ tableextension 51019 "NAC Item Journal Line" extends "Item Journal Line"
             begin
                 if "NAC MFG Date" <> 0D then
                     if Item.Get("Item No.") then
-                        if Format(Item."NAC MFG Date Calculation ") <> '' then
-                            "NAC Expiration Date" := CalcDate(Item."NAC MFG Date Calculation ", "NAC MFG Date");
+                        if Format(Item."NAC MFG Date Calculation") <> '' then
+                            "NAC MFG Expiration Date" := CalcDate(Item."NAC MFG Date Calculation", "NAC MFG Date");
             end;
         }
-        field(51117; "NAC Expiration Date"; Date)
+        field(51117; "NAC MFG Expiration Date"; Date)
         {
-            Caption = 'Manufacturing Expiration Date';
+            Caption = 'MFG Expiration Date';
             DataClassification = CustomerContent;
         }
-        field(51118; "New NAC MFG Date"; Date)
+        field(51118; "NAC New MFG Date"; Date)
         {
-            Caption = 'New Manufacturing MFG Date';
+            Caption = 'New MFG Date';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
             var
                 Item: record Item;
             begin
-                if "New NAC MFG Date" <> 0D then
+                if "NAC New MFG Date" <> 0D then
                     if Item.Get("Item No.") then
-                        if Format(Item."NAC MFG Date Calculation ") <> '' then
-                            "New NAC Expiration Date" := CalcDate(Item."NAC MFG Date Calculation ", "New NAC MFG Date");
+                        if Format(Item."NAC MFG Date Calculation") <> '' then
+                            "NAC New MFG Expiration Date" := CalcDate(Item."NAC MFG Date Calculation", "NAC New MFG Date");
             end;
         }
-        field(51119; "New NAC Expiration Date"; Date)
+        field(51119; "NAC New MFG Expiration Date"; Date)
         {
-            Caption = 'New Manufacturing Expiration Date';
+            Caption = 'New MFG Expiration Date';
             DataClassification = CustomerContent;
         }
     }
