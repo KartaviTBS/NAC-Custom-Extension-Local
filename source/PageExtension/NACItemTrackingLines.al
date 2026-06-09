@@ -30,43 +30,53 @@ pageextension 50003 "NAC Item Tracking Lines" extends "Item Tracking Lines"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the MFG Date field.';
-                Editable = MFGDateEnabled;
-                Visible = MFGDateEnabled and not NewExpirationDateVisible;
+                Editable = false;
                 trigger OnValidate()
                 var
                     Item: Record Item;
                 begin
-                    if Rec."NAC MFG Date" = 0D then
+                    if Rec."NAC MFG Date" = 0D then begin
                         Rec."NAC MFG Expiration Date" := 0D;
+                        Rec."Expiration Date" := 0D;
+                    end;
 
                     if Item.Get(Rec."Item No.") then
-                        if Format(Item."NAC MFG Date Calculation") <> '' then
+                        if Format(Item."NAC MFG Date Calculation") <> '' then begin
                             Rec."NAC MFG Expiration Date" := CalcDate(Item."NAC MFG Date Calculation", Rec."NAC MFG Date");
+                            Rec."Expiration Date" := Rec."NAC MFG Expiration Date";
+                        end;
                 end;
             }
             field("NAC MFG Expiration Date"; Rec."NAC MFG Expiration Date")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Expiration Date field.';
-                Editable = MFGDateEnabled;
-                Visible = MFGDateEnabled and not NewExpirationDateVisible;
+                Editable = false;
+
+                trigger OnValidate()
+                begin
+                    Rec."Expiration Date" := Rec."NAC MFG Expiration Date";
+                end;
             }
             field("NAC New MFG Date"; Rec."NAC New MFG Date")
             {
                 ApplicationArea = ItemTracking;
                 Editable = MFGDateEnabled;
                 ToolTip = 'Specifies a new manufacutring date field.';
-                Visible = MFGDateEnabled and NewExpirationDateVisible;
                 trigger OnValidate()
                 var
                     Item: Record Item;
                 begin
-                    if Rec."NAC MFG Date" = 0D then
-                        Rec."NAC MFG Expiration Date" := 0D;
+                    if Rec."NAC New MFG Date" = 0D then begin
+                        Rec."NAC New MFG Expiration Date" := 0D;
+                        Rec."New Expiration Date" := 0D;
+                    end;
 
                     if Item.Get(Rec."Item No.") then
-                        if Format(Item."NAC MFG Date Calculation") <> '' then
-                            Rec."NAC MFG Expiration Date" := CalcDate(Item."NAC MFG Date Calculation", Rec."NAC MFG Date");
+                        if Format(Item."NAC MFG Date Calculation") <> '' then begin
+                            Rec."NAC New MFG Expiration Date" := CalcDate(Item."NAC MFG Date Calculation", Rec."NAC New MFG Date");
+                            Rec."New Expiration Date" := Rec."NAC New MFG Expiration Date";
+                        end;
                 end;
             }
             field("NAC New MFG Expiration Date"; Rec."NAC New MFG Expiration Date")
@@ -74,7 +84,11 @@ pageextension 50003 "NAC Item Tracking Lines" extends "Item Tracking Lines"
                 ApplicationArea = ItemTracking;
                 Editable = MFGDateEnabled;
                 ToolTip = 'Specifies a new manufacutring date expiration field.';
-                Visible = MFGDateEnabled and NewExpirationDateVisible;
+
+                trigger OnValidate()
+                begin
+                    Rec."New Expiration Date" := Rec."NAC New MFG Expiration Date";
+                end;
             }
         }
     }
