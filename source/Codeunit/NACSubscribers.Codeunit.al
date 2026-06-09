@@ -274,6 +274,25 @@ codeunit 51000 NACSubscribers
         end;
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnSetupSplitJnlLineOnAfterCheckExpirationDate, '', false, false)]
+    local procedure ItemJnlPostLine_OnSetupSplitJnlLineOnAfterCheckExpirationDate(var ItemJnlLine2: Record "Item Journal Line"; var TempTrackingSpecification: Record "Tracking Specification" temporary)
+    var
+        Item: Record Item;
+        ItemTrackingCode: Record "Item Tracking Code";
+    begin
+        if Item.Get(ItemJnlLine2."Item No.") then
+            if ItemTrackingCode.Get(Item."Item Tracking Code") then
+                if ItemTrackingCode."NAC Require MFG Date" then begin
+                    if ItemJnlLine2."Entry Type" = ItemJnlLine2."Entry Type"::Transfer then begin
+                        if ItemJnlLine2."NAC New MFG Date" = 0D then
+                            Error('New MFG Date must have a value in Tracking Specification: Entry No.=%1. It cannot be zero or empty.', TempTrackingSpecification."Entry No.");
+                    end else
+                        if ItemJnlLine2."NAC MFG Date" = 0D then
+                            Error('MFG Date must have a value in Tracking Specification: Entry No.=%1. It cannot be zero or empty.', TempTrackingSpecification."Entry No.");
+                end;
+    end;
+
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnSetupTempSplitItemJnlLineOnAfterCalcPostItemJnlLine, '', false, false)]
     local procedure "Item Journal Line_OnSetupTempSplitItemJnlLineOnAfterCalcPostItemJnlLine"(var TempSplitItemJnlLine: Record "Item Journal Line"; var TempTrackingSpecification: Record "Tracking Specification" temporary; var PostItemJnlLine: Boolean)
     begin
@@ -439,6 +458,42 @@ codeunit 51000 NACSubscribers
     begin
         if Rec."NAC MFG Expiration Date" <> xRec."NAC MFG Expiration Date" then
             Rec."NAC New MFG Expiration Date" := Rec."NAC MFG Expiration Date";
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl. Line-Reserve", 'OnCallItemTrackingOnBeforeItemTrackingLinesRunModal', '', false, false)]
+    local procedure ItemJnlLineReserve_OnCallItemTrackingOnAfterItemTrackingLinesRunModal(var ItemJnlLine: Record "Item Journal Line")
+    var
+        ReservationEntry: Record "Reservation Entry";
+        HasMultipleLots: Boolean;
+    begin
+        ReservationEntry.SetRange("Source ID", ItemJnlLine."Journal Template Name");
+        ReservationEntry.SetRange("Source Batch Name", ItemJnlLine."Journal Batch Name");
+        ReservationEntry.SetRange("Source Ref. No.", ItemJnlLine."Line No.");
+        ReservationEntry.SetRange("Source Type", Database::"Item Journal Line");
+        ReservationEntry.SetRange("Source Subtype", ItemJnlLine."Entry Type");
+
+        if ReservationEntry.FindFirst() then begin
+            ReservationEntry.SetFilter("Lot No.", '<>%1', ReservationEntry."Lot No.");
+            HasMultipleLots := not ReservationEntry.IsEmpty();
+            ReservationEntry.SetRange("Lot No."); 
+
+            if HasMultipleLots then begin
+                ItemJnlLine."NAC MFG Date" := 0D;
+                ItemJnlLine."NAC MFG Expiration Date" := 0D;
+                ItemJnlLine."NAC New MFG Date" := 0D;
+                ItemJnlLine."NAC New MFG Expiration Date" := 0D;
+            end else begin
+                ItemJnlLine."NAC MFG Date" := ReservationEntry."NAC MFG Date";
+                ItemJnlLine."NAC MFG Expiration Date" := ReservationEntry."NAC MFG Expiration Date";
+                ItemJnlLine."NAC New MFG Date" := ReservationEntry."NAC New MFG Date";
+                ItemJnlLine."NAC New MFG Expiration Date" := ReservationEntry."NAC New MFG Expiration Date";
+            end;
+        end else begin
+            ItemJnlLine."NAC MFG Date" := 0D;
+            ItemJnlLine."NAC MFG Expiration Date" := 0D;
+            ItemJnlLine."NAC New MFG Date" := 0D;
+            ItemJnlLine."NAC New MFG Expiration Date" := 0D;
+        end;
     end;
 
     var

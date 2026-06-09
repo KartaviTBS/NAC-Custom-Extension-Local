@@ -30,7 +30,6 @@ pageextension 50003 "NAC Item Tracking Lines" extends "Item Tracking Lines"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the MFG Date field.';
-                Editable = false;
                 trigger OnValidate()
                 var
                     Item: Record Item;
@@ -51,7 +50,6 @@ pageextension 50003 "NAC Item Tracking Lines" extends "Item Tracking Lines"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Expiration Date field.';
-                Editable = false;
 
                 trigger OnValidate()
                 begin
@@ -61,7 +59,6 @@ pageextension 50003 "NAC Item Tracking Lines" extends "Item Tracking Lines"
             field("NAC New MFG Date"; Rec."NAC New MFG Date")
             {
                 ApplicationArea = ItemTracking;
-                Editable = MFGDateEnabled;
                 ToolTip = 'Specifies a new manufacutring date field.';
                 trigger OnValidate()
                 var
@@ -82,7 +79,6 @@ pageextension 50003 "NAC Item Tracking Lines" extends "Item Tracking Lines"
             field("NAC New MFG Expiration Date"; Rec."NAC New MFG Expiration Date")
             {
                 ApplicationArea = ItemTracking;
-                Editable = MFGDateEnabled;
                 ToolTip = 'Specifies a new manufacutring date expiration field.';
 
                 trigger OnValidate()
