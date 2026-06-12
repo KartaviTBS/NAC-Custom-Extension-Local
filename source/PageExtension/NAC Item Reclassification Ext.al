@@ -13,17 +13,17 @@ pageextension 51050 "NAC Item Reclass. Journal" extends "Item Reclass. Journal"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the manufacturing date.';
             }
-            field("NAC Expiration Date"; Rec."NAC Expiration Date")
+            field("NAC Expiration Date"; Rec."NAC MFG Expiration Date")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the expiration date.';
             }
-            field("New NAC MFG Date"; Rec."New NAC MFG Date")
+            field("New NAC MFG Date"; Rec."NAC NEW MFG Date")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the new manufacturing date.';
             }
-            field("New NAC Expiration Date"; Rec."New NAC Expiration Date")
+            field("New NAC Expiration Date"; Rec."NAC NEW MFG Expiration Date")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the new expiration date.';

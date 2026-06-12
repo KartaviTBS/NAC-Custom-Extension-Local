@@ -375,13 +375,6 @@ codeunit 51000 NACSubscribers
         NACSystemAccessWarning.RunModal();
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse. Jnl.-Register Line", OnBeforeInsertWhseEntry, '', false, false)]
-    local procedure "Whse. Jnl.-Register Line_OnBeforeInsertWhseEntry"(var WarehouseEntry: Record "Warehouse Entry"; WarehouseJournalLine: Record "Warehouse Journal Line")
-    begin
-        WarehouseEntry."NAC MFG Date" := WarehouseJournalLine."NAC MFG Date";
-        WarehouseEntry."NAC Expiration Date" := WarehouseJournalLine."NAC Expiration Date";
-    end;
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", OnAfterPostPurchaseDoc, '', false, false)]
     local procedure "Purch.-Post_OnAfterPostPurchaseDoc"(var PurchaseHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; PurchRcpHdrNo: Code[20]; RetShptHdrNo: Code[20]; PurchInvHdrNo: Code[20]; PurchCrMemoHdrNo: Code[20]; CommitIsSupressed: Boolean)
     var
@@ -402,6 +395,36 @@ codeunit 51000 NACSubscribers
             NACItemBarcode.Print('');
         end;
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create Prod. Order from Sale", 'OnAfterCreateProdOrderFromSalesLine', '', false, false)]
+    local procedure OnAfterCreateProdOrderFromSalesLine(var ProdOrder: Record "Production Order"; SalesLine: Record "Sales Line")
+    var
+        SalesHeader: Record "Sales Header";
+    begin
+        if SalesHeader.Get(SalesLine."Document Type", SalesLine."Document No.") then begin
+            ProdOrder."NAC Sales Order No." := SalesHeader."No.";
+            ProdOrder."NAC Bill-To Customer No." := SalesHeader."Bill-to Customer No.";
+            ProdOrder."NAC Bill-To Name" := SalesHeader."Bill-to Name";
+            ProdOrder."NAC Sell-To Customer No." := SalesHeader."Sell-to Customer No.";
+            ProdOrder."NAC Sell-To Name" := SalesHeader."Sell-to Customer Name";
+            ProdOrder.Modify(false);
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Prod. Order Status Management", 'OnAfterChangeStatusOnProdOrder', '', false, false)]
+    local procedure OnAfterChangeStatusOnProdOrder(var ProdOrder: Record "Production Order"; var ToProdOrder: Record "Production Order")
+    begin
+        if ToProdOrder."NAC Sales Order No." <> '' then begin
+            ProdOrder."NAC Sales Order No." := ToProdOrder."NAC Sales Order No.";
+            ProdOrder."NAC Bill-To Customer No." := ToProdOrder."NAC Bill-To Customer No.";
+            ProdOrder."NAC Bill-To Name" := ToProdOrder."NAC Bill-To Name";
+            ProdOrder."NAC Sell-To Customer No." := ToProdOrder."NAC Sell-To Customer No.";
+            ProdOrder."NAC Sell-To Name" := ToProdOrder."NAC Sell-To Name";
+            ProdOrder.Modify(false);
+        end;
+    end;
+
     var
         CheckBeforePostQst: Label 'Check consumption Qty and output Qty before posting. Do you want to continue?';
+
 }

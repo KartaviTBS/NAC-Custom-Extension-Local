@@ -4,6 +4,7 @@ using Microsoft.Manufacturing.Document;
 using Microsoft.Purchases.Document;
 using Microsoft.Manufacturing.MachineCenter;
 using System.Device;
+using Microsoft.Sales.Customer;
 
 tableextension 51014 NACProductionOrder extends "Production Order"
 {
@@ -77,6 +78,39 @@ tableextension 51014 NACProductionOrder extends "Production Order"
             Caption = 'Purchase Order';
             TableRelation = "Purchase Header"."No." where("Document Type" = const(Order));
             DataClassification = CustomerContent;
+        }
+        field(51019; "NAC Sales Order No."; Code[20])
+        {
+            Caption = 'Sales Order No.';
+            DataClassification = CustomerContent;
+        }
+        field(51020; "NAC Bill-To Customer No."; Code[20])
+        {
+            Caption = 'Bill-To Customer No.';
+            TableRelation = Customer;
+            DataClassification = CustomerContent;
+        }
+        field(51021; "NAC Bill-To Name"; Text[100])
+        {
+            Caption = 'Bill-To Name';
+            DataClassification = CustomerContent;
+        }
+        field(51022; "NAC Sell-To Customer No."; Code[20])
+        {
+            Caption = 'Sell-To Customer No.';
+            TableRelation = Customer;
+            DataClassification = CustomerContent;
+        }
+        field(51023; "NAC Sell-To Name"; Text[100])
+        {
+            Caption = 'Sell-To Name';
+            DataClassification = CustomerContent;
+        }
+        field(51024; "NAC COC Print Count"; Integer)
+        {
+            Caption = 'COC Print Count';
+            DataClassification = CustomerContent;
+            Editable = false;
         }
     }
 }
