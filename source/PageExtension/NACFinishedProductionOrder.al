@@ -13,6 +13,26 @@ pageextension 51032 NACFinishedProductionOrder extends "Finished Production Orde
             {
                 ApplicationArea = All;
             }
+            field("NAC Sales Order No."; Rec."NAC Sales Order No.")
+            {
+                ApplicationArea = All;
+            }
+            field("NAC Bill-To Customer No."; Rec."NAC Bill-To Customer No.")
+            {
+                ApplicationArea = All;
+            }
+            field("NAC Bill-To Name"; Rec."NAC Bill-To Name")
+            {
+                ApplicationArea = All;
+            }
+            field("NAC Sell-To Customer No."; Rec."NAC Sell-To Customer No.")
+            {
+                ApplicationArea = All;
+            }
+            field("NAC Sell-To Name"; Rec."NAC Sell-To Name")
+            {
+                ApplicationArea = All;
+            }
         }
         addafter("No.")
         {
