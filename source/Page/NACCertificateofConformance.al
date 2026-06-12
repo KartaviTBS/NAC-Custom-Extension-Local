@@ -3,7 +3,9 @@ namespace NACCustom.NACCustom;
 using Microsoft.Manufacturing.Document;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Setup;
 using Microsoft.Sales.Document;
+using System.Security.AccessControl;
 
 page 50003 "NAC Certificate of Conformance"
 {
@@ -142,6 +144,7 @@ page 50003 "NAC Certificate of Conformance"
                         field("NAC Durometer"; Durometer)
                         {
                             Caption = 'DUROMETER';
+                            Editable = false;
                             ApplicationArea = All;
                             ToolTip = 'Specifies the Durometer measurement value.';
                         }
@@ -173,10 +176,11 @@ page 50003 "NAC Certificate of Conformance"
                     grid("Pick Up")
                     {
                         ShowCaption = false;
-                        field("NAC Pick Up"; Rec."NAC Pick Up")
+                        field("NAC Pick Up"; PickupPct)
                         {
                             ApplicationArea = All;
                             Caption = 'PICKUP (%)';
+                            Editable = false;
                             ToolTip = 'Specifies the Pick Up measurement value.';
                         }
                         field(Test; Test)
@@ -187,6 +191,15 @@ page 50003 "NAC Certificate of Conformance"
                     }
                 }
             }
+            group(Certification)
+            {
+                Caption = 'Certification';
+                field("Certified By"; Rec."Certified By")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the name of the person who certified this document.';
+                }
+            }
             part("NAC COC Lines"; "NAC COC Lines")
             {
                 Caption = 'Finished Roll Details';
@@ -194,7 +207,6 @@ page 50003 "NAC Certificate of Conformance"
                 SubPageLink = "Order No." = field("No."),
                               "Entry Type" = const(Output);
             }
-
         }
 
     }
@@ -231,6 +243,11 @@ page 50003 "NAC Certificate of Conformance"
         NACCustoms: Codeunit NAC_Customs;
         SalesLine: Record "Sales Line";
         ItemLedgerEntries: Record "Item Ledger Entry";
+        InventorySetup: Record "Inventory Setup";
+        UserRec: Record User;
+        IsRuberCustSupplied: Boolean;
+        IsFabricCustSupplied: Boolean;
+        IsModified: Boolean;
     Begin
         CLEAR(vSO);
         CLEAR(vSellName);
@@ -241,6 +258,11 @@ page 50003 "NAC Certificate of Conformance"
         CLEAR(vBillNo);
         Clear(vSalesNo);
         Clear(RubberCompoundLot);
+        Clear(RubberCompound);
+        Clear(FabricType);
+        Clear(CompoundItemList);
+        Clear(CompoundLotNoList);
+        Clear(FabricItemList);
         NACCustoms.GetProductionInfo(Rec, vSO, vSalesNo, vSellName, vSellNo, vBillName, vBillNo, vRequestedDate, vExtDocNo);
 
         SalesLine.Reset();
@@ -255,7 +277,40 @@ page 50003 "NAC Certificate of Conformance"
             Gauge := Item."NAC OAG (IN)";
             Width := Item."NAC CAL Width (IN)";
             Durometer := Item."NAC Durometer";
+            PickupPct := Item."NAC Pickup(%)";
         end;
+
+        IsModified := false;
+        if (Gauge <> 0) and (Rec."NAC Gauge P/F" = Rec."NAC Gauge P/F"::" ") then begin
+            Rec."NAC Gauge P/F" := Rec."NAC Gauge P/F"::Pass;
+            IsModified := true;
+        end;
+
+        if (Width <> 0) and (Rec."NAC Width P/F" = Rec."NAC Width P/F"::" ") then begin
+            Rec."NAC Width P/F" := Rec."NAC Width P/F"::Pass;
+            IsModified := true;
+        end;
+
+        if (Durometer <> '') and (Rec."NAC Durometer P/F" = Rec."NAC Durometer P/F"::" ") then begin
+            Rec."NAC Durometer P/F" := Rec."NAC Durometer P/F"::Pass;
+            IsModified := true;
+        end;
+
+        if Rec."Certified By" = '' then begin
+            UserRec.SetRange("User Security ID", UserSecurityId());
+            if UserRec.FindFirst() then begin
+                if UserRec."Full Name" <> '' then
+                    Rec."Certified By" := UserRec."Full Name"
+                else
+                    Rec."Certified By" := UserId();
+                IsModified := true;
+            end;
+        end;
+
+        if InventorySetup.Get() then;
+        IsRuberCustSupplied := false;
+        IsFabricCustSupplied := false;
+
         rItemLConsumption.Reset();
         rItemLConsumption.SetCurrentKey("Item No.", "Variant Code", "Lot No.", "Entry Type");
         rItemLConsumption.SetRange("Order No.", Rec."No.");
@@ -264,6 +319,9 @@ page 50003 "NAC Certificate of Conformance"
             Repeat
                 rItemLConsumption.CalcFields("NAC Compound");
                 If rItemLConsumption."NAC Compound" then begin
+                    if Item.Get(rItemLConsumption."Item No.") then
+                        if (InventorySetup."NAC Cust. Supplied Owner Code" <> '') and (Item."Global Dimension 2 Code" = InventorySetup."NAC Cust. Supplied Owner Code") then
+                            IsRuberCustSupplied := true;
                     if not CompoundItemList.Contains(rItemLConsumption."Item No.") then begin
                         CompoundItemList.Add(rItemLConsumption."Item No.");
                         if RubberCompound = '' then
@@ -280,7 +338,10 @@ page 50003 "NAC Certificate of Conformance"
                     end;
                 end;
                 if Item.Get(rItemLConsumption."Item No.") then
-                    if UpperCase(Item."Item Category Code") = 'POLY' then
+                    if IsFabricCategory(Item."Item Category Code", InventorySetup."NAC Fabric Item Category") then begin
+                        if (InventorySetup."NAC Cust. Supplied Owner Code" <> '') and (Item."Global Dimension 2 Code" = InventorySetup."NAC Cust. Supplied Owner Code") then
+                            IsFabricCustSupplied := true;
+
                         if not FabricItemList.Contains(rItemLConsumption."Item No.") then begin
                             FabricItemList.Add(rItemLConsumption."Item No.");
                             if FabricType = '' then
@@ -288,6 +349,7 @@ page 50003 "NAC Certificate of Conformance"
                             else
                                 FabricType += ' - ' + Item."No.";
                         end;
+                    end;
             Until rItemLConsumption.Next() = 0;
 
         if Rec."NAC Quantity of Roll" = 0 then begin
@@ -295,8 +357,21 @@ page 50003 "NAC Certificate of Conformance"
             ItemLedgerEntries.SetRange("Entry Type", ItemLedgerEntries."Entry Type"::Output);
             ItemLedgerEntries.SetRange("Order No.", Rec."No.");
             Rec."NAC Quantity of Roll" := ItemLedgerEntries.Count;
-            Rec.Modify();
+            IsModified := true;
         end;
+
+        if Rec."NAC Ruber Cust. Supplied" <> IsRuberCustSupplied then begin
+            Rec."NAC Ruber Cust. Supplied" := IsRuberCustSupplied;
+            IsModified := true;
+        end;
+
+        if Rec."NAC Fabric Cust. Supplied" <> IsFabricCustSupplied then begin
+            Rec."NAC Fabric Cust. Supplied" := IsFabricCustSupplied;
+            IsModified := true;
+        end;
+
+        if IsModified then
+            Rec.Modify();
     End;
 
     var
@@ -321,4 +396,25 @@ page 50003 "NAC Certificate of Conformance"
         Gauge: Decimal;
         Width: Decimal;
         Durometer: Text[10];
+        PickupPct: Decimal;
+
+    local procedure IsFabricCategory(ItemCategoryCode: Code[20]; FabricItemCategoryCode: Code[20]): Boolean
+    var
+        ItemCategory: Record "Item Category";
+    begin
+        if FabricItemCategoryCode = '' then
+            exit(false);
+        if ItemCategoryCode = FabricItemCategoryCode then
+            exit(true);
+
+        if ItemCategory.Get(ItemCategoryCode) then begin
+            while ItemCategory."Parent Category" <> '' do begin
+                if ItemCategory."Parent Category" = FabricItemCategoryCode then
+                    exit(true);
+                if not ItemCategory.Get(ItemCategory."Parent Category") then
+                    exit(false);
+            end;
+        end;
+        exit(false);
+    end;
 }

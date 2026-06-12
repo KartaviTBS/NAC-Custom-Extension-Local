@@ -48,7 +48,7 @@ report 50003 "NAC Certificate of Conformance"
             { }
             column(NAC_Width; Width)
             { }
-            column(NAC_Pickup; "NAC Pick Up")
+            column(NAC_Pickup; Pickup)
             { }
             column(NAC_Ply; "NAC Ply Adhesion")
             { }
@@ -219,6 +219,8 @@ report 50003 "NAC Certificate of Conformance"
                     Gauge := Round(Item."NAC OAG (IN)", 0.001);
                     Width := Item."NAC CAL Width (IN)";
                     Durometer := Item."NAC Durometer";
+                    Pickup := Item."NAC Pickup(%)";
+
                 end;
                 rItemLConsumption.Reset();
                 rItemLConsumption.SetCurrentKey("Item No.", "Variant Code", "Lot No.", "Entry Type");
@@ -287,6 +289,7 @@ report 50003 "NAC Certificate of Conformance"
         Gauge: Decimal;
         Width: Decimal;
         Durometer: Text;
+        Pickup: Decimal;
         NoteTxt: Label 'North American Calendering certifies the following materials were calendered to the specifications required according to the purchase order referenced above.';
         CertificateofConforanceLbl: Label 'CERTIFICATE OF CONFORMANCE';
         CalenderedDateLbl: Label 'CALENDERED DATE';

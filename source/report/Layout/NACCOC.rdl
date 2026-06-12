@@ -9,9 +9,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>PBIRB</am:Name>
-      <am:Version>15.7.1813.16</am:Version>
+      <am:Version>15.7.1818.92</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-05-18T08:53:42.0581354Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-06-12T11:12:48.5275844Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -416,7 +416,9 @@
                     <Style />
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <Top>3.22262cm</Top>
@@ -2240,6 +2242,9 @@ End Function
         </Field>
         <Field Name="NAC_Pickup">
           <DataField>NAC_Pickup</DataField>
+        </Field>
+        <Field Name="NAC_PickupFormat">
+          <DataField>NAC_PickupFormat</DataField>
         </Field>
         <Field Name="NAC_Ply">
           <DataField>NAC_Ply</DataField>

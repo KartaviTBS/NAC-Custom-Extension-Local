@@ -49,32 +49,37 @@ tableextension 51014 NACProductionOrder extends "Production Order"
         field(51012; "NAC Gauge P/F"; Option)
         {
             Caption = 'Gauge P/F';
-            OptionMembers = Pass,Fail;
+            OptionMembers = " ",Pass,Fail;
         }
         field(51013; "NAC Durometer P/F"; Option)
         {
             Caption = 'Durometer P/F';
-            OptionMembers = Pass,Fail;
+            OptionMembers = " ",Pass,Fail;
         }
         field(51014; "NAC Width P/F"; Option)
         {
             Caption = 'Width P/F';
-            OptionMembers = Pass,Fail;
+            OptionMembers = " ",Pass,Fail;
         }
         field(51015; "NAC PLY P/F"; Option)
         {
             Caption = 'PLY Adhesion P/F';
-            OptionMembers = Pass,Fail;
+            OptionMembers = " ",Pass,Fail;
         }
         field(51016; "NAC Surface P/F"; Option)
         {
             Caption = 'Surface Appearance P/F';
-            OptionMembers = Pass,Fail;
+            OptionMembers = " ",Pass,Fail;
         }
         field(51017; "NAC Purchase Order"; Code[20])
         {
             Caption = 'Purchase Order';
             TableRelation = "Purchase Header"."No." where("Document Type" = const(Order));
+            DataClassification = CustomerContent;
+        }
+        field(51018; "Certified By"; Text[100])
+        {
+            Caption = 'Certified By';
             DataClassification = CustomerContent;
         }
     }
