@@ -4,6 +4,7 @@ using Microsoft.Manufacturing.Document;
 using Microsoft.Inventory.Tracking;
 using Microsoft.Foundation.Company;
 using Microsoft.Sales.Document;
+using Microsoft.Sales.History;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Ledger;
 
@@ -131,6 +132,11 @@ report 50003 "NAC Certificate of Conformance"
             { }
             column(WidthHeaderLbl; WidthHeaderLbl) { }
             column(CustomerItemRefLbl; CustomerItemRefLbl) { }
+            column(vSalesNo; vSalesNo) { }
+            column(vBillNo; vBillNo) { }
+            column(vBillName; vBillName) { }
+            column(vSellNo; vSellNo) { }
+            column(vSellName; vSellName) { }
 
             dataitem("Item Ledger Entry"; "Item Ledger Entry")
             {
@@ -156,10 +162,14 @@ report 50003 "NAC Certificate of Conformance"
                     rReservation1: Record "Reservation Entry";
                     rReservation2: Record "Reservation Entry";
                     SalesLine: Record "Sales Line";
+                    SalesInvoiceLine: Record "Sales Invoice Line";
                     QtyRoundingPrecision: Decimal;
+                    SalesLineFound: Boolean;
                 begin
                     if Item.Get("Item No.") then
                         Width_Line := Item."NAC CAL Width (IN)";
+
+                    SalesLineFound := false;
                     rReservation1.RESET;
                     rReservation1.SETRANGE("Source Type", Database::"Item Ledger Entry");
                     rReservation1.SETRANGE("Source Ref. No.", "Item Ledger Entry"."Entry No.");
@@ -168,24 +178,58 @@ report 50003 "NAC Certificate of Conformance"
                         If rReservation2.GET(rReservation1."Entry No.", not rReservation1.Positive) Then begin
                             If rReservation2."Source Type" = Database::"Sales Line" Then
                                 if SalesLine.Get(rReservation2."Source Subtype", rReservation2."Source ID", rReservation2."Source Ref. No.") then begin
-                                    SalesLine.CalcFields("NAC Req. UoM Use in Reports", "NAC UoM Use in Reports");
-                                    if (SalesLine."NAC Req. Unit of Measure" <> '') and (SalesLine."NAC Req. UoM Use in Reports") then begin
-                                        QtyRoundingPrecision := SalesLine."NAC Req. Qty. Rounding Prec." = 0 ? 0.01 : SalesLine."NAC Req. Qty. Rounding Prec.";
-                                        Length_Line := Round(Quantity / SalesLine."NAC Qty. per Unit of Measure", QtyRoundingPrecision);
-                                        UOM := SalesLine."NAC Req. Unit of Measure Code";
-                                    end
-                                    else if (SalesLine."NAC Req. Unit of Measure" = '') and (SalesLine."NAC UoM Use in Reports") then begin
-                                        Length_Line := Quantity;
-                                        UOM := SalesLine."Unit of Measure Code";
-                                    end
-                                    else begin
-                                        Item.Get(SalesLine."No.");
-                                        Length_Line := Quantity;
-                                        UOM := Item."Base Unit of Measure";
-                                    end;
+                                    SalesLineFound := true;
                                 end;
                         end;
                     end;
+
+                    if not SalesLineFound and (ProductionOrder."NAC Sales Order No." <> '') then begin
+                        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+                        SalesLine.SetRange("Document No.", ProductionOrder."NAC Sales Order No.");
+                        SalesLine.SetRange("No.", "Item No.");
+                        if SalesLine.FindFirst() then begin
+                            SalesLineFound := true;
+                        end else begin
+                            SalesInvoiceLine.SetRange("Order No.", ProductionOrder."NAC Sales Order No.");
+                            SalesInvoiceLine.SetRange("No.", "Item No.");
+                            if SalesInvoiceLine.FindFirst() then begin
+                                SalesInvoiceLine.CalcFields("NAC Req. UoM Use in Reports", "NAC UoM Use in Reports");
+                                if (SalesInvoiceLine."NAC Req. Unit of Measure" <> '') and (SalesInvoiceLine."NAC Req. UoM Use in Reports") then begin
+                                    QtyRoundingPrecision := SalesInvoiceLine."NAC Req. Qty. Rounding Prec." = 0 ? 0.01 : SalesInvoiceLine."NAC Req. Qty. Rounding Prec.";
+                                    Length_Line := Round(Quantity / SalesInvoiceLine."NAC Qty. per Unit of Measure", QtyRoundingPrecision);
+                                    UOM := SalesInvoiceLine."NAC Req. Unit of Measure Code";
+                                end else if (SalesInvoiceLine."NAC Req. Unit of Measure" = '') and (SalesInvoiceLine."NAC UoM Use in Reports") then begin
+                                    Length_Line := Quantity;
+                                    UOM := SalesInvoiceLine."Unit of Measure Code";
+                                end else begin
+                                    Length_Line := Quantity;
+                                    UOM := Item."Base Unit of Measure";
+                                end;
+                                CalenderDate := "Item Ledger Entry"."Posting Date";
+                                exit;
+                            end;
+                        end;
+                    end;
+
+                    if SalesLineFound then begin
+                        SalesLine.CalcFields("NAC Req. UoM Use in Reports", "NAC UoM Use in Reports");
+                        if (SalesLine."NAC Req. Unit of Measure" <> '') and (SalesLine."NAC Req. UoM Use in Reports") then begin
+                            QtyRoundingPrecision := SalesLine."NAC Req. Qty. Rounding Prec." = 0 ? 0.01 : SalesLine."NAC Req. Qty. Rounding Prec.";
+                            Length_Line := Round(Quantity / SalesLine."NAC Qty. per Unit of Measure", QtyRoundingPrecision);
+                            UOM := SalesLine."NAC Req. Unit of Measure Code";
+                        end else if (SalesLine."NAC Req. Unit of Measure" = '') and (SalesLine."NAC UoM Use in Reports") then begin
+                            Length_Line := Quantity;
+                            UOM := SalesLine."Unit of Measure Code";
+                        end else begin
+                            Item.Get(SalesLine."No.");
+                            Length_Line := Quantity;
+                            UOM := Item."Base Unit of Measure";
+                        end;
+                    end else begin
+                        Length_Line := Quantity;
+                        UOM := Item."Base Unit of Measure";
+                    end;
+
                     CalenderDate := "Item Ledger Entry"."Posting Date";
                 end;
             }
@@ -193,6 +237,8 @@ report 50003 "NAC Certificate of Conformance"
             var
                 rItemLConsumption: Record "Item Ledger Entry";
                 SalesLine: Record "Sales Line";
+                SalesInvoiceLine: Record "Sales Invoice Line";
+                SalesInvoiceHeader: Record "Sales Invoice Header";
                 myInt: Integer;
             begin
                 CLEAR(vSO);
@@ -206,6 +252,22 @@ report 50003 "NAC Certificate of Conformance"
                 Clear(RubberCompoundLot);
                 NACCustoms.GetProductionInfo(ProductionOrder, vSO, vSalesNo, vSellName, vSellNo, vBillName, vBillNo, vRequestedDate, vExtDocNo);
 
+                if ProductionOrder."NAC Sales Order No." <> '' then begin
+                    vSO := true;
+                    vSalesNo := ProductionOrder."NAC Sales Order No.";
+                    vBillNo := ProductionOrder."NAC Bill-To Customer No.";
+                    vBillName := ProductionOrder."NAC Bill-To Name";
+                    vSellNo := ProductionOrder."NAC Sell-To Customer No.";
+                    vSellName := ProductionOrder."NAC Sell-To Name";
+                    if SalesHeader.Get(SalesHeader."Document Type"::Order, vSalesNo) then
+                        vExtDocNo := SalesHeader."External Document No."
+                    else begin
+                        SalesInvoiceHeader.SetRange("Order No.", vSalesNo);
+                        if SalesInvoiceHeader.FindFirst() then
+                            vExtDocNo := SalesInvoiceHeader."External Document No.";
+                    end;
+                end;
+
                 SalesLine.Reset();
                 SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
                 SalesLine.SetRange("Document No.", vSalesNo);
@@ -213,6 +275,14 @@ report 50003 "NAC Certificate of Conformance"
                 SalesLine.SetRange("No.", ProductionOrder."Source No.");
                 if SalesLine.FindFirst() then begin
                     CustItemRefNo := SalesLine."Item Reference No.";
+                end else begin
+                    SalesInvoiceLine.Reset();
+                    SalesInvoiceLine.SetRange("Order No.", vSalesNo);
+                    SalesInvoiceLine.SetRange(Type, SalesInvoiceLine.Type::Item);
+                    SalesInvoiceLine.SetRange("No.", ProductionOrder."Source No.");
+                    if SalesInvoiceLine.FindFirst() then begin
+                        CustItemRefNo := SalesInvoiceLine."Item Reference No.";
+                    end;
                 end;
 
                 if Item.Get(ProductionOrder."Source No.") then begin
@@ -253,6 +323,11 @@ report 50003 "NAC Certificate of Conformance"
                                         FabricType += ' - ' + Item."No.";
                                 end;
                     Until rItemLConsumption.Next() = 0;
+
+                if not CurrReport.Preview() then begin
+                    ProductionOrder."NAC COC Print Count" += 1;
+                    ProductionOrder.Modify();
+                end;
             end;
         }
     }

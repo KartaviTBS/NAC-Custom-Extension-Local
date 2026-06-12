@@ -4,6 +4,8 @@ using System.Environment.Configuration;
 using Microsoft.Warehouse.Activity;
 using Microsoft.Purchases.Document;
 using Microsoft.Inventory.Ledger;
+using Microsoft.Finance.GeneralLedger.Posting;
+using Microsoft.Purchases.Posting;
 using Microsoft.Warehouse.Tracking;
 using Microsoft.Manufacturing.ProductionBOM;
 using Microsoft.Inventory.Tracking;
@@ -190,10 +192,6 @@ codeunit 51000 NACSubscribers
             ItemLedgerEntry."NAC Roll No." := NACCustoms.GetLastRollNo(ItemJournalLine) + 1;
     end;
 
-    var
-        CheckBeforePostQst: Label 'Check consumption Qty and output Qty before posting. Do you want to continue?';
-
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reservation Management", OnBeforeCheckQuantityIsCompletelyReleased, '', false, false)]
     local procedure ReservationManagementOnBeforeCheckQuantityIsCompletelyReleased(ItemTrackingHandling: Option; QtyToRelease: Decimal; DeleteAll: Boolean; CurrentItemTrackingSetup: Record "Item Tracking Setup" temporary; ReservEntry: Record "Reservation Entry"; var IsHandled: Boolean)
     var
@@ -314,4 +312,57 @@ codeunit 51000 NACSubscribers
         NACSystemAccessWarning.Editable(false);
         NACSystemAccessWarning.RunModal();
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", OnAfterPostPurchaseDoc, '', false, false)]
+    local procedure "Purch.-Post_OnAfterPostPurchaseDoc"(var PurchaseHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; PurchRcpHdrNo: Code[20]; RetShptHdrNo: Code[20]; PurchInvHdrNo: Code[20]; PurchCrMemoHdrNo: Code[20]; CommitIsSupressed: Boolean)
+    var
+        ItemLedgerentry: Record "Item Ledger Entry";
+        NACItemBarcode: Report NACItemBarcodeLabel;
+        PrintLabel: Boolean;
+    begin
+        ItemLedgerentry.Reset();
+        ItemLedgerentry.SetRange("Document Type", ItemLedgerentry."Document Type"::"Purchase Receipt");
+        ItemLedgerentry.SetRange("Document No.", PurchRcpHdrNo);
+        if ItemLedgerentry.FindSet() then
+            repeat
+                NACItemBarcode.ExternalLableEntry(ItemLedgerentry."Item No.", ItemLedgerentry."Serial No.", ItemLedgerentry."Lot No.", ItemLedgerentry."Package No.", ItemLedgerentry.Quantity, ItemLedgerentry."Unit of Measure Code");
+                PrintLabel := true;
+            until ItemLedgerentry.Next() = 0;
+        if PrintLabel then begin
+            NACItemBarcode.UseRequestPage(false);
+            NACItemBarcode.Print('');
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create Prod. Order from Sale", 'OnAfterCreateProdOrderFromSalesLine', '', false, false)]
+    local procedure OnAfterCreateProdOrderFromSalesLine(var ProdOrder: Record "Production Order"; SalesLine: Record "Sales Line")
+    var
+        SalesHeader: Record "Sales Header";
+    begin
+        if SalesHeader.Get(SalesLine."Document Type", SalesLine."Document No.") then begin
+            ProdOrder."NAC Sales Order No." := SalesHeader."No.";
+            ProdOrder."NAC Bill-To Customer No." := SalesHeader."Bill-to Customer No.";
+            ProdOrder."NAC Bill-To Name" := SalesHeader."Bill-to Name";
+            ProdOrder."NAC Sell-To Customer No." := SalesHeader."Sell-to Customer No.";
+            ProdOrder."NAC Sell-To Name" := SalesHeader."Sell-to Customer Name";
+            ProdOrder.Modify(false);
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Prod. Order Status Management", 'OnAfterChangeStatusOnProdOrder', '', false, false)]
+    local procedure OnAfterChangeStatusOnProdOrder(var ProdOrder: Record "Production Order"; var ToProdOrder: Record "Production Order")
+    begin
+        if ToProdOrder."NAC Sales Order No." <> '' then begin
+            ProdOrder."NAC Sales Order No." := ToProdOrder."NAC Sales Order No.";
+            ProdOrder."NAC Bill-To Customer No." := ToProdOrder."NAC Bill-To Customer No.";
+            ProdOrder."NAC Bill-To Name" := ToProdOrder."NAC Bill-To Name";
+            ProdOrder."NAC Sell-To Customer No." := ToProdOrder."NAC Sell-To Customer No.";
+            ProdOrder."NAC Sell-To Name" := ToProdOrder."NAC Sell-To Name";
+            ProdOrder.Modify(false);
+        end;
+    end;
+
+    var
+        CheckBeforePostQst: Label 'Check consumption Qty and output Qty before posting. Do you want to continue?';
+
 }

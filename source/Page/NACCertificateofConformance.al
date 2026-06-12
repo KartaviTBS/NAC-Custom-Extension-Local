@@ -4,6 +4,7 @@ using Microsoft.Manufacturing.Document;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Inventory.Item;
 using Microsoft.Sales.Document;
+using Microsoft.Sales.History;
 
 page 50003 "NAC Certificate of Conformance"
 {
@@ -108,81 +109,110 @@ page 50003 "NAC Certificate of Conformance"
                             ApplicationArea = all;
                             Caption = 'Fabric Lot Number';
                         }
+                        field(vSalesNo; vSalesNo)
+                        {
+                            ApplicationArea = all;
+                            Caption = 'Sales Order';
+                            editable = false;
+                        }
+                        field(vBillNo; vBillNo)
+                        {
+                            ApplicationArea = all;
+                            Caption = 'Bill-To Customer No.';
+                            editable = false;
+                        }
+                        field(vBillName; vBillName)
+                        {
+                            ApplicationArea = all;
+                            Caption = 'Bill-To Name';
+                            editable = false;
+                        }
+                        field(vSellNo; vSellNo)
+                        {
+                            ApplicationArea = all;
+                            editable = false;
+                        }
+                        field(vSellName; vSellName)
+                        {
+                            ApplicationArea = all;
+                            Caption = 'Sell-To Name';
+                            editable = false;
+                        }
                     }
                 }
-            }
-            group("Specification Limits")
-            {
-                Caption = 'Specification Limits (Pass/Fail)';
-                group("Gauge & Ply")
+                group("Specification Limits")
                 {
-                    ShowCaption = false;
+                    Caption = 'Specification Limits (Pass/Fail)';
+                    group("Gauge & Ply")
+                    {
+                        ShowCaption = false;
 
-                    grid(Gauge)
-                    {
-                        ShowCaption = false;
-                        field("NAC Gauge"; Gauge)
-                        {
-                            ApplicationArea = All;
-                            Editable = false;
-                            DecimalPlaces = 3 : 3;
-                            Caption = 'GAUGE (IN)';
-                            ToolTip = 'Specifies the Gauge measurement value.';
-                        }
-                        field("NAC Gauge P/F"; Rec."NAC Gauge P/F")
+                        grid(Gauge)
                         {
                             ShowCaption = false;
-                            ApplicationArea = All;
-                            ToolTip = 'Indicates Pass/Fail for Gauge.';
+                            field("NAC Gauge"; Gauge)
+                            {
+                                ApplicationArea = All;
+                                Editable = false;
+                                DecimalPlaces = 3 : 3;
+                                Caption = 'GAUGE (IN)';
+                                ToolTip = 'Specifies the Gauge measurement value.';
+                            }
+                            field("NAC Gauge P/F"; Rec."NAC Gauge P/F")
+                            {
+                                ShowCaption = false;
+                                ApplicationArea = All;
+                                ToolTip = 'Indicates Pass/Fail for Gauge.';
+                            }
                         }
-                    }
-                    grid(Durometer)
-                    {
-                        ShowCaption = false;
-                        field("NAC Durometer"; Durometer)
-                        {
-                            Caption = 'DUROMETER';
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the Durometer measurement value.';
-                        }
-                        field("NAC Durometer P/F"; Rec."NAC Durometer P/F")
-                        {
-                            ShowCaption = false;
-                            ApplicationArea = All;
-                            ToolTip = 'Indicates Pass/Fail for Durometer.';
-                        }
-                    }
-                    grid(Width)
-                    {
-                        ShowCaption = false;
-                        field("NAC Width"; Width)
-                        {
-                            ApplicationArea = All;
-                            Caption = 'WIDTH (IN)';
-                            Editable = false;
-                            ToolTip = 'Specifies the Width measurement value.';
-                        }
-                        field("NAC Width P/F"; Rec."NAC Width P/F")
+                        grid(Durometer)
                         {
                             ShowCaption = false;
-                            ApplicationArea = All;
-                            ToolTip = 'Indicates Pass/Fail for Width.';
+                            field("NAC Durometer"; Durometer)
+                            {
+                                Caption = 'DUROMETER';
+                                ApplicationArea = All;
+                                ToolTip = 'Specifies the Durometer measurement value.';
+                            }
+                            field("NAC Durometer P/F"; Rec."NAC Durometer P/F")
+                            {
+                                ShowCaption = false;
+                                ApplicationArea = All;
+                                ToolTip = 'Indicates Pass/Fail for Durometer.';
+                            }
                         }
-                    }
+                        grid(Width)
+                        {
+                            ShowCaption = false;
+                            field("NAC Width"; Width)
+                            {
+                                ApplicationArea = All;
+                                Caption = 'WIDTH (IN)';
+                                Editable = false;
+                                ToolTip = 'Specifies the Width measurement value.';
+                            }
+                            field("NAC Width P/F"; Rec."NAC Width P/F")
+                            {
+                                ShowCaption = false;
+                                ApplicationArea = All;
+                                ToolTip = 'Indicates Pass/Fail for Width.';
+                            }
+                        }
 
-                    grid("Pick Up")
-                    {
-                        ShowCaption = false;
-                        field("NAC Pick Up"; Rec."NAC Pick Up")
-                        {
-                            ApplicationArea = All;
-                            Caption = 'PICKUP (%)';
-                            ToolTip = 'Specifies the Pick Up measurement value.';
-                        }
-                        field(Test; Test)
+                        grid("Pick Up")
                         {
                             ShowCaption = false;
-                            Editable = false;
+                            field("NAC Pick Up"; Rec."NAC Pick Up")
+                            {
+                                ApplicationArea = All;
+                                Caption = 'PICKUP (%)';
+                                ToolTip = 'Specifies the Pick Up measurement value.';
+                            }
+                            field(Test; Test)
+                            {
+                                ShowCaption = false;
+                                Editable = false;
+                            }
                         }
                     }
                 }
@@ -194,7 +224,6 @@ page 50003 "NAC Certificate of Conformance"
                 SubPageLink = "Order No." = field("No."),
                               "Entry Type" = const(Output);
             }
-
         }
 
     }
@@ -230,6 +259,9 @@ page 50003 "NAC Certificate of Conformance"
     var
         NACCustoms: Codeunit NAC_Customs;
         SalesLine: Record "Sales Line";
+        SalesInvoiceLine: Record "Sales Invoice Line";
+        SalesHeader: Record "Sales Header";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
         ItemLedgerEntries: Record "Item Ledger Entry";
     Begin
         CLEAR(vSO);
@@ -243,13 +275,38 @@ page 50003 "NAC Certificate of Conformance"
         Clear(RubberCompoundLot);
         NACCustoms.GetProductionInfo(Rec, vSO, vSalesNo, vSellName, vSellNo, vBillName, vBillNo, vRequestedDate, vExtDocNo);
 
+        if Rec."NAC Sales Order No." <> '' then begin
+            vSO := true;
+            vSalesNo := Rec."NAC Sales Order No.";
+            vBillNo := Rec."NAC Bill-To Customer No.";
+            vBillName := Rec."NAC Bill-To Name";
+            vSellNo := Rec."NAC Sell-To Customer No.";
+            vSellName := Rec."NAC Sell-To Name";
+            if SalesHeader.Get(SalesHeader."Document Type"::Order, vSalesNo) then
+                vExtDocNo := SalesHeader."External Document No."
+            else begin
+                SalesInvoiceHeader.SetRange("Order No.", vSalesNo);
+                if SalesInvoiceHeader.FindFirst() then
+                    vExtDocNo := SalesInvoiceHeader."External Document No.";
+            end;
+        end;
+
         SalesLine.Reset();
         SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
         SalesLine.SetRange("Document No.", vSalesNo);
         SalesLine.SetRange(Type, SalesLine.Type::Item);
         SalesLine.SetRange("No.", Rec."Source No.");
-        if SalesLine.FindFirst() then
+        if SalesLine.FindFirst() then begin
             CustItemRefNo := SalesLine."Item Reference No.";
+        end else begin
+            SalesInvoiceLine.Reset();
+            SalesInvoiceLine.SetRange("Order No.", vSalesNo);
+            SalesInvoiceLine.SetRange(Type, SalesInvoiceLine.Type::Item);
+            SalesInvoiceLine.SetRange("No.", Rec."Source No.");
+            if SalesInvoiceLine.FindFirst() then begin
+                CustItemRefNo := SalesInvoiceLine."Item Reference No.";
+            end;
+        end;
 
         if Item.Get(Rec."Source No.") then begin
             Gauge := Item."NAC OAG (IN)";

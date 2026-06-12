@@ -68,5 +68,23 @@ tableextension 50006 "NAC Sales Invoice Line" extends "Sales Invoice Line"
             Editable = false;
             AllowInCustomizations = AsReadOnly;
         }
+        field(50012; "NAC Req. UoM Use in Reports"; Boolean)
+        {
+            Caption = 'Requested UoM Use in Reports';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Unit of Measure"."NAC Use in Reports" where("Code" = field("NAC Req. Unit of Measure Code")));
+            ToolTip = 'Specifies whether the requested unit of measure is used in reports.';
+            Editable = false;
+            AllowInCustomizations = AsReadOnly;
+        }
+        field(50013; "NAC UoM Use in Reports"; Boolean)
+        {
+            Caption = 'UoM Use in Reports';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Unit of Measure"."NAC Use in Reports" where("Code" = field("Unit of Measure Code")));
+            ToolTip = 'Specifies whether the unit of measure is used in reports.';
+            Editable = false;
+            AllowInCustomizations = AsReadOnly;
+        }
     }
 }

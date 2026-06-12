@@ -13,6 +13,32 @@ pageextension 51014 NACPlannedProductionOrder extends "Planned Production Order"
             {
                 ApplicationArea = All;
             }
+            field("NAC Sales Order No."; Rec."NAC Sales Order No.")
+            {
+                ApplicationArea = All;
+                editable = false;
+            }
+            field("NAC Bill-To Customer No."; Rec."NAC Bill-To Customer No.")
+            {
+                ApplicationArea = All;
+                editable = false;
+            }
+            field("NAC Bill-To Name"; Rec."NAC Bill-To Name")
+            {
+                ApplicationArea = All;
+                editable = false;
+            }
+            field("NAC Sell-To Customer No."; Rec."NAC Sell-To Customer No.")
+            {
+                ApplicationArea = All;
+                editable = false;
+            }
+            field("NAC Sell-To Name"; Rec."NAC Sell-To Name")
+            {
+                ApplicationArea = All;
+                editable = false;
+            }
+
         }
         addafter("No.")
         {
