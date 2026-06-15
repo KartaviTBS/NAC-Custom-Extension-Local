@@ -133,8 +133,20 @@ page 50004 "NAC COC Lines"
                 UOM := Item."Base Unit of Measure";
             end;
         end else begin
-            Length := Rec.Quantity;
-            UOM := Item."Base Unit of Measure";
+            if ProdOrder."NAC Sales Order No." <> '' then begin
+                SalesShipmentLine.SetRange("Order No.", ProdOrder."NAC Sales Order No.");
+                SalesShipmentLine.SetRange("No.", Rec."Item No.");
+                if SalesShipmentLine.FindFirst() then begin
+                    Length := SalesShipmentLine.Quantity;
+                    UOM := SalesShipmentLine."Unit of Measure Code";
+                end else begin
+                    Length := Rec.Quantity;
+                    UOM := Item."Base Unit of Measure";
+                end;
+            end else begin
+                Length := Rec.Quantity;
+                UOM := Item."Base Unit of Measure";
+            end;
         end;
     end;
 
@@ -142,4 +154,5 @@ page 50004 "NAC COC Lines"
         UOM: Code[20];
         Length: Decimal;
         Width: Decimal;
+        SalesShipmentLine: record "Sales Shipment Line";
 }

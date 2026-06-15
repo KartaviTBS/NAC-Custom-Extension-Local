@@ -7,6 +7,7 @@ using Microsoft.Manufacturing.Document;
 using Microsoft.Inventory.Tracking;
 using Microsoft.Inventory.Journal;
 using Microsoft.Sales.Customer;
+using Microsoft.Sales.History;
 
 codeunit 51001 NAC_Customs
 {
@@ -88,11 +89,17 @@ codeunit 51001 NAC_Customs
         rReservation1: Record "Reservation Entry";
         rReservation2: Record "Reservation Entry";
         ItemLedgerEntry: Record "Item Ledger Entry";
+        ItemAppEntry: Record "Item Application Entry";
+        OutboundILE: Record "Item Ledger Entry";
+        SalesShptHeader: Record "Sales Shipment Header";
+        SalesInvHeader: Record "Sales Invoice Header";
         GotSO: Boolean;
+        GotPostedSO: Boolean;
         vSType: Integer;
         vInt: Integer;
     Begin
         CLEAR(GotSO);
+        CLEAR(GotPostedSO);
         CLEAR(vSO);
         CLEAR(RequestedDate);
         CLEAR(ExtDocNo);
@@ -155,7 +162,24 @@ codeunit 51001 NAC_Customs
                                         end;
                                     end;
                                 end;
-                            end
+                            end;
+                            if not GotSO then begin
+                                ItemAppEntry.Reset();
+                                ItemAppEntry.SetCurrentKey("Inbound Item Entry No.");
+                                ItemAppEntry.SetRange("Inbound Item Entry No.", ItemLedgerEntry."Entry No.");
+                                ItemAppEntry.SetFilter("Outbound Item Entry No.", '<>0');
+                                if ItemAppEntry.FindFirst() then begin
+                                    if OutboundILE.Get(ItemAppEntry."Outbound Item Entry No.") then begin
+                                        if OutboundILE."Document Type" = OutboundILE."Document Type"::"Sales Shipment" then begin
+                                            if SalesShptHeader.Get(OutboundILE."Document No.") then
+                                                GotPostedSO := true;
+                                        end else if OutboundILE."Document Type" = OutboundILE."Document Type"::"Sales Invoice" then begin
+                                            if SalesInvHeader.Get(OutboundILE."Document No.") then
+                                                GotPostedSO := true;
+                                        end;
+                                    end;
+                                end;
+                            end;
                         end;
                     end;
                 end;
@@ -173,6 +197,33 @@ codeunit 51001 NAC_Customs
                 vBillCustomerNo := rSalesH."Bill-to Customer No.";
                 vBillCustomerName := rBillCustomer.Name;
             End;
+        end else if GotPostedSO then begin
+            vSO := true;
+            if SalesInvHeader."No." <> '' then begin
+                vSalesOrderNo := SalesInvHeader."Order No.";
+                RequestedDate := SalesInvHeader."Order Date";
+                ExtDocNo := SalesInvHeader."External Document No.";
+                if rSellCustomer.Get(SalesInvHeader."Sell-to Customer No.") then begin
+                    vSellCustomerNo := SalesInvHeader."Sell-to Customer No.";
+                    vSellCustomerName := rSellCustomer.Name;
+                end;
+                if rBillCustomer.Get(SalesInvHeader."Bill-to Customer No.") then begin
+                    vBillCustomerNo := SalesInvHeader."Bill-to Customer No.";
+                    vBillCustomerName := rBillCustomer.Name;
+                end;
+            end else if SalesShptHeader."No." <> '' then begin
+                vSalesOrderNo := SalesShptHeader."Order No.";
+                RequestedDate := SalesShptHeader."Requested Delivery Date";
+                ExtDocNo := SalesShptHeader."External Document No.";
+                if rSellCustomer.Get(SalesShptHeader."Sell-to Customer No.") then begin
+                    vSellCustomerNo := SalesShptHeader."Sell-to Customer No.";
+                    vSellCustomerName := rSellCustomer.Name;
+                end;
+                if rBillCustomer.Get(SalesShptHeader."Bill-to Customer No.") then begin
+                    vBillCustomerNo := SalesShptHeader."Bill-to Customer No.";
+                    vBillCustomerName := rBillCustomer.Name;
+                end;
+            end;
         end;
     end;
 
