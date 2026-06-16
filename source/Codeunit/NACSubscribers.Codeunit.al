@@ -264,6 +264,27 @@ codeunit 51000 NACSubscribers
         ReservEntry."NAC Roll No." := TrkgSpec."NAC Roll No.";
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", OnAfterCopyTrackingFromTrackingSpec, '', false, false)]
+    local procedure ReservationEntry_OnAfterCopyTrackingFromTrackingSpec(var ReservationEntry: Record "Reservation Entry"; TrackingSpecification: Record "Tracking Specification")
+    begin
+        ReservationEntry."NAC Weight (LB)" := TrackingSpecification."NAC Weight (LB)";
+        ReservationEntry."NAC Roll No." := TrackingSpecification."NAC Roll No.";
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Reservation Entry", OnAfterCopyTrackingFromReservEntry, '', false, false)]
+    local procedure ReservationEntry_OnAfterCopyTrackingFromReservEntry(var ReservationEntry: Record "Reservation Entry"; FromReservationEntry: Record "Reservation Entry")
+    begin
+        ReservationEntry."NAC Weight (LB)" := FromReservationEntry."NAC Weight (LB)";
+        ReservationEntry."NAC Roll No." := FromReservationEntry."NAC Roll No.";
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Tracking Specification", OnAfterCopyTrackingFromReservEntry, '', false, false)]
+    local procedure OnAfterCopyTrackingFromReservEntry(var TrackingSpecification: Record "Tracking Specification"; ReservEntry: Record "Reservation Entry")
+    begin
+        TrackingSpecification."NAC Weight (LB)" := ReservEntry."NAC Weight (LB)";
+        TrackingSpecification."NAC Roll No." := ReservEntry."NAC Roll No.";
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"WHI Whse. Activity Mgmt.", OnBeforeAddDocToLookupList, '', false, false)]
     local procedure WHIWhseActivityMgmtOnBeforeAddDocToLookupList(var ptrecDocList: Record "WHI Document List Buffer"; var pbHandled: Boolean)
     var
