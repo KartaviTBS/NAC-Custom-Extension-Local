@@ -34,9 +34,10 @@ report 51001 NACProductionOrderOutputLabel
                 dataitem(diItemLedgerEntry; "Item Ledger Entry")
                 {
                     DataItemTableView = SORTING("Item No.", Open, "Variant Code", Positive, "Location Code", "Posting Date", "Lot No.", "Serial No.") ORDER(Ascending)
-                        WHERE(Open = CONST(true), "Entry Type" = CONST(Output), "Order Type" = CONST(Production));
+                        WHERE("Entry Type" = CONST(Output), "Order Type" = CONST(Production));
                     DataItemLinkReference = "ProductionOrderLine";
                     DataItemLink = "Order No." = field("Prod. Order No."), "Order Line No." = field("Line No."), "Item No." = field("Item No.");
+                    RequestFilterFields = "Lot No.";
 
                     trigger OnAfterGetRecord()
                     var
@@ -77,7 +78,7 @@ report 51001 NACProductionOrderOutputLabel
                         trecItems."NAC Roll No." := "NAC Roll No.";
 
                         //if (bIncludeQty) then begin
-                        trecItems."Unit Price" := "Remaining Quantity";
+                        trecItems."Unit Price" := diItemLedgerEntry.Quantity;
                         trecItems."Base Unit of Measure" := "Unit of Measure Code";
                         //end;
                         trecItems.TempEntryNo := diItemLedgerEntry."Entry No.";
@@ -113,6 +114,7 @@ report 51001 NACProductionOrderOutputLabel
                                 end;
                             end;
                         end;
+
                         if (not CurrReport.Preview) and (not diItemLedgerEntry."NAC Output Label Printed") then begin
                             diItemLedgerEntry."NAC Output Label Printed" := true;
                             diItemLedgerEntry.Modify();
@@ -384,5 +386,3 @@ report 51001 NACProductionOrderOutputLabel
         PrintAllLabels: Boolean;
         RollNoLbl: Label 'Roll No.';
 }
-
-
