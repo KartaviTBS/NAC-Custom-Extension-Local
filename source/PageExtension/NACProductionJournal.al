@@ -93,26 +93,19 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                     NACCustoms: Codeunit NAC_Customs;
                     vWin: Dialog;
                     cCount: Integer;
-                    vSelection: Integer;
                     vContinue: Boolean;
                     i: Integer;
                     LastRollNo: Integer;
-                    TotalCountofList: List of [Decimal];
                 begin
-                    CLEAR(ItemJournal);
-                    CLEAR(cCount);
-                    CLEAR(vWin);
-                    If Rec.IsEmpty Then Exit;
-                    vSelection := StrMenu('Selected,All,Exit', 1);
-                    If vSelection = 3 THEN Exit;
-                    If vSelection = 1 Then begin
-                        Currpage.SetSelectionFilter(ItemJournal);
-                    end else begin
-                        ItemJournal.RESET;
-                        ItemJournal.SETFILTER("Journal Template Name", Rec."Journal Template Name");
-                        ItemJournal.SETFILTER("Journal Batch Name", Rec."Journal Batch Name");
-                    end;
-                    If ItemJournal.FINDSET(True) THEN BEGIN
+                    if Rec.IsEmpty() then
+                        exit;
+
+                    if not Confirm('Do you want to create %1 rolls of %2 FT / %3 YD each?', false, Rec.NAC_Rolls, Rec."NAC Length of Rolls", Round(Rec."NAC Length of Rolls" / 3, 0.01)) then
+                        exit;
+
+                    Currpage.SetSelectionFilter(ItemJournal);
+
+                    if ItemJournal.FindSet() then begin
                         vWin.Open('Rec #1########## of ##2#########');
                         vWin.Update(2, ItemJournal.Count);
                         REPEAT
@@ -139,14 +132,19 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                             If ItemJournal."Lot No." <> '' then
                                 CLEAR(vContinue);
                             LastRollNo := NACCustoms.GetLastRollNo(ItemJournal);
+
+                            if vContinue then begin
+                                if (ItemJournal.NAC_Rolls * ItemJournal."NAC Length of Rolls") > ItemJournal."Output Quantity (Base)" then
+                                    Message('Total tracking quantity (%1) exceeds the Item Journal Line Output Quantity (%2) for Line No. %3.\\Please adjust the lot quantities so that the total tracking quantity matches the output quantity before posting.',
+                                        ItemJournal.NAC_Rolls * ItemJournal."NAC Length of Rolls", ItemJournal."Output Quantity (Base)", ItemJournal."Line No.");
+                            end;
                             If vContinue THEN BEGIN
                                 Case ItemJournal.Type of
                                     ItemJournal.Type::"Machine Center":
                                         begin
-                                            TotalCountofList := SplitQuantityIntoRolls(ItemJournal."Output Quantity (Base)", ItemJournal."NAC Length of Rolls");
                                             If MCenter.GET(ItemJournal."No.") Then begin
                                                 If MCenter."NAC Lot No. Series" <> '' then begin
-                                                    for i := 1 to TotalCountofList.Count do begin
+                                                    for i := 1 to ItemJournal.NAC_Rolls do begin
                                                         ReservationEntry.Init();
                                                         ReservationEntry."Entry No." := 0;
                                                         ReservationEntry.Positive := true;
@@ -159,7 +157,7 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                                                         ReservationEntry."Item No." := ItemJournal."Item No.";
                                                         ReservationEntry."Location Code" := ItemJournal."Location Code";
                                                         ReservationEntry."Qty. per Unit of Measure" := ItemJournal."Qty. per Unit of Measure";
-                                                        ReservationEntry.Validate("Quantity (Base)", TotalCountofList.Get(i));
+                                                        ReservationEntry.Validate("Quantity (Base)", ItemJournal."NAC Length of Rolls");
                                                         ReservationEntry."Expected Receipt Date" := ItemJournal."Posting Date";
                                                         ReservationEntry."Lot No." := MCenter.GetNextNo();
                                                         ReservationEntry."Item Tracking" := ReservationEntry."Item Tracking"::"Lot No.";
@@ -172,10 +170,9 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                                         end;
                                     ItemJournal.Type::"Work Center":
                                         begin
-                                            TotalCountofList := SplitQuantityIntoRolls(ItemJournal."Output Quantity (Base)", ItemJournal."NAC Length of Rolls");
                                             If WCenter.GET(ItemJournal."No.") Then begin
                                                 If WCenter."NAC Lot No. Series" <> '' then begin
-                                                    for i := 1 to TotalCountofList.Count do begin
+                                                    for i := 1 to ItemJournal.NAC_Rolls do begin
                                                         ReservationEntry.Init();
                                                         ReservationEntry."Entry No." := 0;
                                                         ReservationEntry.Positive := true;
@@ -188,7 +185,7 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                                                         ReservationEntry."Item No." := ItemJournal."Item No.";
                                                         ReservationEntry."Location Code" := ItemJournal."Location Code";
                                                         ReservationEntry."Qty. per Unit of Measure" := ItemJournal."Qty. per Unit of Measure";
-                                                        ReservationEntry.Validate("Quantity (Base)", TotalCountofList.Get(i));
+                                                        ReservationEntry.Validate("Quantity (Base)", ItemJournal."NAC Length of Rolls");
                                                         ReservationEntry."Expected Receipt Date" := ItemJournal."Posting Date";
                                                         ReservationEntry."Lot No." := WCenter.GetNextNo();
                                                         ReservationEntry."Item Tracking" := ReservationEntry."Item Tracking"::"Lot No.";
