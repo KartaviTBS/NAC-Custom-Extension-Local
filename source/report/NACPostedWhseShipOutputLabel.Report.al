@@ -49,6 +49,9 @@ report 51008 "NAC Whse. Ship. Output Label"
                             diItemLedgerEntry.SetRange("Order Type", diItemLedgerEntry."Order Type"::Production);
                             diItemLedgerEntry.SetRange("Order No.", InboundItemLedgerEntry."Order No.");
                             diItemLedgerEntry.SetRange("Order Line No.", InboundItemLedgerEntry."Order Line No.");
+
+                            if not PrintAllLabels then
+                                diItemLedgerEntry.SetRange("NAC Output Label Printed", false);
                         end;
 
                         trigger OnAfterGetRecord()
@@ -142,6 +145,11 @@ report 51008 "NAC Whse. Ship. Output Label"
                                         end;
                                     end;
                                 end;
+                            end;
+
+                            if (not CurrReport.Preview) and (not diItemLedgerEntry."NAC Output Label Printed") then begin
+                                diItemLedgerEntry."NAC Output Label Printed" := true;
+                                diItemLedgerEntry.Modify();
                             end;
                         end;
                     }
@@ -275,6 +283,11 @@ report 51008 "NAC Whse. Ship. Output Label"
                         Caption = 'Include Quantity';
                         ToolTip = 'Specifies if the item label will display a quantity value. This setting only applies when using the Item Ledger Entry filter, and will display the "Remaining Quantity" from the ledger entry.';
                     }
+                    field(PrintAllLabels; PrintAllLabels)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Print All Labels';
+                    }
                 }
             }
         }
@@ -377,4 +390,5 @@ report 51008 "NAC Whse. Ship. Output Label"
         QRCodelOTText: Text;
         RollNoLbl: Label 'Roll No.';
         PrintedILE: List of [Integer];
+        PrintAllLabels: Boolean;
 }
