@@ -108,6 +108,23 @@ codeunit 50002 "NAC Upgrade"
             until Bin.Next() = 0;
     end;
 
+    local procedure UpgradeDedicatedBin()
+    var
+        Bin: Record Bin;
+        BinContent: Record "Bin Content";
+    begin
+        Bin.SetFilter(Code, 'CAL1|CAL2|CAL3|CAL4|CAL5');
+        if Bin.FindSet() then
+            repeat
+                Bin.Dedicated := true;
+                Bin.Modify();
+                BinContent.Reset();
+                BinContent.SetRange("Location Code", Bin."Location Code");
+                BinContent.SetRange("Bin Code", Bin.Code);
+                BinContent.ModifyAll(Dedicated, Bin.Dedicated);
+            until Bin.Next() = 0;
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Upgrade Tag", OnGetPerCompanyUpgradeTags, '', false, false)]
     local procedure NACUpgradeOnGetPerCompanyUpgradeTags(var PerCompanyUpgradeTags: List of [Code[250]])
     begin
@@ -117,6 +134,7 @@ codeunit 50002 "NAC Upgrade"
     end;
 
     var
+        UpgradeDedicatedBinTok: Label 'UpgradeDedicatedBin-05012026Lbl', Locked = true;
         UpgradeDedicatedBinTok: Label 'UpgradeDedicatedBin-05012026Lbl', Locked = true;
         UpgradeWarehouseShipment05012026Tok: Label 'UpgradeWarehouseShipment-05012026Lbl', Locked = true;
         UpgradeWarehouseShipmentReferences05012026Tok: Label 'UpgradeWarehouseShipmentReferences-05012026Lbl', Locked = true;
