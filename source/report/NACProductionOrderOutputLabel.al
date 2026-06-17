@@ -4,7 +4,6 @@ using Microsoft.Inventory.Item;
 using Microsoft.Foundation.Company;
 using System.Utilities;
 using Microsoft.Inventory.Journal;
-using System.Device;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Sales.Document;
 using Microsoft.Sales.Customer;
@@ -18,7 +17,7 @@ using Microsoft.Manufacturing.Document;
 report 51001 NACProductionOrderOutputLabel
 {
     ApplicationArea = All;
-    DefaultRenderingLayout = "OutputLabel4x6";
+    DefaultRenderingLayout = "Production Output Label 4x6";
     Permissions = tabledata "Item Ledger Entry" = RM;
     Caption = 'NAC Production Order Output Label';
 
@@ -263,17 +262,17 @@ report 51001 NACProductionOrderOutputLabel
     }
     rendering
     {
-        layout("OutputLabel4x6")
+        layout("Production Output Label 4x6")
         {
             Type = RDLC;
             Caption = 'NAC Production Order Output Label 4x6';
-            LayoutFile = 'source\report\Layout\NACProductionOrderOutputLabel4x6.rdl';
+            LayoutFile = 'source/report/Layout/NACProductionOrderOutputLabel4x6.rdl';
         }
-        layout("OutputLabel3x3")
+        layout("Production Output Label 3x3")
         {
             Type = RDLC;
             Caption = 'NAC Production Order Output Label 3x3';
-            LayoutFile = 'source\report\Layout\NACProductionOrderOutputLabel3x3.rdl';
+            LayoutFile = 'source/report/Layout/NACProductionOrderOutputLabel3x3.rdl';
         }
     }
     labels

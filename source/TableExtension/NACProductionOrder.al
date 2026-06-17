@@ -3,7 +3,6 @@ namespace NACCustom.NACCustom;
 using Microsoft.Manufacturing.Document;
 using Microsoft.Purchases.Document;
 using Microsoft.Manufacturing.MachineCenter;
-using System.Device;
 
 tableextension 51014 NACProductionOrder extends "Production Order"
 {

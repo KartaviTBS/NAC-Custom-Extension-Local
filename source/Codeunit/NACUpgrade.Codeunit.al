@@ -28,7 +28,7 @@ codeunit 50002 "NAC Upgrade"
             UpgradeTag.SetUpgradeTag(UpgradeWarehouseShipmentReferences05012026Tok);
         end;
 
-        if not upgradeTag.HasUpgradeTag(UpgradeDedicatedBinTok) then begin
+        if not UpgradeTag.HasUpgradeTag(UpgradeDedicatedBinTok) then begin
             UpgradeDedicatedBin();
             UpgradeTag.SetUpgradeTag(UpgradeDedicatedBinTok);
         end;

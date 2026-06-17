@@ -2,12 +2,7 @@ namespace NACCustom.NACCustom;
 
 using Microsoft.Manufacturing.Document;
 using Microsoft.Sales.Document;
-using Microsoft.Manufacturing.WorkCenter;
 using Microsoft.Inventory.Journal;
-using Microsoft.Manufacturing.MachineCenter;
-using Microsoft.Foundation.Reporting;
-using System.Device;
-using System.Reflection;
 
 pageextension 51030 NACReleasedProductionOrder extends "Released Production Order"
 {
@@ -32,13 +27,13 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
         {
             field(vBillNo; vBillNo)
             {
-                ApplicationArea = All;
+                ApplicationArea = all;
                 CaptionClass = rSalesH.FieldCaption("Bill-to Customer No.");
                 Editable = False;
             }
             field(vBillName; vBillName)
             {
-                ApplicationArea = All;
+                ApplicationArea = all;
                 CaptionClass = rSalesH.FieldCaption("Bill-to Name");
                 Editable = False;
             }
@@ -50,40 +45,33 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
             }
         }
     }
-
     actions
     {
         Addfirst("&Print")
         {
-            action(NACOutputLabels4x6)
+
+            action(NACOutputLabels)
             {
                 ApplicationArea = All;
-                Caption = 'Print 4x6 Output Labels';
+                Caption = 'Print Output Labels';
                 Image = OutputJournal;
-                ToolTip = 'Print production output labels using the 4x6 layout on the printer assigned to this production order.';
 
                 trigger OnAction()
+                var
+                    LabelReport: Report NACProductionOrderOutputLabel;
+                    ProdOrder: Record "Production Order";
                 begin
-                    Customs.ProductionOutputLabelPrint(Rec, LabelSize::"4x6", false);
-                end;
-            }
-            action(NACOutputLabels3x3)
-            {
-                ApplicationArea = All;
-                Caption = 'Print 3x3 Output Labels';
-                Image = OutputJournal;
-                ToolTip = 'Print production output labels using the 3x3 layout on the printer assigned to this production order.';
-
-                trigger OnAction()
-                begin
-                    Customs.ProductionOutputLabelPrint(Rec, LabelSize::"3x3", false);
+                    ProdOrder := Rec;
+                    ProdOrder.SetRecFilter();
+                    LabelReport.SetTableView(ProdOrder);
+                    LabelReport.Run();
                 end;
             }
             action("Production Movement")
             {
                 Image = Production;
                 Caption = 'Production Movement';
-                ApplicationArea = All;
+                ApplicationArea = all;
 
                 trigger OnAction()
                 var
@@ -103,31 +91,34 @@ pageextension 51030 NACReleasedProductionOrder extends "Released Production Orde
 
         addfirst(Category_Print)
         {
-            actionref(NACOutputLabels4x6_Promoted; NACOutputLabels4x6) { }
-            actionref(NACOutputLabels3x3_Promoted; NACOutputLabels3x3) { }
-            actionref(ProductionMovement_Promoted; "Production Movement") { }
+
+            actionref(NACOutputLabels_Promoted; NACOutputLabels)
+            {
+            }
+            actionref(ProductionMovement_Promoted; "Production Movement")
+            {
+            }
         }
     }
 
-    trigger OnAfterGetCurrRecord()
+    Trigger OnAfterGetCurrRecord()
     var
         NACCustoms: Codeunit NAC_Customs;
-    begin
-        Clear(vSO);
-        Clear(vSellName);
-        Clear(vSellNo);
-        Clear(vRequestedDate);
-        Clear(vExtDocNo);
-        Clear(vBillName);
-        Clear(vBillNo);
+    Begin
+        CLEAR(vSO);
+        CLEAR(vSellName);
+        CLEAR(vSellNo);
+        CLEAR(vRequestedDate);
+        CLEAR(vExtDocNo);
+        CLEAR(vBillName);
+        CLEAR(vBillNo);
         Clear(vSalesNo);
         NACCustoms.GetProductionInfo(Rec, vSO, vSalesNo, vSellName, vSellNo, vBillName, vBillNo, vRequestedDate, vExtDocNo);
-    end;
+    End;
 
     var
+        ManuPrintReport: Codeunit "Manu. Print Report";
         rSalesH: Record "Sales Header";
-        LabelSize: Enum "NAC Label Size";
-        Customs: Codeunit NAC_Customs;
         vSalesNo: Code[20];
         vBillNo: Code[20];
         vBillName: Text[100];
