@@ -153,7 +153,7 @@ report 51001 NACProductionOrderOutputLabel
                         column(GuageOrPickupLbl; GuageOrPickupLbl) { }
                         column(gauge; trecItems."NAC Gauge (IN)") { }
                         column(width; trecItems."NAC Finished Width (IN)") { }
-                        column(Length; StrSubstNo('%1 FT / %2 YD', trecItems."NAC Length (FT)", Round(trecItems."NAC Length (FT)" / 3, 0.001) / 3)) { }
+                        column(Length; StrSubstNo('%1 FT / %2 YD', trecItems."NAC Length (FT)", Round(trecItems."NAC Length (FT)" / 3, 0.01) / 3)) { }
                         column(Weight; trecItems."Net Weight") { }
                         column(Pickup; trecItems."NAC Pickup(%)") { }
                         column(ItemCategoryCode; trecItems."Item Category Code") { }
@@ -166,6 +166,7 @@ report 51001 NACProductionOrderOutputLabel
                         column(SalesOrderNo; vSalesOrderNo) { }
                         column(RollNoLbl; RollNoLbl) { }
                         column(Ledger_RollNo; trecItems."NAC Roll No.") { }
+                        column(Part_No_; ProductionOrder."Source No.") { }
                         trigger OnAfterGetRecord()
                         var
                             BarcodeFontProvider2D: Interface "Barcode Font Provider 2D";
@@ -285,6 +286,7 @@ report 51001 NACProductionOrderOutputLabel
         lblLotNo = 'Lot No.';
         lblItemNo = 'Item No.';
         lblDescription = 'Description';
+        PartNo = 'Part No.';
     }
 
     trigger OnInitReport()
