@@ -182,12 +182,12 @@ tableextension 51009 "NAC Item" extends Item
             Caption = 'Temporary Entry No.';
             DataClassification = CustomerContent;
         }
-        field(51131; TempLotNo; Code[20])
+        field(51131; TempLotNo; Code[50])
         {
             Caption = 'Temporary Lot No.';
             DataClassification = CustomerContent;
         }
-        field(51132; TempSerialNo; Code[20])
+        field(51132; TempSerialNo; Code[50])
         {
             Caption = 'Temporary Serial No.';
             DataClassification = CustomerContent;
@@ -209,7 +209,7 @@ tableextension 51009 "NAC Item" extends Item
             Editable = False;
             CalcFormula = lookup("Item Category"."NAC Compound" Where("Code" = field("Item Category Code")));
         }
-        field(51201; TempBatchNo; Code[20])
+        field(51201; TempBatchNo; Code[50])
         {
             Caption = 'Temporary Batch No.';
             DataClassification = CustomerContent;

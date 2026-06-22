@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-05-22T09:34:18.1671271Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-06-17T13:26:30.4988288Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -24,6 +24,133 @@
       <rd:DataSourceID>3bdb26be-ed5d-4201-a78e-1d3c1a1e671f</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="trecItems_No">
+          <DataField>trecItems_No</DataField>
+        </Field>
+        <Field Name="trecItems_Description">
+          <DataField>trecItems_Description</DataField>
+        </Field>
+        <Field Name="trecItems_LotNo">
+          <DataField>trecItems_LotNo</DataField>
+        </Field>
+        <Field Name="trecItems_SerialNo">
+          <DataField>trecItems_SerialNo</DataField>
+        </Field>
+        <Field Name="fldBarcode">
+          <DataField>fldBarcode</DataField>
+        </Field>
+        <Field Name="fldLotBarcode">
+          <DataField>fldLotBarcode</DataField>
+        </Field>
+        <Field Name="fldSerialBarcode">
+          <DataField>fldSerialBarcode</DataField>
+        </Field>
+        <Field Name="fldLotQuantityBarcode">
+          <DataField>fldLotQuantityBarcode</DataField>
+        </Field>
+        <Field Name="diNumCopies_Number">
+          <DataField>diNumCopies_Number</DataField>
+        </Field>
+        <Field Name="fldQuantity">
+          <DataField>fldQuantity</DataField>
+        </Field>
+        <Field Name="fldQuantityFormat">
+          <DataField>fldQuantityFormat</DataField>
+        </Field>
+        <Field Name="fldUnitOfMeasure">
+          <DataField>fldUnitOfMeasure</DataField>
+        </Field>
+        <Field Name="fldIncludeQty">
+          <DataField>fldIncludeQty</DataField>
+        </Field>
+        <Field Name="fldExpiryDate">
+          <DataField>fldExpiryDate</DataField>
+        </Field>
+        <Field Name="WarehouseClassCode">
+          <DataField>WarehouseClassCode</DataField>
+        </Field>
+        <Field Name="MFG_Date">
+          <DataField>MFG_Date</DataField>
+        </Field>
+        <Field Name="Rolls">
+          <DataField>Rolls</DataField>
+        </Field>
+        <Field Name="GuageOrPickup">
+          <DataField>GuageOrPickup</DataField>
+        </Field>
+        <Field Name="GuageOrPickupFormat">
+          <DataField>GuageOrPickupFormat</DataField>
+        </Field>
+        <Field Name="GuageOrPickupLbl">
+          <DataField>GuageOrPickupLbl</DataField>
+        </Field>
+        <Field Name="gauge">
+          <DataField>gauge</DataField>
+        </Field>
+        <Field Name="gaugeFormat">
+          <DataField>gaugeFormat</DataField>
+        </Field>
+        <Field Name="width">
+          <DataField>width</DataField>
+        </Field>
+        <Field Name="widthFormat">
+          <DataField>widthFormat</DataField>
+        </Field>
+        <Field Name="Length">
+          <DataField>Length</DataField>
+        </Field>
+        <Field Name="Weight">
+          <DataField>Weight</DataField>
+        </Field>
+        <Field Name="WeightFormat">
+          <DataField>WeightFormat</DataField>
+        </Field>
+        <Field Name="Pickup">
+          <DataField>Pickup</DataField>
+        </Field>
+        <Field Name="PickupFormat">
+          <DataField>PickupFormat</DataField>
+        </Field>
+        <Field Name="ItemCategoryCode">
+          <DataField>ItemCategoryCode</DataField>
+        </Field>
+        <Field Name="CompanyPicture">
+          <DataField>CompanyPicture</DataField>
+        </Field>
+        <Field Name="CustomerPO">
+          <DataField>CustomerPO</DataField>
+        </Field>
+        <Field Name="SellCustomerNo">
+          <DataField>SellCustomerNo</DataField>
+        </Field>
+        <Field Name="SellCustomerName">
+          <DataField>SellCustomerName</DataField>
+        </Field>
+        <Field Name="BillCustomerNo">
+          <DataField>BillCustomerNo</DataField>
+        </Field>
+        <Field Name="BillCustomerName">
+          <DataField>BillCustomerName</DataField>
+        </Field>
+        <Field Name="SalesOrderNo">
+          <DataField>SalesOrderNo</DataField>
+        </Field>
+        <Field Name="RollNoLbl">
+          <DataField>RollNoLbl</DataField>
+        </Field>
+        <Field Name="Ledger_RollNo">
+          <DataField>Ledger_RollNo</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -225,7 +352,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="CustomerPO">
                           <rd:DefaultName>CustomerPO</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -376,7 +502,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="trecItems_Description">
                           <rd:DefaultName>trecItems_Description</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -527,7 +652,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox6">
                           <rd:DefaultName>Textbox6</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -679,7 +803,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="GuageOrPickup">
                           <rd:DefaultName>GuageOrPickup</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -830,7 +953,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="width">
                           <rd:DefaultName>width</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -927,6 +1049,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox107">
                           <rd:DefaultName>Textbox23</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -934,7 +1057,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Length (FT)</Value>
+                                  <Value EvaluationMode="Constant">Length</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -981,7 +1104,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Length">
                           <rd:DefaultName>Length</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -1132,7 +1254,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Weight">
                           <rd:DefaultName>Weight</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -1283,7 +1404,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox16">
                           <rd:DefaultName>Textbox16</rd:DefaultName>
                           <KeepTogether>true</KeepTogether>
@@ -1436,7 +1556,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox10">
                           <rd:DefaultName>Textbox8</rd:DefaultName>
                           <CanGrow>true</CanGrow>
@@ -2104,134 +2223,4 @@ End Function
 </Code>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="trecItems_No">
-          <DataField>trecItems_No</DataField>
-        </Field>
-        <Field Name="trecItems_Description">
-          <DataField>trecItems_Description</DataField>
-        </Field>
-        <Field Name="trecItems_LotNo">
-          <DataField>trecItems_LotNo</DataField>
-        </Field>
-        <Field Name="trecItems_SerialNo">
-          <DataField>trecItems_SerialNo</DataField>
-        </Field>
-        <Field Name="fldBarcode">
-          <DataField>fldBarcode</DataField>
-        </Field>
-        <Field Name="fldLotBarcode">
-          <DataField>fldLotBarcode</DataField>
-        </Field>
-        <Field Name="fldSerialBarcode">
-          <DataField>fldSerialBarcode</DataField>
-        </Field>
-        <Field Name="fldLotQuantityBarcode">
-          <DataField>fldLotQuantityBarcode</DataField>
-        </Field>
-        <Field Name="diNumCopies_Number">
-          <DataField>diNumCopies_Number</DataField>
-        </Field>
-        <Field Name="fldQuantity">
-          <DataField>fldQuantity</DataField>
-        </Field>
-        <Field Name="fldQuantityFormat">
-          <DataField>fldQuantityFormat</DataField>
-        </Field>
-        <Field Name="fldUnitOfMeasure">
-          <DataField>fldUnitOfMeasure</DataField>
-        </Field>
-        <Field Name="fldIncludeQty">
-          <DataField>fldIncludeQty</DataField>
-        </Field>
-        <Field Name="fldExpiryDate">
-          <DataField>fldExpiryDate</DataField>
-        </Field>
-        <Field Name="WarehouseClassCode">
-          <DataField>WarehouseClassCode</DataField>
-        </Field>
-        <Field Name="MFG_Date">
-          <DataField>MFG_Date</DataField>
-        </Field>
-        <Field Name="Rolls">
-          <DataField>Rolls</DataField>
-        </Field>
-        <Field Name="GuageOrPickup">
-          <DataField>GuageOrPickup</DataField>
-        </Field>
-        <Field Name="GuageOrPickupFormat">
-          <DataField>GuageOrPickupFormat</DataField>
-        </Field>
-        <Field Name="GuageOrPickupLbl">
-          <DataField>GuageOrPickupLbl</DataField>
-        </Field>
-        <Field Name="gauge">
-          <DataField>gauge</DataField>
-        </Field>
-        <Field Name="gaugeFormat">
-          <DataField>gaugeFormat</DataField>
-        </Field>
-        <Field Name="width">
-          <DataField>width</DataField>
-        </Field>
-        <Field Name="widthFormat">
-          <DataField>widthFormat</DataField>
-        </Field>
-        <Field Name="Length">
-          <DataField>Length</DataField>
-        </Field>
-        <Field Name="LengthFormat">
-          <DataField>LengthFormat</DataField>
-        </Field>
-        <Field Name="Weight">
-          <DataField>Weight</DataField>
-        </Field>
-        <Field Name="WeightFormat">
-          <DataField>WeightFormat</DataField>
-        </Field>
-        <Field Name="Pickup">
-          <DataField>Pickup</DataField>
-        </Field>
-        <Field Name="PickupFormat">
-          <DataField>PickupFormat</DataField>
-        </Field>
-        <Field Name="ItemCategoryCode">
-          <DataField>ItemCategoryCode</DataField>
-        </Field>
-        <Field Name="CompanyPicture">
-          <DataField>CompanyPicture</DataField>
-        </Field>
-        <Field Name="CustomerPO">
-          <DataField>CustomerPO</DataField>
-        </Field>
-        <Field Name="SellCustomerNo">
-          <DataField>SellCustomerNo</DataField>
-        </Field>
-        <Field Name="SellCustomerName">
-          <DataField>SellCustomerName</DataField>
-        </Field>
-        <Field Name="BillCustomerNo">
-          <DataField>BillCustomerNo</DataField>
-        </Field>
-        <Field Name="BillCustomerName">
-          <DataField>BillCustomerName</DataField>
-        </Field>
-        <Field Name="SalesOrderNo">
-          <DataField>SalesOrderNo</DataField>
-        </Field>
-        <Field Name="RollNoLbl">
-          <DataField>RollNoLbl</DataField>
-        </Field>
-        <Field Name="Ledger_RollNo">
-          <DataField>Ledger_RollNo</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>

@@ -153,7 +153,7 @@ report 51001 NACProductionOrderOutputLabel
                         column(GuageOrPickupLbl; GuageOrPickupLbl) { }
                         column(gauge; trecItems."NAC Gauge (IN)") { }
                         column(width; trecItems."NAC Finished Width (IN)") { }
-                        column(Length; trecItems."NAC Length (FT)") { }
+                        column(Length; StrSubstNo('%1 FT / %2 YD', trecItems."NAC Length (FT)", Round(trecItems."NAC Length (FT)" / 3, 0.001) / 3)) { }
                         column(Weight; trecItems."Net Weight") { }
                         column(Pickup; trecItems."NAC Pickup(%)") { }
                         column(ItemCategoryCode; trecItems."Item Category Code") { }

@@ -37,6 +37,7 @@ report 50001 "NAC Prod. Jnl. Output Label"
                         DataItemTableView = sorting("Source ID", "Source Ref. No.", "Source Type", "Source Subtype", "Source Batch Name", "Source Prod. Order Line", "Reservation Status", "Shipment Date", "Expected Receipt Date");
                         DataItemLink = "Item No." = field("Item No."), "Source ID" = field("Journal Template Name"),
                                        "Source Batch Name" = field("Journal Batch Name"), "Source Ref. No." = field("Line No.");
+                        RequestFilterFields = "Lot No.";
                         trigger OnAfterGetRecord()
                         var
                             lrecItem: Record Item;
@@ -140,7 +141,7 @@ report 50001 "NAC Prod. Jnl. Output Label"
                             column(GuageOrPickupLbl; GuageOrPickupLbl) { }
                             column(gauge; trecItems."NAC Gauge (IN)") { }
                             column(width; trecItems."NAC Finished Width (IN)") { }
-                            column(Length; trecItems."NAC Length (FT)") { }
+                            column(Length; StrSubstNo('%1 FT / %2 YD', trecItems."NAC Length (FT)", Round(trecItems."NAC Length (FT)" / 3, 0.001) / 3)) { }
                             column(Weight; trecItems."Net Weight") { }
                             column(Pickup; trecItems."NAC Pickup(%)") { }
                             column(ItemCategoryCode; trecItems."Item Category Code") { }
