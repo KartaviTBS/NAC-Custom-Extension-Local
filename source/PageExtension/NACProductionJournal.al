@@ -245,18 +245,36 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
     procedure SplitQuantityIntoRolls(Quantity: Decimal; RollSize: Decimal): List of [Decimal]
     var
         RollList: List of [Decimal];
-        FullRolls: Integer;
+        NumFullRolls: Integer;
         RemainingQty: Decimal;
         i: Integer;
+        NumRemainingRolls: Integer;
+        BaseRemainingRollLength: Decimal;
+        ExtraAmount: Decimal;
     begin
-        FullRolls := Quantity div RollSize;
-        RemainingQty := Quantity mod RollSize;
-        for i := 1 to FullRolls do
+        if RollSize <= 0 then
+            exit(RollList);
+
+        NumFullRolls := Quantity div RollSize;
+        if NumFullRolls > 0 then
+            NumFullRolls -= 1;
+
+        for i := 1 to NumFullRolls do
             RollList.Add(RollSize);
 
+        RemainingQty := Quantity - (NumFullRolls * RollSize);
         if RemainingQty > 0 then
-            RollList.Add(RemainingQty);
-
+            if Rec.NAC_Rolls > NumFullRolls then begin
+                NumRemainingRolls := Rec.NAC_Rolls - NumFullRolls;
+                BaseRemainingRollLength := Round(RemainingQty / NumRemainingRolls, 1, '<');
+                ExtraAmount := RemainingQty - (BaseRemainingRollLength * NumRemainingRolls);
+                for i := 1 to NumRemainingRolls do
+                    if i <= ExtraAmount then
+                        RollList.Add(BaseRemainingRollLength + 1)
+                    else
+                        RollList.Add(BaseRemainingRollLength);
+            end else
+                RollList.Add(RemainingQty);
         exit(RollList);
     end;
 }
