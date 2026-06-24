@@ -34,9 +34,10 @@ report 51001 NACProductionOrderOutputLabel
                 dataitem(diItemLedgerEntry; "Item Ledger Entry")
                 {
                     DataItemTableView = SORTING("Item No.", Open, "Variant Code", Positive, "Location Code", "Posting Date", "Lot No.", "Serial No.") ORDER(Ascending)
-                        WHERE(Open = CONST(true), "Entry Type" = CONST(Output), "Order Type" = CONST(Production));
+                        WHERE("Entry Type" = CONST(Output), "Order Type" = CONST(Production));
                     DataItemLinkReference = "ProductionOrderLine";
                     DataItemLink = "Order No." = field("Prod. Order No."), "Order Line No." = field("Line No."), "Item No." = field("Item No.");
+                    RequestFilterFields = "Lot No.";
 
                     trigger OnAfterGetRecord()
                     var
@@ -77,7 +78,7 @@ report 51001 NACProductionOrderOutputLabel
                         trecItems."NAC Roll No." := "NAC Roll No.";
 
                         //if (bIncludeQty) then begin
-                        trecItems."Unit Price" := "Remaining Quantity";
+                        trecItems."Unit Price" := diItemLedgerEntry.Quantity;
                         trecItems."Base Unit of Measure" := "Unit of Measure Code";
                         //end;
                         trecItems.TempEntryNo := diItemLedgerEntry."Entry No.";
@@ -113,6 +114,7 @@ report 51001 NACProductionOrderOutputLabel
                                 end;
                             end;
                         end;
+
                         if (not CurrReport.Preview) and (not diItemLedgerEntry."NAC Output Label Printed") then begin
                             diItemLedgerEntry."NAC Output Label Printed" := true;
                             diItemLedgerEntry.Modify();
@@ -151,7 +153,7 @@ report 51001 NACProductionOrderOutputLabel
                         column(GuageOrPickupLbl; GuageOrPickupLbl) { }
                         column(gauge; trecItems."NAC Gauge (IN)") { }
                         column(width; trecItems."NAC Finished Width (IN)") { }
-                        column(Length; trecItems."NAC Length (FT)") { }
+                        column(Length; StrSubstNo('%1 FT / %2 YD', trecItems."NAC Length (FT)", Round(trecItems."NAC Length (FT)" / 3, 0.01))) { }
                         column(Weight; trecItems."Net Weight") { }
                         column(Pickup; trecItems."NAC Pickup(%)") { }
                         column(ItemCategoryCode; trecItems."Item Category Code") { }
@@ -164,6 +166,7 @@ report 51001 NACProductionOrderOutputLabel
                         column(SalesOrderNo; vSalesOrderNo) { }
                         column(RollNoLbl; RollNoLbl) { }
                         column(Ledger_RollNo; trecItems."NAC Roll No.") { }
+                        column(Part_No_; ProductionOrder."Source No.") { }
                         trigger OnAfterGetRecord()
                         var
                             BarcodeFontProvider2D: Interface "Barcode Font Provider 2D";
@@ -283,6 +286,7 @@ report 51001 NACProductionOrderOutputLabel
         lblLotNo = 'Lot No.';
         lblItemNo = 'Item No.';
         lblDescription = 'Description';
+        PartNo = 'Part No.';
     }
 
     trigger OnInitReport()
@@ -384,5 +388,3 @@ report 51001 NACProductionOrderOutputLabel
         PrintAllLabels: Boolean;
         RollNoLbl: Label 'Roll No.';
 }
-
-
