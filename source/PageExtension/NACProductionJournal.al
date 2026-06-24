@@ -157,7 +157,10 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                                                         ReservationEntry."Source Ref. No." := ItemJournal."Line No.";
                                                         ReservationEntry."Reservation Status" := ReservationEntry."Reservation Status"::Prospect;
                                                         ReservationEntry."Item No." := ItemJournal."Item No.";
+                                                        ReservationEntry."Variant Code" := ItemJournal."Variant Code";
                                                         ReservationEntry."Location Code" := ItemJournal."Location Code";
+                                                        ReservationEntry."Creation Date" := WorkDate();
+                                                        ReservationEntry."Created By" := CopyStr(UserId(), 1, 50);
                                                         ReservationEntry."Qty. per Unit of Measure" := ItemJournal."Qty. per Unit of Measure";
                                                         ReservationEntry.Validate("Quantity (Base)", ItemJournal."NAC Length of Rolls");
                                                         ReservationEntry."Expected Receipt Date" := ItemJournal."Posting Date";
@@ -185,7 +188,10 @@ pageextension 51036 NACProductionJournal extends "Production Journal"
                                                         ReservationEntry."Source Ref. No." := ItemJournal."Line No.";
                                                         ReservationEntry."Reservation Status" := ReservationEntry."Reservation Status"::Prospect;
                                                         ReservationEntry."Item No." := ItemJournal."Item No.";
+                                                        ReservationEntry."Variant Code" := ItemJournal."Variant Code";
                                                         ReservationEntry."Location Code" := ItemJournal."Location Code";
+                                                        ReservationEntry."Creation Date" := WorkDate();
+                                                        ReservationEntry."Created By" := CopyStr(UserId(), 1, 50);
                                                         ReservationEntry."Qty. per Unit of Measure" := ItemJournal."Qty. per Unit of Measure";
                                                         ReservationEntry.Validate("Quantity (Base)", ItemJournal."NAC Length of Rolls");
                                                         ReservationEntry."Expected Receipt Date" := ItemJournal."Posting Date";
