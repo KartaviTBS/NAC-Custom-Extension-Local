@@ -32,7 +32,26 @@ pageextension 51028 NACFinishedProductionOrders extends "Finished Production Ord
                 Editable = False;
             }
         }
+
     }
+    actions
+    {
+        addlast(processing)
+        {
+            action("Certificate of Conformance")
+            {
+                Caption = 'Certificate of Conformance';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ApplicationArea = all;
+                Image = ItemLedger;
+                RunObject = Page "NAC Certificate of Conformance";
+                RunPageLink = "No." = field("No.");
+            }
+        }
+    }
+
 
     Trigger OnAfterGetCurrRecord()
     var
